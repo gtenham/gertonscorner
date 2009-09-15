@@ -1,0 +1,16 @@
+<?php echo $this->doctype() ?>
+<html xmlns="http://www.w3.org/1999/xhtml"> 
+<head>  
+  <?php echo $this->headMeta() ?>
+  <?php echo $this->headTitle() ?>
+  <?php echo $this->headLink()->prependStylesheet($this->baseUrl().'/css/site.css'); ?>
+</head> 
+<body>
+   <h1><?php echo $this->escape($this->title); ?></h1>
+   <?php echo $this->layout()->content ?>
+
+<!-- if your application requires it, this would be a great place to put a
+     footer for all pages. -->
+
+</body>
+</html>
