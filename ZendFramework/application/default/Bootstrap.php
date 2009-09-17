@@ -22,7 +22,22 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
         return $autoloader;
     }
     
-    
+    protected function _initRouters()
+    {
+    	$this->bootstrap('frontController');
+        $front = Zend_Controller_Front::getInstance();
+        
+        $route = new Zend_Controller_Router_Route(
+                    'plsdispatch/:packagename',
+                        array(
+                          'module'     => 'admin',
+                          'controller' => 'index',
+                          'action'     => 'index'
+                         )
+                     );
+//http://monzee.wordpress.com/2009/05/21/migrating-applications-to-1-8/
+        //$front->addRoute('plsdispatcher', $route);
+    }
     /**
      * Bootstrap the view helpers
      * 

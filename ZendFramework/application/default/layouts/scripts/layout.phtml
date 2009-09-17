@@ -8,7 +8,10 @@
   <?php echo $this->headLink()->prependStylesheet($this->baseUrl().'/css/site.css'); ?>
 </head> 
 <body>
-   <h1><?php echo $this->escape($this->title); ?></h1>
-   <?php echo $this->layout()->content ?>
+   <div id="doc3" class="yui-t3">
+      <div id="hd"><h1><?php echo $this->escape($this->title); ?></h1></div>
+      <?php echo $this->layout()->content ?>
+      <div id="ft"><p>Footer</p></div>
+   </div>
 </body>
 </html>
