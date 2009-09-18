@@ -21,22 +21,26 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
         ));
         return $autoloader;
     }
-    
+    /**
+     * Bootstrap the Routers
+     * http://monzee.wordpress.com/2009/05/21/migrating-applications-to-1-8/
+     * @return void
+     */
     protected function _initRouters()
     {
-    	$this->bootstrap('frontController');
-        $front = Zend_Controller_Front::getInstance();
+    	$front = $this->bootstrap('frontController')->getResource('frontController');
+        $router = $front->getRouter();
         
         $route = new Zend_Controller_Router_Route(
-                    'plsdispatch/:packagename',
+                    'plsdispatch/:packagename/*',
                         array(
                           'module'     => 'admin',
                           'controller' => 'index',
                           'action'     => 'index'
                          )
                      );
-//http://monzee.wordpress.com/2009/05/21/migrating-applications-to-1-8/
-        //$front->addRoute('plsdispatcher', $route);
+        
+        $router->addRoute('plsdispatcher', $route);
     }
     /**
      * Bootstrap the view helpers
@@ -45,8 +49,8 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
      */
     protected function _initViewHelpers()
     {
-        $this->bootstrap('view');
-        $view = $this->getResource('view');
+        //$this->bootstrap('view');
+        $view = $this->bootstrap('view')->getResource('view');
         $view->doctype('XHTML1_STRICT');
         $view->headMeta()->appendHttpEquiv('Content-Type', 'text/html;charset=utf-8');
         $view->headTitle()->setSeparator(' - ');
