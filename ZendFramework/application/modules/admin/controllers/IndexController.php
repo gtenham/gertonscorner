@@ -12,7 +12,7 @@ class Admin_IndexController extends Zend_Controller_Action
     public function indexAction()
     {
         // action body
-        $this->view->title = 'Admin is called for package: ' . $this->_getParam('packagename');
+        $this->view->title = 'Admin';
         $this->view->headTitle($this->view->title, 'PREPEND');
     }
 

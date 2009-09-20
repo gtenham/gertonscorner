@@ -34,7 +34,7 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
         $route = new Zend_Controller_Router_Route(
                     'plsdispatch/:packagename/*',
                         array(
-                          'module'     => 'admin',
+                          'module'     => 'plsdad',
                           'controller' => 'index',
                           'action'     => 'index'
                          )
@@ -49,7 +49,6 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
      */
     protected function _initViewHelpers()
     {
-        //$this->bootstrap('view');
         $view = $this->bootstrap('view')->getResource('view');
         $view->doctype('XHTML1_STRICT');
         $view->headMeta()->appendHttpEquiv('Content-Type', 'text/html;charset=utf-8');
