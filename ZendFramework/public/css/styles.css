@@ -1,1 +1,153 @@
-//styles.css
+@import url("base.css");
+body {
+	background: #000000 url(../images/header.jpg) no-repeat;
+	color: #E9E9E9;
+}
+#hd {
+	height: 347px;
+	text-align: right;		
+}
+#logo {
+   width: 699px;
+   height: 247px;
+   float: left;
+   text-align: left;
+   padding-top: 60px;
+   padding-left: 40px;
+}
+#logo a {
+   text-decoration: none;
+   text-transform: lowercase;
+   font-style: italic;
+   font-size: 138.5%;
+   color: #FFFFFF;
+}
+#logo h2 a {
+   font-size: 93%;
+}
+#menu {
+   float: left;
+   padding-left: 139px;
+   width: 600px;
+   height: 47px;
+   background: url(../images/menu.gif) no-repeat;
+}
+#menu ul {
+	list-style: none;
+}
+#menu li {
+	display: inline;
+}
+#menu a {
+	display: block;
+	float: left;
+	width: 79px;
+	height: 31px;
+	text-align: center;
+	text-decoration: none;
+	color: #E0E7FF;
+	font-weight: bold;
+	font-size: 108%;
+	padding-top: 15px;
+
+}
+#menu a:hover {
+	width: 79px;
+    height: 31px;
+	color: #FF0000;
+	text-decoration: underline;
+	background: url(../images/menu_back.gif) repeat-x;
+}
+#bd {
+   padding-top: 20px;
+   min-height:350px;
+}
+#ft {
+	height: 47px;
+	clear: both;
+	padding-top: 20px;
+	background: url(../images/footer.gif) repeat-x;
+}
+
+#ft p {
+	margin: 0;
+	font-size: 10px;
+	text-align: center;
+	color: #E9E9E9;
+}
+
+#ft a {
+	color: #E0E7FF;
+}
+#right-block {
+	padding: 10px;
+	width: 240px;
+	padding-right: 1em;
+}
+#right-block h3 {
+   width: 238px;
+   height: 28px;
+   font-size: 108%;
+   padding-left: 15px;
+   padding-top: 15px;
+   text-transform: uppercase;
+   color: #ffffff;
+   background: url(../images/title.gif) no-repeat
+}
+
+#right-block ul {
+	border: 0px;
+	margin-left: 20px;
+	margin-bottom: 10px;
+	list-style: none;
+}
+
+#right-block li  {
+	padding: 4px 20px;
+    background: url(../images/small.gif) no-repeat left;
+}
+
+#right-block .news
+{
+background: #000000;
+padding: 5px;
+}
+
+#right-block h4
+{
+font-size: 77%;
+}
+
+#right-block a {
+	color: #E0E7FF;
+	font-size: 85%;
+}
+#right-block a:visited {
+	color: #E0E7FF;
+	font-size: 85%;
+}
+
+#right-block p
+{
+padding: 10px;
+}
+
+#left-block {
+   padding-left: 20px;
+}
+#left-block h2 {
+	padding-top: 10px;
+	color: #E0E7FF;
+}
+#left-block h4 {
+	padding-bottom: 1em;
+	font-size: 93%;
+	color: #D72020;
+}
+#left-block a {
+   color: #E0E7FF;
+   text-decoration: none;
+}
+#left-block p {
+	padding-bottom: 10px;
+}

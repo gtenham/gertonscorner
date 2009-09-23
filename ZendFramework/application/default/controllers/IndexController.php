@@ -10,6 +10,11 @@
  */
 class IndexController extends Zend_Controller_Action 
 {
+    public function init()
+    {
+        /* Initialize action controller here */
+    	$this->_helper->layout()->setLayout('frontpage');
+    }
     /**
      * The "index" action is the default action for all controllers -- the 
      * landing page of the site.
@@ -24,7 +29,7 @@ class IndexController extends Zend_Controller_Action
      */
     public function indexAction() 
     {
-        $this->view->title = "Welkom";
+        $this->view->title = "Welcome";
     }
     
 	public function infoAction() 
