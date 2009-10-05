@@ -1,8 +1,5 @@
 <?php
-class FileVO {
-	
+class Model_File {
 	public $filename;
 	public $filedata;
-	
 }
-?>

@@ -19,7 +19,7 @@ class Messagebroker_AmfController extends Zend_Controller_Action
         // action body
         $server = new Zend_Amf_Server();
 		$server->addDirectory(APPLICATION_PATH . '/modules/messagebroker/services/');
-		$server->setClassMap("FileVO", "FileVO");
+		//$server->setClassMap("FileVO", "FileVO");
 		echo($server->handle());
     }
 }
