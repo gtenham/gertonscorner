@@ -13,6 +13,7 @@ class IndexController extends Zend_Controller_Action
     public function init()
     {
         /* Initialize action controller here */
+    	// Override the default layout "page" with "frontpage"
     	$this->_helper->layout()->setLayout('frontpage');
     }
     /**
@@ -27,8 +28,8 @@ class IndexController extends Zend_Controller_Action
      *
      * @return void
      */
-    public function indexAction() 
-    {
+    public function indexAction() {
+    	Zend_Registry::get('Zend_Log')->info("Informational log");
         $this->view->title = "Congratulations!";
     }
     
