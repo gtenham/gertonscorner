@@ -25,6 +25,18 @@ body {
 #logo h2 a {
    font-size: 93%;
 }
+#authenticate h4{
+   color: #ffffff;
+   font-size: 108%;
+   padding-bottom: 5px;
+}
+#authenticate h4 a{
+   text-decoration: none;
+   /* color: #D72020; */
+   color: #E0E7FF;
+   padding-right: 1em;
+   font-weight: bold;
+}
 #menu {
    float: left;
    padding-left: 139px;

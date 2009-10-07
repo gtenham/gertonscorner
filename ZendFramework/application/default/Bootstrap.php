@@ -34,5 +34,7 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
         $view->headMeta()->appendHttpEquiv('Content-Type', 'text/html;charset=utf-8');
         $view->headTitle()->setSeparator(' - ');
         $view->headTitle('Zend Framework Demo');
+        $view->partial()->setObjectKey('object');
+        $view->partialLoop()->setObjectKey('object');
     }
 }
