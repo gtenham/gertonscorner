@@ -1,4 +1,11 @@
 <?php
+/**
+ * Custom Resource plugin class for logging
+ * 
+ * @uses       Zend_Application_Resource_ResourceAbstract
+ * @package    Custom_Resource
+ * @version    $Id$
+ */
 class Custom_Resource_Logger extends Zend_Application_Resource_ResourceAbstract {
    
    protected $_log;
@@ -11,6 +18,7 @@ class Custom_Resource_Logger extends Zend_Application_Resource_ResourceAbstract 
       if (null === $this->_log) {
          $options = $this->getOptions();
          $output = strtolower($options['output']);
+         $registry = $options['registry'];
          // Change log output
          if ( $output === "firebug") {
             $writer = new Zend_Log_Writer_Firebug();
@@ -27,9 +35,9 @@ class Custom_Resource_Logger extends Zend_Application_Resource_ResourceAbstract 
          $log->addFilter($filter);
          
          // Add log instance to the global registry
-         // fetch the logger using Zend_Registry::get('Zend_Log')
+         // fetch the logger using Zend_Registry::get('[registry-option]')
          // within your controllers, models etc          
-         Zend_Registry::set('Zend_Log', $log);
+         Zend_Registry::set($registry, $log);
          $this->_log = $log;
       }
       return $this->_log;

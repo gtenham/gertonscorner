@@ -2,8 +2,7 @@
 class Admin_IndexController extends Zend_Controller_Action
 {
 
-    public function init()
-    {
+    public function init() {
         /* Initialize action controller here */
     	$myuser = new Model_User();
     	$myuser->userid = "gertonth";
@@ -15,7 +14,7 @@ class Admin_IndexController extends Zend_Controller_Action
     public function indexAction()
     {
         // action body
-        
+        Zend_Registry::get('Zend_Mod_Log')->info("module Admin log");
         $this->view->title = 'Admin module';
         $this->view->headTitle($this->view->title, 'PREPEND');
         
