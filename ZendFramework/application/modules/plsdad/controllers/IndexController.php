@@ -9,12 +9,15 @@ class Plsdad_IndexController extends Zend_Controller_Action
 {
     private $content;
     private $request;
+    private $pls;
     
     public function init()
     {
         /* Initialize action controller here */
     	$this->_helper->viewRenderer->setNoRender(true);
     	$this->_helper->layout->disableLayout();
+    	// Get a database adapter resource
+    	$this->pls = new Plsdad_Model_PLSExecuter();
     }
 
     public function indexAction()
@@ -43,7 +46,8 @@ class Plsdad_IndexController extends Zend_Controller_Action
 
     public function getAction() {
     	Zend_Registry::get('Zend_Mod_Log')->info("module plsdad log");
-    	$content = 'Plsdad is called for package: ' . $this->_getParam('packagename');
+    	$content = 'Plsdad is called for package: ' . $this->_getParam('packagename') . "\n";
+        $content .= $this->pls->run('dummy');
         
         $this->getResponse()
              ->setHeader('Content-Type', 'text/plain')
