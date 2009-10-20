@@ -47,7 +47,7 @@ class Plsdad_IndexController extends Zend_Controller_Action
     public function getAction() {
     	Zend_Registry::get('Zend_Mod_Log')->info("module plsdad log");
     	$content = 'Plsdad is called for package: ' . $this->_getParam('packagename') . "\n";
-        $content .= $this->pls->run('dummy');
+        $content .= $this->pls->run($this->_getParam('packagename'));
         
         $this->getResponse()
              ->setHeader('Content-Type', 'text/plain')
