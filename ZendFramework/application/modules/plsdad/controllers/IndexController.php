@@ -11,6 +11,9 @@ class Plsdad_IndexController extends Zend_Controller_Action
     private $request;
     private $pls;
     
+    /*
+     * Initialisation
+     */
     public function init()
     {
         /* Initialize action controller here */
@@ -20,55 +23,39 @@ class Plsdad_IndexController extends Zend_Controller_Action
     	$this->pls = new Plsdad_Model_PLSExecuter();
     }
 
+    /*
+     * The plsdad module index action method
+     */
     public function indexAction()
     {
         // action body
+        Zend_Registry::get('Zend_Mod_Log')->info("module plsdad log");
+        
         $request = $this->getRequest();
         $method = $request->getMethod();
         
+        $this->pls->setPackage($this->_getParam('packagename'));
+        $this->pls->run();
+        
         switch ($method) {
-           case 'POST':
-             $this->_forward('post');
-             break;
-           case 'PUT':
-             $this->_forward('put');
-             break;
-           case 'DELETE':
-             $this->_forward('delete');
-             break;
            case 'HEAD':
              $this->_forward('head');
              break;
            default:
-             $this->_forward('get');
+             $content = 'Plsdad is called for package: ' . $this->_getParam('packagename') . "\n";
+             $content .= $this->pls->getResponse();
+        
+             $this->getResponse()
+                ->setHeader('Content-Type', 'text/plain')
+                ->setHeader('X-Custom-Head', 'HelloWorld')
+                ->appendBody($content);
         }
     }
 
-    public function getAction() {
-    	Zend_Registry::get('Zend_Mod_Log')->info("module plsdad log");
-    	$content = 'Plsdad is called for package: ' . $this->_getParam('packagename') . "\n";
-        $content .= $this->pls->run($this->_getParam('packagename'));
-        
-        $this->getResponse()
-             ->setHeader('Content-Type', 'text/plain')
-             ->setHeader('X-Custom-Head', 'HelloWorld')
-             ->appendBody($content);
-    }
-    
-    public function postAction() {
-    	
-    }
-    
-    public function putAction() {
-    	
-    }
-    
-    public function deleteAction() {
-    	
-    }
-    
     public function headAction() {
-    	
+    	$this->getResponse()
+          ->setHeader('Content-Type', 'text/plain')
+          ->setHeader('X-Custom-Head', 'Just the header');
     }
 }
 

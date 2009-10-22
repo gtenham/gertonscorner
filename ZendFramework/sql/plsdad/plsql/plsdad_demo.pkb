@@ -10,7 +10,6 @@ as
    San Francisco, California, 94105, USA.
 
    $Revision$
-   $LastChangedBy$
    $LastChangedDate$
 ====================================================================*/
 --
@@ -31,12 +30,12 @@ end getRevision;
 -- EXECUTE
 --
 procedure execute
-(         response  in out clob nocopy
+(         response  in out nocopy clob 
 )
 as
 begin
    response := 'today is: '||to_char(sysdate, 'DD Month YYYY')||' (called from ['||
-               PACKAGENAME||']');
+               PACKAGENAME||'])';
 end execute;
 
 end plsdad_demo;

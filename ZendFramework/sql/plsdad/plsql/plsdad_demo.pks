@@ -18,7 +18,6 @@ as
    San Francisco, California, 94105, USA.
 
    $Revision$
-   $LastChangedBy$
    $LastChangedDate$
 ====================================================================*/
 --
@@ -37,7 +36,7 @@ return varchar2;
 * @param response containing the response data send to php
 */
 procedure execute
-(         response  in out clob nocopy
+(         response  in out nocopy clob 
 );
 
 end plsdad_demo;

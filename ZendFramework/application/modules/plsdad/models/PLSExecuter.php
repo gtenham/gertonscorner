@@ -1,17 +1,42 @@
 <?php
 class Plsdad_Model_PLSExecuter extends Plsdad_Model_OracleDB {
 	
+	private $packagename;
+	private $response;
+	
+	/**
+    * Setter for database packagename
+    *
+    */
+	public function setPackage($package) {
+		$this->packagename = $package;
+	}
+	/**
+    * Return the response string returned by the database package
+    *
+    * @return string
+    */
+	public function getResponse() {
+		return $this->response;
+	}
 	/**
     * Run the package on the Oracle server
     *
     * @return string
     */
-	function run($packagename) {
+	public function run() {
 		try {
 		   $conn = $this->getOCIConnection();
-		   $parse = oci_parse($conn, "begin :retval := 'today is: '||to_char(sysdate); end;");
-		   oci_bind_by_name($parse, ':retval', $r, 20);
-           $result = oci_execute($parse);
+		   $parse = oci_parse($conn, "begin $this->packagename.execute(:RESPONSE); end;");
+		   $lob = oci_new_descriptor($conn, OCI_D_LOB);
+		   // Bind variables
+		   oci_bind_by_name($parse, ':RESPONSE', $lob, -1, OCI_B_CLOB);
+		   $result = oci_execute($parse);
+		   // Read the lob-data
+		   if (is_object($lob)) { // protect against a NULL LOB
+              $this->response = $lob->load();
+              $lob->free();
+           }
 		   if (!$result) {
            	  $error = oci_error($parse);
            	  // Throw a OraException with oci_error
@@ -19,21 +44,9 @@ class Plsdad_Model_PLSExecuter extends Plsdad_Model_OracleDB {
            }
 		} catch (GcLib_Db_OraException $e) {
 			echo $e->getCode().' - '. $e->getMessage();
-		}
-	    catch (Exception $e) {
+		} catch (Exception $e) {
 			echo $e->getCode().' - '. $e->getMessage();
 		}
-        return $r;
 	}
-	
-    /**
-    * return the current sysdate of the oracle server
-    *
-    * @return string
-    */
-    function getSysDate() {
-       $res = $this->db->fetchRow("SELECT sysdate FROM dual");
-       return $res['SYSDATE'];
-    }
 }
 ?>

@@ -7,7 +7,6 @@
    San Francisco, California, 94105, USA.
 
    $Revision$
-   $LastChangedBy$
    $LastChangedDate$
 ====================================================================*/
 --
