@@ -31,7 +31,7 @@ class Plsdad_Model_PLSExecuter extends Plsdad_Model_OracleDB {
 		   $lob = oci_new_descriptor($conn, OCI_D_LOB);
 		   // Bind variables
 		   oci_bind_by_name($parse, ':RESPONSE', $lob, -1, OCI_B_CLOB);
-		   $result = oci_execute($parse);
+		   $result = oci_execute($parse, OCI_DEFAULT);
 		   // Read the lob-data
 		   if (is_object($lob)) { // protect against a NULL LOB
               $this->response = $lob->load();
