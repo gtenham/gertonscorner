@@ -33,10 +33,12 @@ return varchar2;
 /**
 * Wrapper execute procedure
 *
-* @param response containing the response data send to php
+* @param header_data containing the json encoded header data send from/to php
+* @param body_data containing the response data send to php
 */
 procedure execute
-(         response  in out nocopy clob 
+(         header_data    in out nocopy clob
+,         body_data      in out nocopy clob
 );
 
 end plsdad_demo;

@@ -43,7 +43,9 @@ class Plsdad_IndexController extends Zend_Controller_Action
              break;
            default:
              $content = 'Plsdad is called for package: ' . $this->_getParam('packagename') . "\n";
-             $content .= $this->pls->getResponse();
+             $content .= $this->pls->getResponse(). "\n";
+             $content .= serialize($this->getRequest()->getHeader('Cache-Control')). "\n";
+             //$content .= serialize($this->getResponse()->getHeaders());
         
              $this->getResponse()
                 ->setHeader('Content-Type', 'text/plain')

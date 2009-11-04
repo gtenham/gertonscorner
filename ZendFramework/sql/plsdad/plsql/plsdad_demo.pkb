@@ -17,6 +17,9 @@ as
 PACKAGENAME   constant varchar2( 30 ) := 'plsdad_demo';
 REVISIONLABEL constant varchar2( 50 ) := '$Revision$';
 
+-- Initialisation namevalues table type
+initvalue namevalues_type := namevalues_type();
+
 function getRevision
 return varchar2
 is
@@ -30,11 +33,23 @@ end getRevision;
 -- EXECUTE
 --
 procedure execute
-(         response  in out nocopy clob 
+(         header_data    in out nocopy clob
+,         body_data      in out nocopy clob
 )
 as
+   t_req_params   namevalue_parameter_type := namevalue_parameter_type(initvalue);
+   t_resp_params  namevalue_parameter_type := namevalue_parameter_type(initvalue);
 begin
-   response := 'today is: '||to_char(sysdate, 'DD Month YYYY')||' (called from ['||
+   -- Initialise the request headers into namevalue_parameter_type
+   t_req_params.json_decode(header_data);
+   
+   -- Add some reponse headers
+   t_resp_params.add_value('X-Custom-Head', 'HelloWorld');
+   t_resp_params.textcontenttype;
+   
+   -- Return the out data
+   header_data := t_resp_params.json_encode;
+   body_data := 'today is: '||to_char(sysdate, 'DD Month YYYY')||' (called from ['||
                PACKAGENAME||'])';
 end execute;
 
