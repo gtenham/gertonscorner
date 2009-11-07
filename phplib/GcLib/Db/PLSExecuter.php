@@ -47,9 +47,9 @@ class GcLib_Db_PLSExecuter {
     */
 	public function run() {
 		try {
-		   $parse = oci_parse($conn, "begin $this->packagename.execute(:header, :body); end;");
-		   $headlob = oci_new_descriptor($conn, OCI_D_LOB);
-	       $bodylob = oci_new_descriptor($conn, OCI_D_LOB);
+		   $parse = oci_parse($this->conn, "begin $this->packagename.execute(:header, :body); end;");
+		   $headlob = oci_new_descriptor($this->conn, OCI_D_LOB);
+	       $bodylob = oci_new_descriptor($this->conn, OCI_D_LOB);
 		   // Bind variables
 		   oci_bind_by_name($parse, ':header', $headlob, -1, OCI_B_CLOB);
 		   oci_bind_by_name($parse, ':body', $bodylob, -1, OCI_B_CLOB);
