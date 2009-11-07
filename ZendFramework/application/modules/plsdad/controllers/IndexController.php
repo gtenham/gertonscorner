@@ -20,7 +20,8 @@ class Plsdad_IndexController extends Zend_Controller_Action
     	$this->_helper->viewRenderer->setNoRender(true);
     	$this->_helper->layout->disableLayout();
     	// Get a database adapter resource
-    	$this->pls = new Plsdad_Model_PLSExecuter();
+    	$db = Zend_Registry::get('OracleAdapter');
+    	$this->pls = new GcLib_Db_PLSExecuter( $db->getConnection() );
     }
 
     /*
@@ -33,31 +34,29 @@ class Plsdad_IndexController extends Zend_Controller_Action
         
         $request = $this->getRequest();
         $method = $request->getMethod();
+        // Obtain user parameters
+        $params = $request->getParams();
+        $params['Cache-Control'] = (String)$request->getHeader('Cache-Control');
+        $params['Accept-Charset'] = $request->getHeader('Accept-Charset');
+        $params['Method'] = $method;
         
         $this->pls->setPackage($this->_getParam('packagename'));
+        $this->pls->setRequestHeaders(array_filter($params));
         $this->pls->run();
         
         switch ($method) {
            case 'HEAD':
-             $this->_forward('head');
+             foreach ($this->pls->getResponseHeaders() as $key => $value) {
+             	$this->getResponse()->setHeader($key,$value);
+             }
              break;
            default:
-             $content = 'Plsdad is called for package: ' . $this->_getParam('packagename') . "\n";
-             $content .= $this->pls->getResponse(). "\n";
-             $content .= serialize($this->getRequest()->getHeader('Cache-Control')). "\n";
-             //$content .= serialize($this->getResponse()->getHeaders());
-        
-             $this->getResponse()
-                ->setHeader('Content-Type', 'text/plain')
-                ->setHeader('X-Custom-Head', 'HelloWorld')
-                ->appendBody($content);
+             $content = $this->pls->getResponse();
+             foreach ($this->pls->getResponseHeaders() as $key => $value) {
+             	$this->getResponse()->setHeader($key,$value);
+             }
+             $this->getResponse()->appendBody($content);
         }
-    }
-
-    public function headAction() {
-    	$this->getResponse()
-          ->setHeader('Content-Type', 'text/plain')
-          ->setHeader('X-Custom-Head', 'Just the header');
     }
 }
 

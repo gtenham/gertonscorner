@@ -116,10 +116,11 @@ create or replace type body namevalue_parameter_type is
    
     end json_decode;
 	
-    member procedure shouldredirect 
+    member procedure redirect(p_location varchar2) 
 	is
     begin
 	    add_value('HTTP_RESPONSE_CODE','302');
+	    add_value('Location',p_location);
 	end;
 	
 	member procedure xmlcontenttype 

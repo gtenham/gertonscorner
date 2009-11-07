@@ -32,6 +32,6 @@ create or replace type namevalue_parameter_type as object(
    ,member procedure htmlcontenttype
    ,member procedure textcontenttype
    ,member procedure contenttype(p_value clob)
-   ,member procedure shouldredirect
+   ,member procedure redirect(p_location varchar2)
 );
 /
