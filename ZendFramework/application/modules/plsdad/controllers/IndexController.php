@@ -36,12 +36,15 @@ class Plsdad_IndexController extends Zend_Controller_Action
         $method = $request->getMethod();
         // Obtain user parameters
         $params = $request->getParams();
-        $params['Cache-Control'] = (String)$request->getHeader('Cache-Control');
-        $params['Accept-Charset'] = $request->getHeader('Accept-Charset');
         $params['Method'] = $method;
+        foreach (Zend_Registry::get('SystemReqHeader') as $key => $value) {
+        	$params[$value] = (String)$request->getHeader($value);
+        }
+        
+        $params['data'] = '<p>a html snippet within json encode string</p>';
         
         $this->pls->setPackage($this->_getParam('packagename'));
-        $this->pls->setRequestHeaders(array_filter($params));
+        $this->pls->setRequestHeaders(array_map('rawurlencode',array_filter($params)));
         $this->pls->run();
         
         switch ($method) {
