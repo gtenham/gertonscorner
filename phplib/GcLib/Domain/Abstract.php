@@ -2,7 +2,7 @@
 abstract class GcLib_Domain_Abstract {
 	protected $_data = array();
 	
-    public function __construct(array $Data){
+    public function __construct(array $Data = array()){
        $this->populate($Data);
     }
 	
@@ -12,7 +12,7 @@ abstract class GcLib_Domain_Abstract {
        }
     }
 	
-    public function __get($Attribute){
+    public function &__get($Attribute){
        if (array_key_exists($Attribute, $this->_data)) {
           return $this->_data[$Attribute];
        } else {
@@ -58,7 +58,7 @@ abstract class GcLib_Domain_Abstract {
           throw new Exception('Initial data must be an array or object');
        }
        foreach ($data as $key => $val) {
-          $this->__set(strtolower($key), $val);
+          $this->__set($key, $val);
        }
        return $this;
     }
