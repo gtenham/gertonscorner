@@ -1,0 +1,6 @@
+/* Inline Label class*/
+span.inline-label {
+   position: absolute;
+   padding-left: 0.6em;
+   display: none;
+}

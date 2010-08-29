@@ -1,0 +1,19 @@
+/* CSS Document */
+
+form {width:550px; background:#4f718a; padding:10px; border:1px solid #eee; margin:5px auto; font-size:1em; font-family:verdana, arial, helvetica, sans-serif;}
+form p {font-size:.9em; color:#fff; text-align:left; padding:15px 5px 5px 0; margin:0;}
+form fieldset#current p {padding:4px; margin:0;}
+
+form fieldset {width:500px; display:block; border:1px dotted #fff; padding:5px 5px 5px 10px; font-family:verdana, sans-serif; margin-bottom:0.5em; line-height:1.5em; font-size:1em; }
+form fieldset:hover {border:1px solid #fff;}
+form fieldset#opt:hover {border:1px solid #b80b38;}
+
+form legend {font-size:1.1em; font-weight:bold; border-bottom:2px solid #fff; margin-bottom:15px; padding:6px; background:none; color:#fff;}
+* html form legend { padding:0 0 30px 0; margin:5px 0 0 0; border:none;}
+
+form label {clear:left; display:block; float:left; width:200px; text-align:left; padding-right:10px; color:#fff; margin-bottom:0.5em;}
+
+form input {border:1px solid #414d59; padding-left:0.5em; margin-bottom:0.6em; width:280px; background:#c5d3e0;}
+form input:hover { background:#b80b38; border:1px solid #fff; color:#fff;}
+form input:focus {background:#fff; border:1px solid #b80b38; color:#b80b38;}
+form fieldset#medical input, form fieldset#current input {width:45px;}

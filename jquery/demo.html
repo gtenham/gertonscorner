@@ -1,0 +1,39 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<title>Jquery plugin demo</title>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
+<script type="text/javascript" src="plugins/inFieldLabel/jquery.inFieldLabel.js"></script>
+<link href="form.css" rel="stylesheet" type="text/css" media="screen" />
+<link href="demo.css" rel="stylesheet" type="text/css" media="screen" />
+</head>
+<body>
+	<form id="demo" method="post" action="">
+		<fieldset>
+			<legend>In-Field-Label</legend>
+			<label for="test1">Default label</label>
+			<input type="text" id="test1" name="test1" value="" />
+			<label for="test2">Using labelText</label>
+			<input type="text" id="test2" name="test2" value="" />
+			<label for="test3">Using input title</label>
+			<input type="text" id="test3" title="I am a title" name="test3" value="" />
+		</fieldset>
+	</form>
+	
+<script type="text/javascript">
+
+$(document).ready(function() {
+	// inFieldLabel
+	$("#test1").inFieldLabel();
+	$("#test2").inFieldLabel({labelText:"Type your text here..."});
+	$("#test3").inFieldLabel({useAttribute:"title"});
+	
+});
+
+function autosuggestHandler(elem) {
+	alert("selectionAdded");
+}
+</script>
+</body>
+</html>
