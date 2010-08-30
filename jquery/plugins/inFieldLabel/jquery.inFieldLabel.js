@@ -1,13 +1,13 @@
  /*
- * inFieldLabel
- * 
+ * inFieldLabel - jQuery Plugin
+ * The ultimate in-field-label for input text fields
+ *
  * Copyright (c) 2010 Gerton ten Ham
- * 
- * See for demo and example code: http://gertonscorner.wordpress.com
+ * Examples and documentation at: http://gertonscorner.wordpress.com
  *
- * Version 0.1   -   29-08-2010
+ * Version: 0.2 (30/08/2010)
  *
- * This inFieldLabel jQuery plug-in is dual licensed under the MIT and GPL licenses:
+ * Dual licensed under the MIT and GPL licenses:
  *   http://www.opensource.org/licenses/mit-license.php
  *   http://www.gnu.org/licenses/gpl.html
  */
