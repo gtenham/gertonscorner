@@ -15,7 +15,9 @@
 	$.fn.inFieldLabel = function(options) {
 		var defaults = { 
 			labelText: "Enter Name Here",
-			useAttribute: false
+			useAttribute: false,
+			onHideLabel: function(elem){},
+			onShowLabel: function(elem){}
 	  	};  
 	 	var opts = $.extend(defaults, options);
 		
@@ -55,6 +57,7 @@
 				// All keystrokes except [shift]
 				if (e.keyCode != 16) {
 				   labelContainer.hide();
+				   opts.onHideLabel.call(this,input);
 				}
 				// Check on del key, if no data left, force show label
 				if (e.keyCode == 46 && input.val().length <= (this.selectionEnd-this.selectionStart)) {
@@ -72,8 +75,10 @@
 		function showInlineLabel(force) {
 			if ( force || input.val() === '') {
 				labelContainer.show();
+				opts.onShowLabel.call(this,input);
 			} else {
 				labelContainer.hide();
+				opts.onHideLabel.call(this,input);
 			}
 		}
 		
