@@ -1,11 +1,11 @@
- /*
+/*
  * inFieldLabel - jQuery Plugin
  * The ultimate in-field-label for input text fields
  *
  * Copyright (c) 2010 Gerton ten Ham
  * Examples and documentation at: http://gertonscorner.wordpress.com
  *
- * Version: 0.2 (30/08/2010)
+ * Version: 0.2 (26/08/2010)
  *
  * Dual licensed under the MIT and GPL licenses:
  *   http://www.opensource.org/licenses/mit-license.php
@@ -38,7 +38,7 @@
 		var labelContainer = $('<span class="inline-label">'+inlineLabel+'</span>');
 		
 		// Modify the DOM by adding placeholder label
-		input.before(labelContainer);
+		input.after(labelContainer);
 		
 		labelContainer.click(function() {
 			input.focus();
@@ -54,24 +54,46 @@
 				showInlineLabel();
             })
 			.keydown(function(e) {
-				// All keystrokes except [shift]
-				if (e.keyCode != 16) {
-				   labelContainer.hide();
-				   opts.onHideLabel.call(this,input);
+				if( !(e.keyCode > 8 && e.keyCode < 46) ) { // all keys except [shift], [ctrl] etc.
+					labelContainer.hide();
+					opts.onHideLabel.call(this,input);
 				}
 				// Check on del key, if no data left, force show label
-				if (e.keyCode == 46 && input.val().length <= (this.selectionEnd-this.selectionStart)) {
+				if (e.keyCode == 46 && input.val().length <= getSelectionRange(this) ) { //(this.selectionEnd-this.selectionStart)) {
 					showInlineLabel(true);
 				}
 				// Check on backspace key, if no data left, force show label
 				if (e.keyCode == 8 && input.val().length <= 1) {
 					showInlineLabel(true);
 				}
+				
 			})
 			.change(function(){
                 showInlineLabel();
             })
             ;
+		
+		function getSelectionRange(inputbox) {
+			var startPos = 0;
+			var endPos = 0;
+			var length = 0;
+			var tmpText = "";
+			
+			if (inputbox.setSelectionRange) { // W3C/Gecko
+				startPos = inputbox.selectionStart;
+				endPos = inputbox.selectionEnd;
+				tmpText = (startPos != endPos) ? inputbox.value.substring(startPos, endPos): "";
+			}
+			else if (document.selection) { // IE
+				var oText = document.selection.createRange().duplicate();
+				tmpText = oText.text;
+				for (; oText.moveStart("character", -1) !== 0; startPos++);
+				endPos = tmpText.length + startPos;
+			}
+			length = tmpText.length;
+			return length;
+		}
+		
 		function showInlineLabel(force) {
 			if ( force || input.val() === '') {
 				labelContainer.show();
@@ -82,6 +104,6 @@
 			}
 		}
 		
-	};
+	}
 	
 })(jQuery); 
