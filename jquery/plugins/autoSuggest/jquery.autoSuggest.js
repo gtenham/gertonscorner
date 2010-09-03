@@ -102,7 +102,7 @@
 						}
 					}
 					input_focus = true;
-					return true;
+					//return true;
 				}).blur(function(){
 					if(input_focus){
 						$("li.as-selection-item", selections_holder).addClass("blur").removeClass("selected");
@@ -150,9 +150,10 @@
 							}
 							break;
 						case 46: // delete
-							if(input.val().length <= (this.selectionEnd-this.selectionStart)){
+							if(input.val().length <= getSelectionRange(this) ) { //(this.selectionEnd-this.selectionStart)){
 								results_holder.html("").hide();
 								prev = "";
+								results_holder.hide();
 							}
 							if($(":visible",results_holder).length > 0){
 								if (timeout){ clearTimeout(timeout); }
@@ -172,6 +173,27 @@
 							break;
 					}
 				});
+				
+				function getSelectionRange(inputbox) {
+					var startPos = 0;
+					var endPos = 0;
+					var length = 0;
+					var tmpText = "";
+					
+					if (inputbox.setSelectionRange) { // W3C/Gecko
+						startPos = inputbox.selectionStart;
+						endPos = inputbox.selectionEnd;
+						tmpText = (startPos != endPos) ? inputbox.value.substring(startPos, endPos): "";
+					}
+					else if (document.selection) { // IE
+						var oText = document.selection.createRange().duplicate();
+						tmpText = oText.text;
+						for (; oText.moveStart("character", -1) !== 0; startPos++);
+						endPos = tmpText.length + startPos;
+					}
+					length = tmpText.length;
+					return length;
+				}
 				
 				function keyChange() {
 					// ignore if the following keys are pressed: [shift] [capslock]
@@ -194,12 +216,6 @@
 									var dynVal = $("#"+fieldId).val();
 									extraParams += "&"+key+"="+encodeURIComponent(dynVal);
 								});
-								//var dynParams = opts.dynamicParams.split(',');
-								//for (i=0;i<dynParams.length;i++) {
-								//	var dynParam = dynParams[i].toLowerCase();
-								//	var dynVal = $("#"+dynParams[i]).val();
-								//	extraParams += "&"+dynParam+"="+encodeURIComponent(dynVal);
-								//}
 							}
 							if(opts.beforeRetrieve){
 								string = opts.beforeRetrieve.call(this, string);
@@ -254,14 +270,16 @@
 							var formatted = $('<li class="as-result-item" id="as-result-item-'+num+'"></li>').click(function(){
 									var raw_data = $(this).data("data");
 									var number = raw_data.num;
-									results_holder.hide();
+									
 									if($("#as-selection-"+number, selections_holder).length <= 0 ){
 										var data = raw_data.attributes;
+										
 										input.focus();
 										prev = "";
+										input_focus = false;
 										add_selected_item(data, number);
 										opts.resultClick.call(this, raw_data);
-										
+										results_holder.hide();
 									}
 								}).mousedown(function(){ input_focus = false; }).mouseover(function(){
 									$("li", results_ul).removeClass("active");
@@ -299,11 +317,11 @@
 				
 				function add_selected_item(data, num){
 					input.val(data[opts.selectedValuesProp]); //gth
-					var item = $('<li class="as-selection-item" id="as-selection-'+num+'"></li>').click(function(){
-							opts.selectionClick.call(this, $(this));
-							selections_holder.children().removeClass("selected");
-							$(this).addClass("selected");
-						}).mousedown(function(){ input_focus = false; });
+					//var item = $('<li class="as-selection-item" id="as-selection-'+num+'"></li>').click(function(){
+					//		opts.selectionClick.call(this, $(this));
+					//		selections_holder.children().removeClass("selected");
+					//		$(this).addClass("selected");
+					//	}).mousedown(function(){ input_focus = false; });
 					
 					opts.selectionAdded.call(this, org_li.prev());	
 				}
