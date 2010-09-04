@@ -38,7 +38,7 @@
 		var labelContainer = $('<span class="inline-label">'+inlineLabel+'</span>');
 		
 		// Modify the DOM by adding placeholder label
-		input.after(labelContainer);
+		input.before(labelContainer);
 		
 		labelContainer.click(function() {
 			input.focus();
@@ -104,6 +104,6 @@
 			}
 		}
 		
-	}
+	};
 	
 })(jQuery); 
