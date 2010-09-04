@@ -6,6 +6,8 @@
 <meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
 <script type="text/javascript" src="http://gertonscorner.googlecode.com/svn/trunk/jquery/plugins/inFieldLabel/jquery.inFieldLabel.js"></script>
+<script type="text/javascript" src="http://gertonscorner.googlecode.com/svn/trunk/jquery/plugins/autoSuggest/jquery.autoSuggest.js"></script>
+<link href="reset-fonts.css" rel="stylesheet" type="text/css" media="screen" />
 <link href="form.css" rel="stylesheet" type="text/css" media="screen" />
 <link href="demo.css" rel="stylesheet" type="text/css" media="screen" />
 </head>
@@ -20,6 +22,13 @@
 			<label for="test3">Using input title</label>
 			<input type="text" id="test3" title="I am a title" name="test3" value="" />
 		</fieldset>
+		<fieldset>
+			<legend>autoSuggest</legend>
+			<label for="auto1">Using default options</label>
+			<input type="text" id="auto1" name="auto1" value="" />
+			<label for="auto2">Combined with inFieldLabel</label>
+			<input type="text" id="auto2" name="auto2" value="" />
+		</fieldset>
 	</form>
 	
 <script type="text/javascript">
@@ -29,12 +38,21 @@ $(document).ready(function() {
 	$("#test1").inFieldLabel();
 	$("#test2").inFieldLabel({labelText:"Type your text here..."});
 	$("#test3").inFieldLabel({useAttribute:"title"});
-	
+
+	// autoSuggest
+	$("#auto1").autoSuggest(data.items);
+	$("#auto2").autoSuggest(data.items).inFieldLabel();
 });
 
-function autosuggestHandler(elem) {
-	alert("selectionAdded");
-}
+var data = {items: [
+              {value: "Mick Jagger"},
+              {value: "Johnny Storm"},
+              {value: "Richard Hatch"},
+              {value: "Kelly Slater"},
+              {value: "Rudy Hamilton"},
+              {value: "Michael Jordan"}
+              ]};
+
 </script>
 </body>
 </html>
