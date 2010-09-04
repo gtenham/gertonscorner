@@ -35,10 +35,11 @@
 				});	
 			}
 		}
+		var fieldContainer = $('<div class="field"></div>');
 		var labelContainer = $('<span class="inline-label">'+inlineLabel+'</span>');
 		
 		// Modify the DOM by adding placeholder label
-		input.before(labelContainer);
+		input.wrap(fieldContainer).before(labelContainer);
 		
 		labelContainer.click(function() {
 			input.focus();

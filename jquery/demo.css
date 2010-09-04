@@ -1,4 +1,5 @@
 /* Inline Label class*/
+div.field {}
 span.inline-label {
    position: absolute;
    padding-left: 0.6em;
