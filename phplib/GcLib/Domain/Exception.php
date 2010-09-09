@@ -12,7 +12,7 @@
  * @category   GcLib
  * @package    GcLib_Domain
  * @copyright  Copyright (c) 2010 Gerton ten Ham
- * @version    $Id:$
+ * @version    $Id$
  */
 Class GcLib_Domain_Exception extends Exception {
 	protected $_attribute;
