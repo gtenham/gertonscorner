@@ -1,36 +1,65 @@
 <?php
+/**
+ * GcLib_Domain_Abstract - Gertons corner library (GcLib) for php 
+ *
+ * Copyright (c) 2010 Gerton ten Ham
+ * Examples and documentation at: http://gertonscorner.wordpress.com
+ *
+ * Dual licensed under the MIT and GPL licenses:
+ *   http://www.opensource.org/licenses/mit-license.php
+ *   http://www.gnu.org/licenses/gpl.html
+ *
+ * @category   GcLib
+ * @package    GcLib_Domain
+ * @copyright  Copyright (c) 2010 Gerton ten Ham
+ * @version    $Id$
+ */
 abstract class GcLib_Domain_Abstract {
 	protected $_data = array();
+	protected $_dirtyAttributes = array();
+	protected $_errors = array();
 	
-    public function __construct(array $Data = array()){
-       $this->populate($Data);
+    public function __construct(array $data = array()){
+    	$this->_errors = array();
+       	$this->populate($data);
     }
 	
-    public function __set($Attribute, $Value){
-       if (array_key_exists($Attribute, $this->_data)) {
-          $this->_data[$Attribute] = $Value;
+    public function setData(array $data) {
+    	$this->_errors = array();
+    	$this->populate($data);
+    }
+    
+    public function __set($attribute, $value){
+       if (array_key_exists($attribute, $this->_data)) {
+          if ($value !== $this->_data[$attribute]) {
+          	 $this->_dirtyAttributes[$attribute] = true;
+       	  } else {
+       	  	 unset($this->_dirtyAttributes[$attribute]);
+       	  }
+          $this->_data[$attribute] = $value;
+          //$this->validate($attribute,$value);
        }
     }
 	
-    public function &__get($Attribute){
-       if (array_key_exists($Attribute, $this->_data)) {
-          return $this->_data[$Attribute];
+    public function &__get($attribute){
+       if (array_key_exists($attribute, $this->_data)) {
+          return $this->_data[$attribute];
        } else {
-          throw new Exception("Invalid attribute – $Attribute");
+          throw new Exception("Invalid attribute – $attribute");
        }
     }
   
-    public function __isset($Attribute){
-       if (array_key_exists($Attribute, $this->_data)) {
-          return isset($this->_data[$Attribute]);
+    public function __isset($attribute){
+       if (array_key_exists($attribute, $this->_data)) {
+          return isset($this->_data[$attribute]);
        } else {
          return false;
        }
     }
 
-    public function __unset($Attribute){
-       if (array_key_exists($Attribute, $this->_data)) {
-          unset($this->_data[$Attribute]);
+    public function __unset($attribute){
+       if (array_key_exists($attribute, $this->_data)) {
+          unset($this->_data[$attribute]);
        } else {
           return null;
        }
@@ -40,11 +69,65 @@ abstract class GcLib_Domain_Abstract {
        return $this->_data;
     }
 
-    protected function _convert($Data){
-       if (is_array($Data)) {
-          return $Data;
-       } else if (is_object($Data)) {
-          return (array) $Data;           
+    public function isValid($attribute=null) {
+    	if ($attribute != null) {
+	    	foreach ($this->_errors as $key => $val) {
+	    		if ($val->getAttribute() === $attribute) {
+	    			return false;
+	    		}
+	       	}
+    	}
+    	return (count($this->_errors) == 0);
+    }
+    
+    public function setError($error) {
+    	$this->_errors[] = $error;
+    }
+    
+    public function getErrors($attribute=null) {
+    	if ($attribute != null) {
+    		$errors = array();
+	    	foreach ($this->_errors as $key => $val) {
+	    		if ($val->getAttribute() === $attribute) {
+	    			$errors[] = $val;
+	    		}
+	       	}
+	       	return $errors;
+    	}
+       	return $this->_errors;
+    }
+    
+    public function getErrorMessage($attribute=null) {
+    	if ($attribute != null) {
+    		foreach ($this->_errors as $key => $val) {
+	    		if ($val->getAttribute() === $attribute) {
+	    			return $val->getErrorMessage();
+	    		}
+	       	}
+    	}
+    	return $this->_errors[0]->getErrorMessage();
+    }
+    
+    public function getAllErrorMessages($attribute=null) {
+    	$errors = array();
+    	foreach ($this->_errors as $key => $val) {
+	    	if ($attribute != null && $val->getAttribute() === $attribute) {
+	    		$errors[] = $val->getErrorMessage();
+	    	} else if ($attribute == null) {
+	    		$errors[] = $val->getErrorMessage();
+	    	}
+	    }
+    	return $errors;
+    }
+    public function getDirtyAttributes() {
+    	return $this->_dirtyAttributes;
+    }
+    
+    protected function _convert($data){
+       if (is_array($data)) {
+          return $data;
+       } else if (is_object($data)) {
+          return (array) $data;           
        } else {
           throw new Exception("Data must be an datasource, array or object");
        }
