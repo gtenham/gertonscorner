@@ -25,13 +25,13 @@ abstract class GcLib_Domain_Abstract {
     }
 	
     public function setData(array $data) {
-    	$this->_errors = array();
+    	//$this->_errors = array();
     	$this->populate($data);
     }
     
     public function __set($attribute, $value){
        if (array_key_exists($attribute, $this->_data)) {
-          if ($value !== $this->_data[$attribute]) {
+          if ($value !== $this->_data[$attribute] || !$this->isValid($attribute)) {
           	 $this->_dirtyAttributes[$attribute] = true;
        	  } else {
        	  	 unset($this->_dirtyAttributes[$attribute]);
@@ -80,6 +80,18 @@ abstract class GcLib_Domain_Abstract {
     	return (count($this->_errors) == 0);
     }
     
+    public function setValid($attribute=null) {
+    	if ($attribute != null) {
+	    	foreach ($this->_errors as $key => $val) {
+	    		if ($val->getAttribute() === $attribute) {
+	    			unset($this->_errors[$key]);
+	    		}
+	       	}
+    	} else {
+    		$this->_errors = array();
+    	}
+    }
+    
     public function setError($error) {
     	$this->_errors[] = $error;
     }
@@ -104,8 +116,9 @@ abstract class GcLib_Domain_Abstract {
 	    			return $val->getErrorMessage();
 	    		}
 	       	}
-    	}
-    	return $this->_errors[0]->getErrorMessage();
+	       	return "";
+    	} 
+    	return (count($this->_errors) > 0) ? $this->_errors[0]->getErrorMessage():"";
     }
     
     public function getAllErrorMessages($attribute=null) {
