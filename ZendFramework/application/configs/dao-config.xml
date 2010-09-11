@@ -1,0 +1,19 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<container>
+   <manager id="files">
+      <gateway class="GcLib_Dao_FileGateway">
+         <property name="path">/tmp/</property>
+      </gateway>
+      <daos>
+         <dao name="file" class="Model_Dao_FileDAO"/>
+      </daos>
+   </manager>
+   <manager id="usersession">
+      <gateway class="GcLib_Dao_ZendSessionGateway">
+         <property name="namespacename">usersession</property>
+      </gateway>
+      <daos>
+         <dao name="currentUser" class="Model_Dao_UserDAO"/>
+      </daos>
+   </manager>
+</container>

@@ -3,9 +3,12 @@
 <head>  
   <?php echo $this->headMeta() ?>
   <?php echo $this->headTitle() ?>
-  <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script>
-  <link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/2.8.0r4/build/reset-fonts-grids/reset-fonts-grids.css"/>
-  <?php echo $this->headLink()->appendStylesheet('/css/styles.css') ?>
+  <?php 
+        $this->headScript()->appendFile('/min/g=js'); 
+        // output the javascript
+        echo $this->headScript();
+  ?>
+  <?php echo $this->headLink()->appendStylesheet('/min/g=css') ?>
 </head> 
 <body>
    <div id="doc" class="yui-t7">

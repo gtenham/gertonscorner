@@ -4,11 +4,10 @@ class Admin_IndexController extends Zend_Controller_Action
 
     public function init() {
         /* Initialize action controller here */
-    	$myuser = new Model_User();
-    	$myuser->userid = "gertonth";
-    	$myuser->username = "Gerton ten Ham";
+    	$xmlconfig = &GcLib_Xml_XMLResource::load(APPLICATION_PATH .'/configs/dao-config.xml');
+    	$daocontainer = new GcLib_Dao_Container($xmlconfig);
+        $this->userdao = $daocontainer->getManager('usersession')->getDao('currentUser');
     	
-    	$this->view->loggedInUser = $myuser;
     }
 
     public function indexAction()
@@ -18,7 +17,17 @@ class Admin_IndexController extends Zend_Controller_Action
         $this->view->title = 'Admin module';
         $this->view->headTitle($this->view->title, 'PREPEND');
         
+        $myuser = $this->userdao->getCurrentUser();
+        $myuser->userid = "jdoe";
+    	$myuser->firstname = "John";
+    	$myuser->lastname = "Doe";
+    	
+        $myuser->validate();
         
+        if ($myuser->isValid()) {
+        	$this->userdao->setCurrentUser($myuser);
+        	$this->view->loggedInUser = $myuser;
+        }
     }
 
 }
