@@ -1,6 +1,6 @@
 <?php
 /**
- * Plsdad index controller.
+ * Messagebroker Amf controller.
  * 
  * @uses Zend_Controller_Action
  *

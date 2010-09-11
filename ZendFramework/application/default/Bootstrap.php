@@ -37,4 +37,16 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
         $view->partial()->setObjectKey('object');
         $view->partialLoop()->setObjectKey('object');
     }
+    /**
+     * Bootstrap the configuration settings
+     * 
+     * @return Zend_Config
+     */
+    protected function _initConfig()
+    {
+        $config = new Zend_Config($this->getOptions());
+        Zend_Registry::set('config', $config);
+        return $config;
+    }
+    
 }
