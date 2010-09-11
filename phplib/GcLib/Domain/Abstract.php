@@ -19,17 +19,27 @@ abstract class GcLib_Domain_Abstract {
 	protected $_dirtyAttributes = array();
 	protected $_errors = array();
 	
+    /**
+     * @param array $data (optional)
+     */
     public function __construct(array $data = array()){
     	$this->_errors = array();
        	$this->populate($data);
     }
 	
+    /**
+     * @param array $data
+     */
     public function setData(array $data) {
     	//$this->_errors = array();
     	$this->populate($data);
     }
     
-    public function __set($attribute, $value){
+    /**
+     * @param string $attribute
+     * @param multitype $value
+     */
+    public function __set($attribute, $value) {
        if (array_key_exists($attribute, $this->_data)) {
           if ($value !== $this->_data[$attribute] || !$this->isValid($attribute)) {
           	 $this->_dirtyAttributes[$attribute] = true;
@@ -41,7 +51,10 @@ abstract class GcLib_Domain_Abstract {
        }
     }
 	
-    public function &__get($attribute){
+    /**
+     * @return multitype
+     */
+    public function &__get($attribute) {
        if (array_key_exists($attribute, $this->_data)) {
           return $this->_data[$attribute];
        } else {
@@ -49,7 +62,10 @@ abstract class GcLib_Domain_Abstract {
        }
     }
   
-    public function __isset($attribute){
+    /**
+     * @return boolean
+     */
+    public function __isset($attribute) {
        if (array_key_exists($attribute, $this->_data)) {
           return isset($this->_data[$attribute]);
        } else {
@@ -57,7 +73,9 @@ abstract class GcLib_Domain_Abstract {
        }
     }
 
-    public function __unset($attribute){
+    /**
+     */
+    public function __unset($attribute) {
        if (array_key_exists($attribute, $this->_data)) {
           unset($this->_data[$attribute]);
        } else {
@@ -65,10 +83,17 @@ abstract class GcLib_Domain_Abstract {
        }
     }  
     
-	public function toArray(){
+    /**
+     * @return array
+     */
+	public function toArray() {
        return $this->_data;
     }
 
+    /**
+     * @param string $attribute (optional)
+     * @return string|boolean
+     */
     public function isValid($attribute=null) {
     	if ($attribute != null) {
 	    	foreach ($this->_errors as $key => $val) {
@@ -80,6 +105,9 @@ abstract class GcLib_Domain_Abstract {
     	return (count($this->_errors) == 0);
     }
     
+    /**
+     * @param string $attribute (optional)
+     */
     public function setValid($attribute=null) {
     	if ($attribute != null) {
 	    	foreach ($this->_errors as $key => $val) {
@@ -92,10 +120,17 @@ abstract class GcLib_Domain_Abstract {
     	}
     }
     
+    /**
+     * @param array $error
+     */
     public function setError($error) {
     	$this->_errors[] = $error;
     }
     
+    /**
+     * @param string $attribute (optional)
+     * @return array 
+     */
     public function getErrors($attribute=null) {
     	if ($attribute != null) {
     		$errors = array();
@@ -109,6 +144,10 @@ abstract class GcLib_Domain_Abstract {
        	return $this->_errors;
     }
     
+    /**
+     * @param string $attribute (optional)
+     * @return string
+     */
     public function getErrorMessage($attribute=null) {
     	if ($attribute != null) {
     		foreach ($this->_errors as $key => $val) {
@@ -121,6 +160,10 @@ abstract class GcLib_Domain_Abstract {
     	return (count($this->_errors) > 0) ? $this->_errors[0]->getErrorMessage():"";
     }
     
+    /**
+     * @param string $attribute (optional)
+     * @return array:
+     */
     public function getAllErrorMessages($attribute=null) {
     	$errors = array();
     	foreach ($this->_errors as $key => $val) {
@@ -132,10 +175,18 @@ abstract class GcLib_Domain_Abstract {
 	    }
     	return $errors;
     }
+    
+    /**
+     * @return array
+     */
     public function getDirtyAttributes() {
     	return $this->_dirtyAttributes;
     }
     
+    /**
+     * @param object|array $data
+     * @return array
+     */
     protected function _convert($data){
        if (is_array($data)) {
           return $data;
@@ -146,6 +197,10 @@ abstract class GcLib_Domain_Abstract {
        }
     }
     
+    /**
+     * @param object|array $data
+     * @return unknown
+     */
     protected function populate($data){
        if (is_object($data)) {
           $data = $data->toArray();
@@ -159,5 +214,8 @@ abstract class GcLib_Domain_Abstract {
        return $this;
     }
     
+    /**
+     * 
+     */
     abstract function validate();
 }
