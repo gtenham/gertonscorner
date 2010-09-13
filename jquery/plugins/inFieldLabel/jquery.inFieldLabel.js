@@ -55,16 +55,16 @@
 				showInlineLabel();
             })
 			.keydown(function(e) {
-				if( !(e.keyCode > 8 && e.keyCode < 46) ) { // all keys except [shift], [ctrl] etc.
+				if( (e.keyCode > 48 || e.keyCode == 40) ) { // all keys except [shift], [ctrl] etc.
 					labelContainer.hide();
 					opts.onHideLabel.call(this,input);
 				}
 				// Check on del key, if no data left, force show label
-				if (e.keyCode == 46 && input.val().length <= getSelectionRange(this) ) { //(this.selectionEnd-this.selectionStart)) {
+				if (e.keyCode == 46 && input.val().length <= getSelectionRange(this) ) {
 					showInlineLabel(true);
 				}
 				// Check on backspace key, if no data left, force show label
-				if (e.keyCode == 8 && input.val().length <= 1) {
+				if (e.keyCode == 8 && (input.val().length <= 1 || input.val().length <= getSelectionRange(this))) {
 					showInlineLabel(true);
 				}
 				
