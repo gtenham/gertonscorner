@@ -18,9 +18,9 @@ class Admin_IndexController extends Zend_Controller_Action
         $this->view->headTitle($this->view->title, 'PREPEND');
         
         $myuser = $this->userdao->getCurrentUser();
-        $myuser->userid = "jdoe";
-    	$myuser->firstname = "John";
-    	$myuser->lastname = "Doe";
+        //$myuser->userid = "jdoe";
+    	//$myuser->firstname = "John";
+    	//$myuser->lastname = "Doe";
     	
         $myuser->validate();
         

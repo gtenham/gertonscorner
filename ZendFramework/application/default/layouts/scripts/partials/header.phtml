@@ -1,14 +1,27 @@
+<?php 
+$xmlconfig = &GcLib_Xml_XMLResource::load(APPLICATION_PATH .'/configs/dao-config.xml');
+$daocontainer = new GcLib_Dao_Container($xmlconfig);
+$userdao = $daocontainer->getManager('usersession')->getDao('currentUser');
+    	
+$currentUser = $userdao->getCurrentUser();
+$validated = $currentUser->userid !== null;
+
+$comingFrom = Zend_Controller_Front::getInstance()->getRequest()->getRequestUri();
+$this->placeholder('redirect')->set($comingFrom);
+?>
 <div id="logo">
    <h1>Gertons's corner</h1>
    <h2><a href="http://gertonscorner.wordpress.com/" title="">Zend framework demoground</a></h2>
 </div>
 <div id="authenticate">
-   <?php echo $this->partial('partials/login.phtml', $this->loggedInUser); ?>
+   <?php echo $this->partial('partials/login.phtml', $currentUser); ?>
 </div>
 <div id="menu">
    <ul>
       <li><a href="/"  title="">Home</a></li>
       <li><a href="/"  title="">Forms</a></li>
+      <?php if ($validated) {?>
       <li><a href="/admin" title="">Admin</a></li>
+      <?php }?>
    </ul>
 </div>

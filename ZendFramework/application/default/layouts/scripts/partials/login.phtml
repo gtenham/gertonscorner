@@ -1,5 +1,7 @@
-<?php if (isset($this->object) && $this->object->userid != ""){?>
-<h4>Logged in: <a href="#"><?php echo $this->object->toString() ?></a></h4>
+<?php 
+if (isset($this->object) && $this->object->userid != ""){
+?>
+<h4>Logged in: <a href="/authenticate/logout"><?php echo $this->object->toString(); ?></a></h4>
 <?php } else {?>
-<h4><a href="#">Login</a></h4>
+<h4><a href="/authenticate/login?userid=jdoe&redirect=<?php echo $this->placeholder('redirect'); ?>">Login</a></h4>
 <?php }?>

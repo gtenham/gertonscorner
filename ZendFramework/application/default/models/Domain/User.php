@@ -18,6 +18,15 @@ class Model_Domain_User extends GcLib_Domain_Abstract {
 		
 	}
 	
+	public function validateUserid() {
+		if ($this->userid !== null) {
+			$this->setValid("userid");
+		} else {
+			$error = new GcLib_Domain_Exception("userid","Authentication failed.",-10000);
+		    $this->setError($error);
+		}
+	}
+	
 	public function toString() {
 		return $this->firstname." ".$this->lastname;
 	}
