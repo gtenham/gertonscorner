@@ -11,9 +11,11 @@
    <manager id="usersession">
       <gateway class="GcLib_Dao_ZendSessionGateway">
          <property name="namespacename">usersession</property>
+         <property name="lifetime">60</property>
       </gateway>
       <daos>
          <dao name="currentUser" class="Model_Dao_UserDAO"/>
+         <dao name="address" class="Model_Dao_AddressDAO"/>
       </daos>
    </manager>
 </container>

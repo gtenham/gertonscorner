@@ -33,12 +33,7 @@ class IndexController extends Zend_Controller_Action
         $this->view->title = "Congratulations!";
     }
     
-    public function loginAction() 
-    {
-        $this->_helper->layout()->disableLayout();
-    }
-    
-	public function infoAction() 
+    public function infoAction() 
     {
         $this->_helper->layout()->disableLayout();
     }

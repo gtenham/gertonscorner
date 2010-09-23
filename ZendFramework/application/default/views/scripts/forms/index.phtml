@@ -1,0 +1,23 @@
+<h2><?php echo $this->escape($this->title); ?></h2>
+<div id="forms" class="content">
+	<form id="addressdetails" method="post" action="">
+		<fieldset id="address">
+			<legend>ADDRESS</legend>
+			<label for="street">Streetname</label>
+			<input type="text" id="street" name="street" value="<?php echo $this->address->street;?>" />
+			<?php echo $this->ShowInfo("address.street");?><br/>
+			<label for="housenumber">Housenumber</label>
+			<input type="text" id="housenumber" name="housenumber" value="<?php echo $this->address->housenumber;?>" />
+			<?php echo $this->ShowInfo("address.housenumber");?><br/>
+			<label for="zipcode">Zipcode</label>
+			<input type="text" id="zipcode" name="zipcode" value="<?php echo $this->address->zipcode;?>" />
+			<?php echo $this->ShowInfo("address.zipcode", "Zipcode is in format: XXXX AA");?><br/>
+			<label for="city">City</label>
+			<input type="text" id="city" name="city" value="<?php echo $this->address->city;?>" />
+			<?php echo $this->ShowInfo("address.city");?><br/>
+		</fieldset>
+		<p>
+			<input type="submit" value="Save" />
+		</p>
+	</form>
+</div>

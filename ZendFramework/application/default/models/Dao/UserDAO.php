@@ -7,14 +7,21 @@ class Model_Dao_UserDAO {
 	}
 	
 	public function removeCurrentUser() {
-        $usersession = $this->_daogateway->getSession();
-    	$usersession->currentuser = null;
+		$usersession = $this->_daogateway->getSession();
+    	unset($usersession->currentuser);
+	}
+	
+    public function rememberMe() {
+		$usersession = $this->_daogateway->getSession();
+    	$usersession->setExpirationSeconds(3600);
 	}
 	
 	public function setCurrentUser(Model_Domain_User $user) {
+		$options = $this->_daogateway->getOptions();
     	$usersession = $this->_daogateway->getSession();
     	$user->userid = Zend_Session::getId();
     	$usersession->currentuser = $user;
+    	$usersession->setExpirationSeconds($options['lifetime']);
     	return $user;
 	}
 	

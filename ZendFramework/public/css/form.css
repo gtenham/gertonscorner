@@ -1,0 +1,22 @@
+/* with :focus and :hover for fieldset, input and textarea - special effects are not visible with ie, sorry */
+form { padding:10px; margin:5px auto; font-size:1em;}
+form p {font-size:.9em; color:#E0E7FF; text-align:left; padding:15px 5px 5px 0; margin:0;}
+form fieldset#current p {padding:4px; margin:0;}
+
+form fieldset {width:450px; display:block; border:1px dotted #E0E7FF; padding:5px 5px 5px 10px; margin-bottom:0.5em; line-height:1.5em; font-size:1em;}
+form fieldset:hover {border:1px solid #E0E7FF;}
+form fieldset#opt:hover {border:1px solid #E0E7FF;}
+
+form legend {font-size:1.1em; font-weight:bold; border-bottom:2px solid #E0E7FF; margin-bottom:15px; padding:6px; background:none; color:#E0E7FF;}
+* html form legend { padding:0 0 30px 0; margin:5px 0 0 0; border:none;}
+
+form label {clear:left; display:block; float:left; width:60px; text-align:left; padding-right:120px; color:#E0E7FF; margin-bottom:0.5em;}
+
+form input {border:1px solid #999999; padding-left:0.5em; margin-bottom:0.6em; width:200px; background:#fff; -moz-border-radius:.7ex; -webkit-border-radius:.7ex;}
+form input:hover { background:#eeeeee; border:1px solid #4f718a; color:#999999;}
+form input:focus {background:#eeeeee; border:1px solid #999999; color:#414d59;}
+
+form fieldset#current input {width:45px;}
+
+form input[type=submit] {color:#000; padding-right:0.5em; cursor:pointer; width:205px; margin-left:8px; background:#E0E7FF; border:1px solid; border-color:#6eb7e4;-moz-border-radius:.7ex; -webkit-border-radius:.7ex;}
+form input[type=submit]:hover {color:#000; background:#E0E7FF; border:1px solid; border-color:#999999; }

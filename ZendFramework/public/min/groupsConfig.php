@@ -58,7 +58,8 @@ return array(
                  , $swfobject),
     'css' => array($yuicss
                   , '//css/base.css'
-                  , '//css/styles.css')
+                  , '//css/styles.css'
+                  , '//css/form.css')
 
 
 );

@@ -162,3 +162,16 @@ padding: 10px;
 #left-block p {
 	padding-bottom: 10px;
 }
+/*images used are from: DryIcons - colorful-stickers-icons-set */
+.tooltip {
+	padding-left:18px;
+	cursor: pointer;
+}
+
+.error {
+	background:#000000 url('../images/delete.png') no-repeat right top;
+}
+
+.info {
+	background:#000000 url('../images/info.png') no-repeat right top;
+}

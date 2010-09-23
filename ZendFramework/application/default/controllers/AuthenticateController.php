@@ -3,15 +3,15 @@ class AuthenticateController extends Zend_Controller_Action
 {
     public function init()
     {
-        /* Initialize action controller here */
+    	
+    	/* Initialize action controller here */
     	$this->_helper->viewRenderer->setNoRender(true);
     	$this->_helper->layout->disableLayout();
     	
     	$xmlconfig = &GcLib_Xml_XMLResource::load(APPLICATION_PATH .'/configs/dao-config.xml');
     	$daocontainer = new GcLib_Dao_Container($xmlconfig);
         $this->userdao = $daocontainer->getManager('usersession')->getDao('currentUser');
-    	
-        $this->r = Zend_Controller_Action_HelperBroker::getStaticHelper('redirector');
+    	$this->r = Zend_Controller_Action_HelperBroker::getStaticHelper('redirector');
     }
     /**
      * The "index" action is the default action for all controllers -- the 
@@ -26,10 +26,11 @@ class AuthenticateController extends Zend_Controller_Action
      * @return void
      */
     public function indexAction() {
+    	
     }
     
     public function loginAction() {
-        $request = $this->getRequest();
+    	$request = $this->getRequest();
         // Obtain user parameters
         $params = $request->getParams();
         $redirectParam = $params['redirect'];
@@ -48,7 +49,12 @@ class AuthenticateController extends Zend_Controller_Action
     }
     
 	public function logoutAction() {
-        $this->userdao->removeCurrentUser();
-        $this->r->gotoUrl('/')->redirectAndExist();
+		$this->userdao->removeCurrentUser();
+		$this->r->gotoUrl('/')->redirectAndExist();
+    }
+    
+    public function rememberAction() {
+    	$this->userdao->rememberMe();
+    	$this->r->gotoUrl($redirectParam)->redirectAndExist();
     }
 }
