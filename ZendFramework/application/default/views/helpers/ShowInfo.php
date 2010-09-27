@@ -39,9 +39,9 @@ class App_View_Helper_ShowInfo extends Zend_View_Helper_Abstract {
 		}
 		$errors = $obj->getErrors($propertyName);
 		if (count($errors) > 0) {
-			$infoBlock = '<span class="tooltip error" title="'.$errors[0]->getErrorMessage().'">&nbsp;</span>';
+			$infoBlock = '<span class="showinfo error" title="'.$errors[0]->getErrorMessage().'">&nbsp;</span>';
 		} else if ($info !== null) {
-			$infoBlock = '<span class="tooltip info" title="'.$info.'">&nbsp;</span>';
+			$infoBlock = '<span class="showinfo info" title="'.$info.'">&nbsp;</span>';
 		} else {
 			$infoBlock = "";
 		}

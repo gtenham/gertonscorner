@@ -31,6 +31,17 @@ $jqueryui = new Minify_Source(array(
     'lastModified' => ($_SERVER['REQUEST_TIME'] - $_SERVER['REQUEST_TIME'] % 86400),
 ));
 
+function jquerytool_fetch() {
+    return file_get_contents('http://cdn.jquerytools.org/1.2.5/jquery.tools.min.js');
+}
+
+$jquerytool = new Minify_Source(array(
+    'id' => 'jquerytool1',
+    'getContentFunc' => 'jquerytool_fetch',
+    'contentType' => Minify::TYPE_JS,    
+    'lastModified' => ($_SERVER['REQUEST_TIME'] - $_SERVER['REQUEST_TIME'] % 86400),
+));
+
 function swfobject_fetch() {
     return file_get_contents('http://ajax.googleapis.com/ajax/libs/swfobject/2.2/swfobject.js');
 }
@@ -55,7 +66,8 @@ $yuicss = new Minify_Source(array(
 
 return array(
     'js' => array($jquery
-                 , $swfobject),
+                 , $swfobject
+                 , $jquerytool),
     'css' => array($yuicss
                   , '//css/base.css'
                   , '//css/styles.css'

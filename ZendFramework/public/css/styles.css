@@ -163,7 +163,7 @@ padding: 10px;
 	padding-bottom: 10px;
 }
 /*images used are from: DryIcons - colorful-stickers-icons-set */
-.tooltip {
+.showinfo {
 	padding-left:18px;
 	cursor: pointer;
 }
@@ -174,4 +174,24 @@ padding: 10px;
 
 .info {
 	background:#000000 url('../images/info.png') no-repeat right top;
+}
+
+.tooltip {
+	display:none;
+	background:transparent url(/images/black.png) no-repeat;
+	font-size:15px;
+	height:70px;
+	width:160px;
+	padding:25px;
+	color:#fff;	
+}
+
+.errortooltip {
+	display:none;
+	background:transparent url(/images/red.png) no-repeat;
+	font-size:15px;
+	height:70px;
+	width:160px;
+	padding:25px;
+	color:#fff;	
 }
