@@ -55,7 +55,7 @@
 				showInlineLabel();
             })
 			.keydown(function(e) {
-				if( (e.keyCode > 48 || e.keyCode == 40) ) { // all keys except [shift], [ctrl] etc.
+				if( (e.keyCode >= 48 || e.keyCode == 40) ) { // all keys except [shift], [ctrl] etc.
 					labelContainer.hide();
 					opts.onHideLabel.call(this,input);
 				}
