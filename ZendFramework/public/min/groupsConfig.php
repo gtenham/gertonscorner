@@ -54,7 +54,7 @@ $swfobject = new Minify_Source(array(
 ));
 
 function yui_fetch() {
-    return file_get_contents('http://yui.yahooapis.com/2.8.0r4/build/reset-fonts-grids/reset-fonts-grids.css');
+    return file_get_contents('http://yui.yahooapis.com/2.8.1/build/reset-fonts-grids/reset-fonts-grids.css');
 }
 
 $yuicss = new Minify_Source(array(
