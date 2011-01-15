@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="
+       http://www.springframework.org/schema/beans 
+       http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+       http://www.springframework.org/schema/util 
+       http://www.springframework.org/schema/util/spring-util-3.0.xsd
+       http://www.springframework.org/schema/context
+       http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+       
+	<bean class="org.springframework.web.servlet.view.BeanNameViewResolver"/>
+	
+	<bean id="xstreamMarshaller" class="org.springframework.oxm.xstream.XStreamMarshaller">
+		<property name="aliases">
+	        <map>
+            	<entry key="order" value="com.wordpress.gertonscorner.messagebroker.dto.OrderDTO" />
+            	<entry key="orders" value="com.wordpress.gertonscorner.messagebroker.dto.OrderList"/>
+        	</map>
+    	</property>
+    	<!-- property name="aliasesByType">
+      		<map>
+        		<entry key="orders" value="com.wordpress.gertonscorner.messagebroker.dto.OrderList"/>        
+      		</map>
+    	</property--> 
+    	<property name="useAttributeFor">
+    		<map key-type="java.lang.Class">
+       			<entry key="com.wordpress.gertonscorner.messagebroker.dto.OrderDTO">
+          			<list>
+            			<value>id</value>
+          			</list>            
+        		</entry>
+      		</map>
+    	</property>
+    	<property name="implicitCollections">
+        	<map>
+            	<entry key="com.wordpress.gertonscorner.messagebroker.dto.OrderList" value="orders" />
+        	</map>
+    	</property>
+	</bean>
+	
+	<bean id="marshallingHttpMessageConverter" class="org.springframework.http.converter.xml.MarshallingHttpMessageConverter">
+		<property name="marshaller" ref="xstreamMarshaller"/>
+		<property name="unmarshaller" ref="xstreamMarshaller"/>
+	</bean>
+	
+	<bean id="jsonConverter"
+		  class="org.springframework.http.converter.json.MappingJacksonHttpMessageConverter">
+		<property name="supportedMediaTypes" value="application/json" />
+	</bean>
+
+	<bean id="atomConverter"
+		  class="org.springframework.http.converter.feed.AtomFeedHttpMessageConverter">
+		<property name="supportedMediaTypes" value="application/atom+xml" />
+	</bean>
+	
+	<bean id="rssConverter"
+		  class="org.springframework.http.converter.feed.RssChannelHttpMessageConverter">
+		<property name="supportedMediaTypes" value="application/rss+xml" />
+	</bean>
+	
+	<bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter">
+		<property name="messageConverters">
+			<util:list id="beanList">
+				<ref bean="jsonConverter" />
+				<ref bean="marshallingHttpMessageConverter"/>
+			</util:list>
+		</property>
+	</bean>
+	
+	<bean class="org.springframework.web.servlet.view.ContentNegotiatingViewResolver">
+	  <property name="order" value="1" />
+	  <property name="mediaTypes">
+			<map>
+	      		<entry key="json" value="application/json" />
+	      		<entry key="xml" value="text/xml" />
+	    	</map>
+	  </property>
+	  <property name="defaultViews">
+	    	<list>
+			      <bean class="org.springframework.web.servlet.view.json.MappingJacksonJsonView">
+			      		<property name="contentType" value="application/json"/>
+			      </bean>
+			      <bean class="org.springframework.web.servlet.view.xml.MarshallingView">
+			        	<property name="marshaller" ref="xstreamMarshaller"/>
+			        	<property name="contentType" value="text/xml"/>
+			      </bean>
+	    	</list>
+	  </property>
+	  <property name="ignoreAcceptHeader" value="true" />
+	</bean>
+	
+	<!-- bean id="marshalview" class="org.springframework.web.servlet.view.xml.MarshallingView">
+		<property name="contentType" value="text/xml"/>
+		<property name="marshaller" ref="xstreamMarshaller"/>
+	</bean-->
+	
+</beans>
