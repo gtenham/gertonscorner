@@ -13,6 +13,12 @@ import com.wordpress.gertonscorner.messagebroker.dto.OrderDTO;
 import com.wordpress.gertonscorner.messagebroker.services.IOrderService;
 
 
+/**
+ * Order service implementation
+ * 
+ * @author Gerton
+ *
+ */
 @Service("orderService")
 public class OrderService implements IOrderService {
 	@Autowired
@@ -24,6 +30,9 @@ public class OrderService implements IOrderService {
 	public OrderService() {
 	}
 	
+	/* (non-Javadoc)
+	 * @see com.wordpress.gertonscorner.messagebroker.services.IOrderService#getOrders()
+	 */
 	public Collection<OrderDTO> getOrders() {
 		Collection<OrderDTO> orders = new ArrayList<OrderDTO>(0);
 		for (Order order : orderDao.getOrders()) {
@@ -32,18 +41,30 @@ public class OrderService implements IOrderService {
 		return orders;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.wordpress.gertonscorner.messagebroker.services.IOrderService#getOrderById(java.lang.String)
+	 */
 	public OrderDTO getOrderById(String id) {
 		return mapper.map(orderDao.selectOrder(id),OrderDTO.class);
 	}
 
+	/* (non-Javadoc)
+	 * @see com.wordpress.gertonscorner.messagebroker.services.IOrderService#insertOrder(com.wordpress.gertonscorner.messagebroker.dto.OrderDTO)
+	 */
 	public void insertOrder(OrderDTO order) {
 		orderDao.insertOrder(mapper.map(order, Order.class));
 	}
 
+	/* (non-Javadoc)
+	 * @see com.wordpress.gertonscorner.messagebroker.services.IOrderService#deleteOrder(java.lang.String)
+	 */
 	public void deleteOrder(String id) {
 		orderDao.deleteOrder(id);
 	}
 
+	/* (non-Javadoc)
+	 * @see com.wordpress.gertonscorner.messagebroker.services.IOrderService#updateOrder(com.wordpress.gertonscorner.messagebroker.dto.OrderDTO)
+	 */
 	public void updateOrder(OrderDTO order) {
 		orderDao.updateOrder(mapper.map(order, Order.class));
 	}

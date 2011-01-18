@@ -2,6 +2,12 @@ package com.wordpress.gertonscorner.messagebroker.domain;
 
 import java.io.Serializable;
 
+/**
+ * Order domain entity
+ * 
+ * @author Gerton
+ *
+ */
 public class Order implements Serializable {
 
 	private static final long serialVersionUID = -632626680286074037L;

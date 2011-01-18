@@ -2,6 +2,12 @@ package com.wordpress.gertonscorner.messagebroker.dto;
 
 import java.io.Serializable;
 
+/**
+ * Order transfer object
+ * 
+ * @author Gerton
+ *
+ */
 public class OrderDTO implements Serializable {
 
 	private static final long serialVersionUID = -7974075876533955036L;
