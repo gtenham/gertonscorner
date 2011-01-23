@@ -5,6 +5,8 @@ import java.util.Collection;
 
 import org.dozer.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.flex.remoting.RemotingDestination;
+import org.springframework.flex.remoting.RemotingInclude;
 import org.springframework.stereotype.Service;
 
 import com.wordpress.gertonscorner.messagebroker.dao.IOrderDao;
@@ -20,6 +22,7 @@ import com.wordpress.gertonscorner.messagebroker.services.IOrderService;
  *
  */
 @Service("orderService")
+@RemotingDestination(channels={"my-amf"})
 public class OrderService implements IOrderService {
 	@Autowired
 	private IOrderDao orderDao;
@@ -33,6 +36,7 @@ public class OrderService implements IOrderService {
 	/* (non-Javadoc)
 	 * @see com.wordpress.gertonscorner.messagebroker.services.IOrderService#getOrders()
 	 */
+	@RemotingInclude
 	public Collection<OrderDTO> getOrders() {
 		Collection<OrderDTO> orders = new ArrayList<OrderDTO>(0);
 		for (Order order : orderDao.getOrders()) {
