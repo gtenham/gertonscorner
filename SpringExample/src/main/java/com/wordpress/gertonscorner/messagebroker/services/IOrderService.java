@@ -31,15 +31,17 @@ public interface IOrderService {
 	 * Insert a new Order.
 	 * 
 	 * @param order Order transfer object
+	 * @return Order transfer object
 	 */
-	void insertOrder(OrderDTO order);
+	OrderDTO insertOrder(OrderDTO orderDTO);
 	
 	/**
 	 * Update Order with given order data
 	 * 
 	 * @param order Order transfer object containing the updated data
+	 * @return Order transfer object
 	 */
-	void updateOrder(OrderDTO order);
+	OrderDTO updateOrder(OrderDTO orderDTO);
 	
 	/**
 	 * Delete Order for given orderId

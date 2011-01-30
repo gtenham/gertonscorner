@@ -1,6 +1,8 @@
 package com.wordpress.gertonscorner.messagebroker.dto;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collection;
 
 /**
  * Order transfer object
@@ -14,6 +16,7 @@ public class OrderDTO implements Serializable {
 
 	private String id;
 	private String description;
+	private Collection<ErrorDTO> errors = new ArrayList<ErrorDTO>(0);
 	
 	public OrderDTO() {}
 	public OrderDTO(String id, String description) {
@@ -32,5 +35,11 @@ public class OrderDTO implements Serializable {
 	}
 	public void setDescription(String description) {
 		this.description = description;
+	}
+	public void setErrors(Collection<ErrorDTO> errors) {
+		this.errors = errors;
+	}
+	public Collection<ErrorDTO> getErrors() {
+		return errors;
 	}
 }

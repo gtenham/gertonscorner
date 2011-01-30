@@ -4,11 +4,12 @@
     <default-package>com.wordpress.gertonscorner.messagebroker.domain</default-package>
     <bean class="Order"  >
         <field name="id"  >
-            <constraint annotation="javax.validation.constraints.NotNull"/>
+            <constraint annotation="org.hibernate.validator.constraints.NotBlank"/>
         </field>
         <field name="description"  >
-            <constraint annotation="javax.validation.constraints.Min">
-                  <element name="value">2</element>
+            <constraint annotation="javax.validation.constraints.Size">
+                  <element name="min">2</element>
+                  <element name="max">255</element>
             </constraint>
         </field>
       </bean>

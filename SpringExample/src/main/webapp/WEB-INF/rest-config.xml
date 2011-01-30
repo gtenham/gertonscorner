@@ -19,6 +19,7 @@
 	        <map>
             	<entry key="order" value="com.wordpress.gertonscorner.messagebroker.dto.OrderDTO" />
             	<entry key="orders" value="com.wordpress.gertonscorner.messagebroker.dto.OrderList"/>
+            	<entry key="error" value="com.wordpress.gertonscorner.messagebroker.dto.ErrorDTO" />
         	</map>
     	</property>
     	<!-- property name="aliasesByType">

@@ -34,15 +34,14 @@ public class OrderController {
 	}
 	
 	/**
-	 * Add order and returns all orders directly into the response.
+	 * Add order and returns the new order directly into the response.
 	 * 
 	 * @param order The new order data
-	 * @return OrderList transfer object
+	 * @return Order transfer object
 	 */
 	@RequestMapping(value = "/orders", method = RequestMethod.POST)
-	public @ResponseBody OrderList addOrder(@RequestBody OrderDTO order) {		
-		orderService.insertOrder(order);
-		return new OrderList(orderService.getOrders());
+	public @ResponseBody OrderDTO addOrder(@RequestBody OrderDTO order) {		
+		return orderService.insertOrder(order);
 	}
 	
 	/**
@@ -67,8 +66,7 @@ public class OrderController {
 	@RequestMapping(value = "/orders/{id}", method = RequestMethod.PUT)
 	public @ResponseBody OrderDTO updateOrder(@PathVariable("id") String orderId,
 										  @RequestBody OrderDTO order) {
-		orderService.updateOrder(order);
-		return orderService.getOrderById(orderId);
+		return orderService.updateOrder(order);
 	}
 	
 	/**
