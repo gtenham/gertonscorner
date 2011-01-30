@@ -70,8 +70,8 @@ public class OrderService implements IOrderService {
 		if (constraintViolations.size() > 0) {
 			for (ConstraintViolation<Order> error : constraintViolations) {
 				ErrorDTO errordto = new ErrorDTO();
-				errordto.setErrorField(error.getPropertyPath().toString());
-				errordto.setErrorMessage(error.getMessage());
+				errordto.setField(error.getPropertyPath().toString());
+				errordto.setMessage(error.getMessage());
 				errors.add(errordto);
 			}
 			orderDTO.setErrors(errors);
@@ -100,8 +100,8 @@ public class OrderService implements IOrderService {
 		if (constraintViolations.size() > 0) {
 			for (ConstraintViolation<Order> error : constraintViolations) {
 				ErrorDTO errordto = new ErrorDTO();
-				errordto.setErrorField(error.getPropertyPath().toString());
-				errordto.setErrorMessage(error.getMessage());
+				errordto.setField(error.getPropertyPath().toString());
+				errordto.setMessage(error.getMessage());
 				errors.add(errordto);
 			}
 			orderDTO.setErrors(errors);

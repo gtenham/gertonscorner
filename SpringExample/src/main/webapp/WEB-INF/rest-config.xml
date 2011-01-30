@@ -34,6 +34,11 @@
             			<value>id</value>
           			</list>            
         		</entry>
+        		<entry key="com.wordpress.gertonscorner.messagebroker.dto.ErrorDTO">
+          			<list>
+            			<value>field</value>
+          			</list>            
+        		</entry>
       		</map>
     	</property>
     	<property name="implicitCollections">

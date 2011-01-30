@@ -12,19 +12,21 @@ public class ErrorDTO implements Serializable {
 
 	private static final long serialVersionUID = -2577938088819066878L;
 
-	private String errorField;
-	private String errorMessage;
+	private String field;
+	private String message;
 	
-	public void setErrorMessage(String errorMessage) {
-		this.errorMessage = errorMessage;
+	public void setField(String field) {
+		this.field = field;
 	}
-	public String getErrorMessage() {
-		return errorMessage;
+	public String getField() {
+		return field;
 	}
-	public void setErrorField(String errorField) {
-		this.errorField = errorField;
+	public void setMessage(String message) {
+		this.message = message;
 	}
-	public String getErrorField() {
-		return errorField;
+	public String getMessage() {
+		return message;
 	}
+	
+	
 }
