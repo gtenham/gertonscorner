@@ -45,13 +45,8 @@ public class OrderService implements IOrderService {
 	public Collection<OrderDTO> getOrders() {
 		Collection<OrderDTO> orders = new ArrayList<OrderDTO>(0);
 		
-		ErrorDTO errordto = new ErrorDTO();
-		errordto.setErrorField("SST-01000");
-		errordto.setErrorMessage("test message");
-		
 		for (Order order : orderDao.getOrders()) {
 			OrderDTO orderdto = mapper.map(order,OrderDTO.class);
-			orderdto.getErrors().add(errordto);
 			orders.add(orderdto);
 		}
 		return orders;
