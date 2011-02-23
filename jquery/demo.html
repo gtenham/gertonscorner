@@ -29,6 +29,8 @@
 			<input type="text" id="auto1" name="auto1" value="" />
 			<label for="auto2">Combined with inFieldLabel</label>
 			<input type="text" id="auto2" name="auto2" value="" />
+			<label for="auto3">Using scrollbar option</label>
+			<input type="text" id="auto3" name="auto3" value="" />
 		</fieldset>
 	</form>
 	
@@ -41,8 +43,9 @@ $(document).ready(function() {
 	$("#test3").inFieldLabel({useAttribute:"title"});
 
 	// autoSuggest
-	$("#auto1").autoSuggest(data.items,{retrieveLimit:3, showScrollbar:true});
-	$("#auto2").autoSuggest(data.items,{retrieveLimit:3}).inFieldLabel();
+	$("#auto1").autoSuggest(data.items);
+	$("#auto2").autoSuggest(data.items).inFieldLabel();
+	$("#auto3").autoSuggest(data.items,{retrieveLimit:3, showScrollbar:true});
 });
 
 var data = {items: [
