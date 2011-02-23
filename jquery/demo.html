@@ -41,8 +41,8 @@ $(document).ready(function() {
 	$("#test3").inFieldLabel({useAttribute:"title"});
 
 	// autoSuggest
-	$("#auto1").autoSuggest(data.items);
-	$("#auto2").autoSuggest(data.items).inFieldLabel();
+	$("#auto1").autoSuggest(data.items,{retrieveLimit:3, showScrollbar:true});
+	$("#auto2").autoSuggest(data.items,{retrieveLimit:3}).inFieldLabel();
 });
 
 var data = {items: [
@@ -51,6 +51,9 @@ var data = {items: [
               {value: "Richard Hatch"},
               {value: "Kelly Slater"},
               {value: "Rudy Hamilton"},
+              {value: "John Doe"},
+              {value: "Jane Doe"},
+              {value: "Gerton ten Ham"},
               {value: "Michael Jordan"}
               ]};
 

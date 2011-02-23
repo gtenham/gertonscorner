@@ -38,6 +38,7 @@
 			neverSubmit: false,
 			selectionLimit: false,
 			showResultList: true,
+			showScrollbar: false,
 		  	start: function(){},
 		  	selectionClick: function(elem){},
 		  	selectionAdded: function(elem){},
@@ -207,7 +208,7 @@
 							var limit = "";
 							var extraParams = opts.extraParams;
 							
-							if(opts.retrieveLimit){
+							if(opts.retrieveLimit && !opts.showScrollbar){
 								limit = "&limit="+encodeURIComponent(opts.retrieveLimit);
 							}
 							
@@ -303,7 +304,7 @@
 							results_ul.append(formatted);
 							delete this_data;
 							matchCount++;
-							if(opts.retrieveLimit && opts.retrieveLimit == matchCount ){ break; }
+							if(opts.retrieveLimit && opts.retrieveLimit == matchCount && !opts.showScrollbar){ break; }
 						}
 					}
 					selections_holder.removeClass("loading");
@@ -311,6 +312,18 @@
 						results_ul.html('<li class="as-message">'+opts.emptyText+'</li>');
 					}
 					results_ul.css("width", input.outerWidth());
+					if (opts.showScrollbar && opts.retrieveLimit && opts.retrieveLimit <= matchCount) {
+						var line_height = results_ul.css("line-height");
+						var maxHeight;
+						if(opts.retrieveLimit && opts.retrieveLimit > 0){
+							var maxHeight = line_height.replace('px','')*opts.retrieveLimit;
+						}
+						results_ul.css("overflow-y", "scroll");
+						results_ul.css("height", maxHeight+"px");
+					} else {
+						results_ul.css("overflow-y", "");
+						results_ul.css("height", "");
+					}
 					results_holder.show();
 					opts.resultsComplete.call(this);
 				}
@@ -344,6 +357,11 @@
 						}
 						lis.removeClass("active");
 						start.addClass("active");
+						if (opts.showScrollbar) {
+							var listitem_number = $("li.active:first").index()+1;
+							var listitem_height = results_ul.css("line-height").replace('px','');
+							results_ul.scrollTop((listitem_number-1)*listitem_height);
+						}
 					}
 				}
 									
