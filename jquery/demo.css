@@ -1,6 +1,9 @@
+body {width:550px; margin:5px auto;}
+h1 {font-size:130%; font-weight:bold;color:#aaaaaa; padding:5px;}
 /* Inline Label class*/
 div.field {}
 span.inline-label {
+   color:#aaaaaa;
    position: absolute;
    padding-left: 0.6em;
    display: none;
@@ -42,7 +45,7 @@ ul.as-selections li.as-original input {
 
 ul.as-list {
 	position: absolute;
-	margin-left: 210px;
+	margin-left: 250px;
 	z-index: 2;
 	background-color: #fff;
 	border-top: 1px solid #888;

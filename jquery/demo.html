@@ -13,6 +13,7 @@
 <link href="demo.css" rel="stylesheet" type="text/css" media="screen" />
 </head>
 <body>
+	<h1>This demo will show it's full style with a css3 capable browser</h1>
 	<form id="demo" method="post" action="">
 		<fieldset>
 			<legend>In-Field-Label</legend>
@@ -25,12 +26,15 @@
 		</fieldset>
 		<fieldset>
 			<legend>autoSuggest</legend>
+			<p>Try the plugin by typing the letter "a"</p>
 			<label for="auto1">Using default options</label>
 			<input type="text" id="auto1" name="auto1" value="" />
 			<label for="auto2">Combined with inFieldLabel</label>
 			<input type="text" id="auto2" name="auto2" value="" />
-			<label for="auto3">Using scrollbar option</label>
+			<label for="auto3">Limit results to 3</label>
 			<input type="text" id="auto3" name="auto3" value="" />
+			<label for="auto4">Using scrollbar option</label>
+			<input type="text" id="auto4" name="auto4" value="" />
 		</fieldset>
 	</form>
 	
@@ -45,7 +49,8 @@ $(document).ready(function() {
 	// autoSuggest
 	$("#auto1").autoSuggest(data.items);
 	$("#auto2").autoSuggest(data.items).inFieldLabel();
-	$("#auto3").autoSuggest(data.items,{retrieveLimit:3, showScrollbar:true});
+	$("#auto3").autoSuggest(data.items,{retrieveLimit:3});
+	$("#auto4").autoSuggest(data.items,{retrieveLimit:3, showScrollbar:true});
 });
 
 var data = {items: [

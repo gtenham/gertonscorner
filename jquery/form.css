@@ -1,19 +1,68 @@
 /* CSS Document */
-
-form {width:550px; background:#4f718a; padding:10px; border:1px solid #eee; margin:5px auto; font-size:1em; font-family:verdana, arial, helvetica, sans-serif;}
-form p {font-size:.9em; color:#fff; text-align:left; padding:15px 5px 5px 0; margin:0;}
+form { padding:10px; font-size:1em;}
+form p {font-size:.9em; color:#c92c35; text-align:left; padding:0; margin:0 0 20px;}
 form fieldset#current p {padding:4px; margin:0;}
 
-form fieldset {width:500px; display:block; border:1px dotted #fff; padding:5px 5px 5px 10px; font-family:verdana, sans-serif; margin-bottom:0.5em; line-height:1.5em; font-size:1em; }
-form fieldset:hover {border:1px solid #fff;}
+form fieldset {
+	width:550px; display:block; border:1px dotted #c92c35; padding:5px 5px 5px 10px; margin-bottom:0.5em; line-height:1.5em; font-size:1em;}
+form fieldset:hover {border:1px solid #c92c35;}
 form fieldset#opt:hover {border:1px solid #b80b38;}
 
-form legend {font-size:1.1em; font-weight:bold; border-bottom:2px solid #fff; margin-bottom:15px; padding:6px; background:none; color:#fff;}
+form legend {font-size:1.1em; font-weight:bold; border-bottom:2px solid #c92c35; margin-bottom:15px; padding:6px; background:none; color:#c92c35;}
 * html form legend { padding:0 0 30px 0; margin:5px 0 0 0; border:none;}
 
-form label {clear:left; display:block; float:left; width:200px; text-align:left; padding-right:10px; color:#fff; margin-bottom:0.5em;}
+form label {clear:left; display:block; float:left; width:230px; text-align:left; padding-right:20px; color:#000; margin-bottom:0.5em;}
 
-form input {border:1px solid #414d59; padding-left:0.5em; margin-bottom:0.6em; width:280px; background:#c5d3e0;}
-form input:hover { background:#b80b38; border:1px solid #fff; color:#fff;}
-form input:focus {background:#fff; border:1px solid #b80b38; color:#b80b38;}
-form fieldset#medical input, form fieldset#current input {width:45px;}
+form input, form textarea, form select {
+	border:1px solid #999999; 
+	padding-left:0.5em; 
+	margin-bottom:0.7em; 
+	width:280px; 
+	-moz-border-radius:.7ex; -webkit-border-radius:.7ex; border-radius: .7ex;
+	box-shadow: rgba(0,0,0, 0.1) 0px 0px 4px;  
+    -moz-box-shadow: rgba(0,0,0, 0.1) 0px 0px 4px;  
+    -webkit-box-shadow: rgba(0,0,0, 0.1) 0px 0px 4px;
+    background: -webkit-gradient(linear, left top, left 25, from(#FFFFFF), color-stop(4%, #eeeeee), to(#FFFFFF));  
+    background: -moz-linear-gradient(top, #FFFFFF, #eeeeee 1px, #FFFFFF 10px);
+}
+form input:hover, form input:focus, form textarea:hover, form textarea:focus { 
+	border-color: #C9C9C9;
+	box-shadow: rgba(0,0,0, 0.15) 0px 0px 4px;  
+    -moz-box-shadow: rgba(0,0,0, 0.15) 0px 0px 4px;  
+    -webkit-box-shadow: rgba(0,0,0, 0.15) 0px 0px 4px;
+}
+
+form fieldset#current input {width:45px;}
+
+form select {width:80px;}
+
+form option {background:#fff;color:#999999;}
+form optgroup {background:#fff; color:#000; font-style:normal;}
+form optgroup option {background:#fff; color:#b80b38;}
+
+form input[type="submit"] {
+	cursor:pointer;
+	padding: 5px 10px;
+	font-weight: bold;
+	line-height: 1;
+	color: #444;
+	border: none;
+	text-shadow: 0 1px 1px rgba(255, 255, 255, 0.85);
+	background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#fff), to(#bbb));
+	background-image: -moz-linear-gradient(0% 100% 90deg, #bbb, #fff);
+	background-color: #fff;
+	-webkit-border-radius: 23px;
+	-moz-border-radius: 23px;
+	-o-border-radius: 23px;
+	border-radius: 23px;
+	-webkit-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+	-moz-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+	box-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+form input[type=submit]:hover {
+	border-color: #C9C9C9;
+	box-shadow: rgba(0,0,0, 0.15) 0px 0px 4px;  
+    -moz-box-shadow: rgba(0,0,0, 0.15) 0px 0px 4px;  
+    -webkit-box-shadow: rgba(0,0,0, 0.15) 0px 0px 4px; 
+}
