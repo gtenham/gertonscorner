@@ -1,10 +1,12 @@
  /*
  * AutoSuggest  - jQuery Plugin
  * 
- * Copyright (c) 2010 Gerton ten Ham
+ * Copyright (c) 2010-2011 Gerton ten Ham
  * Examples and documentation at: http://gertonscorner.wordpress.com
+ * See for more examples the demo at: 
+ * http://gertonscorner.googlecode.com/svn/trunk/jquery/demo.html
  *
- * Version 0.1  (01/09/2010)
+ * Version 0.2  (23/02/2011)
  *
  * This Plug-In will auto-complete or auto-suggest completed search queries
  * for you as you type. It supports keybord navigation (UP + DOWN + RETURN), as well

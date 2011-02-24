@@ -2,8 +2,9 @@
  * inFieldLabel - jQuery Plugin
  * The ultimate in-field-label for input text fields
  *
- * Copyright (c) 2010 Gerton ten Ham
  * Examples and documentation at: http://gertonscorner.wordpress.com
+ * See for more examples the demo at: 
+ * http://gertonscorner.googlecode.com/svn/trunk/jquery/demo.html
  *
  * Version: 0.2 (26/08/2010)
  *
