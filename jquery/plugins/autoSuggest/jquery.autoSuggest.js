@@ -41,7 +41,7 @@
 			selectionLimit: false,
 			showResultList: true,
 			showScrollbar: false,
-		  	start: function(){},
+			start: function(){},
 		  	selectionClick: function(elem){},
 		  	selectionAdded: function(elem){},
 		  	formatList: false, //callback function
@@ -64,7 +64,7 @@
 		if((d_type == "object" && d_count > 0) || d_type == "string"){
 			return this.each(function(x){
 				if(!opts.asHtmlID){
-					x = x+""+Math.floor(Math.random()*100); //this ensures there will be unique IDs on the page if autoSuggest() is called multiple times
+					x = x+""+Math.floor((Math.random()*10)*($(this).position().top+$(this).position().left)); //this ensures there will be unique IDs on the page if autoSuggest() is called multiple times
 					var x_id = "as-input-"+x;
 				} else {
 					x = opts.asHtmlID;
