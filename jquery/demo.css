@@ -9,12 +9,13 @@ span.inline-label {
    display: none;
 }
 
-/* AutoSuggest */
+/* AutoSuggest background-color: #eee;*/
 ul.as-selections {
 }
 
 ul.as-selections.loading {
-	background-color: #eee;
+	background: #ffffff url(ajax-loader-small.gif) no-repeat scroll right top;
+	margin-right: 12px;
 }
 
 ul.as-selections li {

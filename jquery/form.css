@@ -4,7 +4,7 @@ form p {font-size:.9em; color:#c92c35; text-align:left; padding:0; margin:0 0 20
 form fieldset#current p {padding:4px; margin:0;}
 
 form fieldset {
-	width:550px; display:block; border:1px dotted #c92c35; padding:5px 5px 5px 10px; margin-bottom:0.5em; line-height:1.5em; font-size:1em;}
+	width:580px; display:block; border:1px dotted #c92c35; padding:5px 5px 5px 10px; margin-bottom:0.5em; line-height:1.5em; font-size:1em;}
 form fieldset:hover {border:1px solid #c92c35;}
 form fieldset#opt:hover {border:1px solid #b80b38;}
 
