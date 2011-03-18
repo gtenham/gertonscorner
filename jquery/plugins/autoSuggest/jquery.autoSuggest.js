@@ -322,9 +322,15 @@
 						}
 						results_ul.css("overflow-y", "scroll");
 						results_ul.css("height", maxHeight+"px");
+						results_ul.scroll(function() {
+							input_focus = false;
+						});
+						input.focus();
 					} else {
 						results_ul.css("overflow-y", "");
 						results_ul.css("height", "");
+						input_focus = true;
+						input.focus();
 					}
 					results_holder.show();
 					opts.resultsComplete.call(this);
