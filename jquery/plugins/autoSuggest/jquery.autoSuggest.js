@@ -34,6 +34,7 @@
 			extraParams: "",
 			dynamicParamsMap: false,
 			matchCase: false,
+			matchAny: true,
 			minChars: 1,
 			keyDelay: 400,
 			resultsHighlight: true,
@@ -147,21 +148,17 @@
 								results_holder.html("").hide();
 								prev = "";
 							}
-							if($(":visible",results_holder).length > 0){
-								if (timeout){ clearTimeout(timeout); }
-								timeout = setTimeout(function(){ keyChange(); }, opts.keyDelay);
-							}
+							if (timeout){ clearTimeout(timeout); }
+							timeout = setTimeout(function(){ keyChange(); }, opts.keyDelay);
 							break;
 						case 46: // delete
-							if(input.val().length <= getSelectionRange(this) ) { //(this.selectionEnd-this.selectionStart)){
+							if(input.val().length <= getSelectionRange(this) ) {
 								results_holder.html("").hide();
 								prev = "";
 								results_holder.hide();
 							}
-							if($(":visible",results_holder).length > 0){
-								if (timeout){ clearTimeout(timeout); }
-								timeout = setTimeout(function(){ keyChange(); }, opts.keyDelay);
-							}
+							if (timeout){ clearTimeout(timeout); }
+							timeout = setTimeout(function(){ keyChange(); }, opts.keyDelay);
 							break;
 						default:
 							if(opts.showResultList){
@@ -249,90 +246,100 @@
 					if (!opts.matchCase){ query = query.toLowerCase(); }
 					var matchCount = 0;
 					results_holder.html(results_ul.html("")).hide();
-					for(var i=0;i<d_count;i++){				
-						var num = i;
-						num_count++;
-						var forward = false;
-						if(opts.searchObjProps == "value") {
-							var str = data[num].value;
-						} else {	
-							var str = "";
-							var names = opts.searchObjProps.split(",");
-							for(var y=0;y<names.length;y++){
-								var name = $.trim(names[y]);
-								str = str+data[num][name]+" ";
+					if(data.length > 0){
+						for(var i=0;i<d_count;i++){				
+							var num = i;
+							num_count++;
+							var forward = false;
+							if(opts.searchObjProps == "value") {
+								var str = data[num].value;
+							} else {	
+								var str = "";
+								var names = opts.searchObjProps.split(",");
+								for(var y=0;y<names.length;y++){
+									var name = $.trim(names[y]);
+									str = str+data[num][name]+" ";
+								}
 							}
-						}
-						if(str){
-							if (!opts.matchCase){ str = str.toLowerCase(); }				
-							if(str.search(query) != -1 && values_input.search(data[num][opts.selectedValuesProp]) == -1){
-								forward = true;
-							}	
-						}
-						if(forward){
-							var formatted = $('<li class="as-result-item" id="as-result-item-'+num+'"></li>').click(function(){
-									var raw_data = $(this).data("data");
-									var number = raw_data.num;
-									
-									if($("#as-selection-"+number, selections_holder).length <= 0 ){
-										var data = raw_data.attributes;
+							if(str){
+								if (!opts.matchCase){ str = str.toLowerCase(); }				
+								if(str.search(query) != -1 && values_input.search(data[num][opts.selectedValuesProp]) == -1){
+									forward = true;
+								}	
+							}
+							if(forward){
+								var formatted = $('<li class="as-result-item" id="as-result-item-'+num+'"></li>').click(function(){
+										var raw_data = $(this).data("data");
+										var number = raw_data.num;
 										
-										input.focus();
-										prev = "";
-										input_focus = false;
-										add_selected_item(data, number);
-										opts.resultClick.call(this, raw_data);
-										results_holder.hide();
-									}
-								}).mousedown(function(){ input_focus = false; }).mouseover(function(){
-									$("li", results_ul).removeClass("active");
-									$(this).addClass("active");
-								}).data("data",{attributes: data[num], num: num_count});
-							var this_data = $.extend({},data[num]);
-							if (!opts.matchCase){ 
-								var regx = new RegExp("(?![^&;]+;)(?!<[^<>]*)(" + query + ")(?![^<>]*>)(?![^&;]+;)", "gi");
-							} else {
-								var regx = new RegExp("(?![^&;]+;)(?!<[^<>]*)(" + query + ")(?![^<>]*>)(?![^&;]+;)", "g");
+										if($("#as-selection-"+number, selections_holder).length <= 0 ){
+											var data = raw_data.attributes;
+											
+											input.focus();
+											prev = "";
+											input_focus = false;
+											add_selected_item(data, number);
+											opts.resultClick.call(this, raw_data);
+											results_holder.hide();
+										}
+									}).mousedown(function(){ input_focus = false; }).mouseover(function(){
+										$("li", results_ul).removeClass("active");
+										$(this).addClass("active");
+									}).data("data",{attributes: data[num], num: num_count});
+								var this_data = $.extend({},data[num]);
+								
+								var regxMatchCase = (!opts.matchCase) ? "gi" : "g";
+								if (!opts.matchAny){
+									var regx = new RegExp("^(" + query + ")(?![^<>]*>)(?![^&;]+;)", regxMatchCase);
+								} else {
+									var regx = new RegExp("(?![^&;]+;)(?!<[^<>]*)(" + query + ")(?![^<>]*>)(?![^&;]+;)", regxMatchCase);
+								}
+								
+								if(opts.resultsHighlight){
+									this_data[opts.selectedItemProp] = this_data[opts.selectedItemProp].replace(regx,"<em>$1</em>");
+								}
+								if(!opts.formatList){
+									formatted = formatted.html(this_data[opts.selectedItemProp]);
+								} else {
+									formatted = opts.formatList.call(this, this_data, formatted);	
+								}
+								results_ul.append(formatted);
+								delete this_data;
+								matchCount++;
+								if(opts.retrieveLimit && opts.retrieveLimit == matchCount && !opts.showScrollbar){ break; }
 							}
-							
-							if(opts.resultsHighlight){
-								this_data[opts.selectedItemProp] = this_data[opts.selectedItemProp].replace(regx,"<em>$1</em>");
-							}
-							if(!opts.formatList){
-								formatted = formatted.html(this_data[opts.selectedItemProp]);
-							} else {
-								formatted = opts.formatList.call(this, this_data, formatted);	
-							}
-							results_ul.append(formatted);
-							delete this_data;
-							matchCount++;
-							if(opts.retrieveLimit && opts.retrieveLimit == matchCount && !opts.showScrollbar){ break; }
 						}
 					}
 					selections_holder.removeClass("loading");
-					if(matchCount <= 0){
-						results_ul.html('<li class="as-message">'+opts.emptyText+'</li>');
-					}
-					results_ul.css("width", input.outerWidth());
-					if (opts.showScrollbar && opts.retrieveLimit && opts.retrieveLimit <= matchCount) {
-						var line_height = results_ul.css("line-height");
-						var maxHeight;
-						if(opts.retrieveLimit && opts.retrieveLimit > 0){
-							var maxHeight = line_height.replace('px','')*opts.retrieveLimit;
+					if(matchCount == 0){
+						if (opts.emptyText) {
+							results_ul.html('<li class="as-message">'+opts.emptyText+'</li>');
+						} else {
+							results_ul.css("display", "none");
 						}
-						results_ul.css("overflow-y", "scroll");
-						results_ul.css("height", maxHeight+"px");
-						results_ul.scroll(function() {
-							input_focus = false;
-						});
-						input.focus();
 					} else {
-						results_ul.css("overflow-y", "");
-						results_ul.css("height", "");
-						input_focus = true;
-						input.focus();
+						results_ul.css("width", input.outerWidth());
+						results_ul.css("display", "block");
+						if (opts.showScrollbar && opts.retrieveLimit && opts.retrieveLimit <= matchCount) {
+							var line_height = results_ul.css("line-height");
+							var maxHeight;
+							if(opts.retrieveLimit && opts.retrieveLimit > 0){
+								var maxHeight = line_height.replace('px','')*opts.retrieveLimit;
+							}
+							results_ul.css("overflow-y", "scroll");
+							results_ul.css("height", maxHeight+"px");
+							results_ul.scroll(function() {
+								input_focus = false;
+							});
+							input.focus();
+						} else {
+							results_ul.css("overflow-y", "");
+							results_ul.css("height", "");
+							input_focus = true;
+							input.focus();
+						}
+						results_holder.show();
 					}
-					results_holder.show();
 					opts.resultsComplete.call(this);
 				}
 				
