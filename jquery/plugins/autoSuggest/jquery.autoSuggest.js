@@ -43,8 +43,6 @@
 			showResultList: true,
 			showScrollbar: false,
 			start: function(){},
-		  	selectionClick: function(elem){},
-		  	selectionAdded: function(elem){},
 		  	formatList: false, //callback function
 		  	beforeRetrieve: function(string){ return string; },
 		  	retrieveComplete: function(data){ return data; },
@@ -311,15 +309,17 @@
 						}
 					}
 					selections_holder.removeClass("loading");
+					results_ul.css("display", "block");
 					if(matchCount == 0){
 						if (opts.emptyText) {
 							results_ul.html('<li class="as-message">'+opts.emptyText+'</li>');
+							input.focus();
 						} else {
 							results_ul.css("display", "none");
 						}
 					} else {
 						results_ul.css("width", input.outerWidth());
-						results_ul.css("display", "block");
+						
 						if (opts.showScrollbar && opts.retrieveLimit && opts.retrieveLimit <= matchCount) {
 							var line_height = results_ul.css("line-height");
 							var maxHeight;
@@ -344,14 +344,7 @@
 				}
 				
 				function add_selected_item(data, num){
-					input.val(data[opts.selectedValuesProp]); //gth
-					//var item = $('<li class="as-selection-item" id="as-selection-'+num+'"></li>').click(function(){
-					//		opts.selectionClick.call(this, $(this));
-					//		selections_holder.children().removeClass("selected");
-					//		$(this).addClass("selected");
-					//	}).mousedown(function(){ input_focus = false; });
-					
-					opts.selectionAdded.call(this, org_li.prev());	
+					input.val(data[opts.selectedValuesProp]);
 				}
 				
 				function moveSelection(direction){
