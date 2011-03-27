@@ -25,23 +25,21 @@
 		var defaults = { 
 			asHtmlID: false,
 			emptyText: "No Results Found",
-			limitText: "No More Selections Are Allowed",
 			selectedItemProp: "value", //name of object property
 			selectedValuesProp: "value", //name of object property
-			searchObjProps: "value", //comma separated list of object property names
+			searchObjProps: "value", //false, "value" or a comma separated list of object property names to search in
 			queryParam: "q",
 			retrieveLimit: false, //number for 'limit' param on ajax request
 			extraParams: "",
-			dynamicParamsMap: false,
+			dynamicParamsMap: false, 
 			matchCase: false,
-			matchAny: true,
+			matchAny: true, // Match any occurrence of queryParam
 			minChars: 1,
 			keyDelay: 400,
 			resultsHighlight: true,
-			neverSubmit: false,
-			selectionLimit: false,
-			showResultList: true,
-			showScrollbar: false,
+			neverSubmit: false, // Prevent submit form on [ENTER]
+			showResultList: true, // Show result list
+			showScrollbar: false, // Show scrollbar, "retrieveLimit" will be used for determining height
 			start: function(){},
 		  	formatList: false, //callback function
 		  	beforeRetrieve: function(string){ return string; },
@@ -77,15 +75,12 @@
 				var input_focus = false;
 				
 				// Setup basic elements and render them to the DOM
-				input.wrap('<ul class="as-selections" id="as-selections-'+x+'"></ul>').wrap('<li class="as-original" id="as-original-'+x+'"></li>');
-				var selections_holder = $("#as-selections-"+x);
-				var org_li = $("#as-original-"+x);				
+				input.wrap('<div class="as-original" id="as-original-'+x+'"></div>');
+				var input_holder = $("#as-original-"+x);
 				var results_holder = $('<div class="as-results" id="as-results-'+x+'"></div>').hide();
-				var results_ul =  $('<ul class="as-list"></ul>');
+				var results_list =  $('<ul class="as-list"></ul>');
 				
-				var values_input = "";
-				
-				selections_holder.click(function(){
+				input_holder.click(function(){
 					input_focus = true;
 					input.focus();
 				}).mousedown(function(){ input_focus = false; }).after(results_holder);	
@@ -96,9 +91,8 @@
 				// Handle input field events
 				input.focus(function(){			
 					if(input_focus){
-						$("li.as-selection-item", selections_holder).removeClass("blur");
 						if($(this).val() != ""){
-							results_ul.css("width", input.outerWidth()-2);
+							results_list.css("width", input.outerWidth()-2);
 							
 							results_holder.show();
 						}
@@ -107,7 +101,6 @@
 					//return true;
 				}).blur(function(){
 					if(input_focus){
-						$("li.as-selection-item", selections_holder).addClass("blur").removeClass("selected");
 						results_holder.hide();
 					}				
 				}).keydown(function(e) {
@@ -139,7 +132,6 @@
 								active.click();
 								results_holder.hide();
 							}
-							
 							break;
 						case 8: // backspace
 							if(input.val().length <= 1){
@@ -160,13 +152,8 @@
 							break;
 						default:
 							if(opts.showResultList){
-								if(opts.selectionLimit && $("li.as-selection-item", selections_holder).length >= opts.selectionLimit){
-									results_ul.html('<li class="as-message">'+opts.limitText+'</li>');
-									results_holder.show();
-								} else {
-									if (timeout){ clearTimeout(timeout); }
-									timeout = setTimeout(function(){ keyChange(); }, opts.keyDelay);
-								}
+								if (timeout){ clearTimeout(timeout); }
+								timeout = setTimeout(function(){ keyChange(); }, opts.keyDelay);
 							}
 							break;
 					}
@@ -200,7 +187,7 @@
 					if (string == prev) return;
 					prev = string;
 					if (string.length >= opts.minChars) {
-						selections_holder.addClass("loading");
+						input_holder.addClass("loading");
 						if(d_type == "string"){
 							var limit = "";
 							var extraParams = opts.extraParams;
@@ -235,7 +222,7 @@
 							processData(org_data, string);
 						}
 					} else {
-						selections_holder.removeClass("loading");
+						input_holder.removeClass("loading");
 						results_holder.hide();
 					}
 				}
@@ -243,34 +230,39 @@
 				function processData(data, query){
 					if (!opts.matchCase){ query = query.toLowerCase(); }
 					var matchCount = 0;
-					results_holder.html(results_ul.html("")).hide();
+					results_holder.html(results_list.html("")).hide();
 					if(data.length > 0){
 						for(var i=0;i<d_count;i++){				
 							var num = i;
 							num_count++;
-							var forward = false;
-							if(opts.searchObjProps == "value") {
-								var str = data[num].value;
-							} else {	
-								var str = "";
-								var names = opts.searchObjProps.split(",");
-								for(var y=0;y<names.length;y++){
-									var name = $.trim(names[y]);
-									str = str+data[num][name]+" ";
+							var str = "";
+							var localmatch = false;
+							if (!opts.searchObjProps) {
+								localmatch = true;
+							} else {
+								if(opts.searchObjProps == "value") {
+									str = data[num].value;
+								} else {	
+									str = "";
+									var names = opts.searchObjProps.split(",");
+									for(var y=0;y<names.length;y++){
+										var name = $.trim(names[y]);
+										str = str+data[num][name]+" ";
+									}
+								}
+								if(str){
+									if (!opts.matchCase){ str = str.toLowerCase(); }				
+									if(str.search(query) != -1){
+										localmatch = true;
+									}	
 								}
 							}
-							if(str){
-								if (!opts.matchCase){ str = str.toLowerCase(); }				
-								if(str.search(query) != -1 && values_input.search(data[num][opts.selectedValuesProp]) == -1){
-									forward = true;
-								}	
-							}
-							if(forward){
+							
+							if(localmatch){
 								var formatted = $('<li class="as-result-item" id="as-result-item-'+num+'"></li>').click(function(){
 										var raw_data = $(this).data("data");
 										var number = raw_data.num;
-										
-										if($("#as-selection-"+number, selections_holder).length <= 0 ){
+										if($("#as-original-"+number, input_holder).length <= 0 ){
 											var data = raw_data.attributes;
 											
 											input.focus();
@@ -281,7 +273,7 @@
 											results_holder.hide();
 										}
 									}).mousedown(function(){ input_focus = false; }).mouseover(function(){
-										$("li", results_ul).removeClass("active");
+										$("li", results_list).removeClass("active");
 										$(this).addClass("active");
 									}).data("data",{attributes: data[num], num: num_count});
 								var this_data = $.extend({},data[num]);
@@ -301,40 +293,40 @@
 								} else {
 									formatted = opts.formatList.call(this, this_data, formatted);	
 								}
-								results_ul.append(formatted);
+								results_list.append(formatted);
 								delete this_data;
 								matchCount++;
 								if(opts.retrieveLimit && opts.retrieveLimit == matchCount && !opts.showScrollbar){ break; }
 							}
 						}
 					}
-					selections_holder.removeClass("loading");
-					results_ul.css("display", "block");
+					input_holder.removeClass("loading");
+					results_list.css("display", "block");
 					if(matchCount == 0){
 						if (opts.emptyText) {
-							results_ul.html('<li class="as-message">'+opts.emptyText+'</li>');
+							results_list.html('<li class="as-message">'+opts.emptyText+'</li>');
 							input.focus();
 						} else {
-							results_ul.css("display", "none");
+							results_list.css("display", "none");
 						}
 					} else {
-						results_ul.css("width", input.outerWidth());
+						results_list.css("width", input.outerWidth());
 						
 						if (opts.showScrollbar && opts.retrieveLimit && opts.retrieveLimit <= matchCount) {
-							var line_height = results_ul.css("line-height");
+							var line_height = "15px"; //results_list.css("line-height");
 							var maxHeight;
 							if(opts.retrieveLimit && opts.retrieveLimit > 0){
 								var maxHeight = line_height.replace('px','')*opts.retrieveLimit;
 							}
-							results_ul.css("overflow-y", "scroll");
-							results_ul.css("height", maxHeight+"px");
-							results_ul.scroll(function() {
+							results_list.css("overflow-y", "scroll");
+							results_list.css("height", maxHeight+"px");
+							results_list.scroll(function() {
 								input_focus = false;
 							});
 							input.focus();
 						} else {
-							results_ul.css("overflow-y", "");
-							results_ul.css("height", "");
+							results_list.css("overflow-y", "");
+							results_list.css("height", "");
 							input_focus = true;
 							input.focus();
 						}
@@ -367,8 +359,8 @@
 						start.addClass("active");
 						if (opts.showScrollbar) {
 							var listitem_number = $("li.active:first").index()+1;
-							var listitem_height = results_ul.css("line-height").replace('px','');
-							results_ul.scrollTop((listitem_number-1)*listitem_height);
+							var listitem_height = results_list.css("line-height").replace('px','');
+							results_list.scrollTop((listitem_number-1)*listitem_height);
 						}
 					}
 				}

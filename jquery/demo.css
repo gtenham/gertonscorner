@@ -10,38 +10,15 @@ span.inline-label {
 }
 
 /* AutoSuggest background-color: #eee;*/
-ul.as-selections {
+div.as-original {
 }
 
-ul.as-selections.loading {
+div.as-original.loading {
 	background: #ffffff url(ajax-loader-small.gif) no-repeat scroll right top;
 	margin-right: 12px;
 }
 
-ul.as-selections li {
-}
-
-ul.as-selections li.as-selection-item {
-	border: 1px solid #acc3ec;
-	border-top-color: #c0d9e9;
-}
-
-ul.as-selections li.as-selection-item:last-child {
-}
-
-ul.as-selections li.as-selection-item.blur {
-}
-
-ul.as-selections li:hover.as-selection-item {
-}
-
-ul.as-selections li.as-selection-item.selected {
-}
-
-ul.as-selections li.as-original {
-}
-
-ul.as-selections li.as-original input {
+div.as-original input {
 }
 
 ul.as-list {
