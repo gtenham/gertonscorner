@@ -41,10 +41,11 @@
 			showResultList: true, // Show result list
 			showScrollbar: false, // Show scrollbar, "retrieveLimit" will be used for determining height
 			start: function(){},
+			formatRawData: false, //callback function : function(string){ return string; }
 		  	formatList: false, //callback function
 		  	beforeRetrieve: function(string){ return string; },
 		  	retrieveComplete: function(data){ return data; },
-		  	resultClick: function(data){},
+		  	resultClick: false, //function(data){},
 		  	resultsComplete: function(){}
 	  	};  
 	 	var opts = $.extend(defaults, options);	 	
@@ -183,6 +184,7 @@
 				function keyChange() {
 					// ignore if the following keys are pressed: [shift] [capslock]
 					if( (lastKeyPressCode > 8 && lastKeyPressCode < 32) ){ return results_holder.hide(); }
+					var trimInputValue =  (input.val() || "").replace( /^(\s|\u00A0)+//g, "" )
 					var string = input.val().replace(/[\\]+|[\/]+/g,"");
 					if (string == prev) return;
 					prev = string;
@@ -269,7 +271,9 @@
 											prev = "";
 											input_focus = false;
 											add_selected_item(data, number);
-											opts.resultClick.call(this, raw_data);
+											if (opts.resultClick) {
+                                        	   opts.resultClick.call(this, raw_data);
+                                            }
 											results_holder.hide();
 										}
 									}).mousedown(function(){ input_focus = false; }).mouseover(function(){
@@ -284,10 +288,15 @@
 								} else {
 									var regx = new RegExp("(?![^&;]+;)(?!<[^<>]*)(" + query + ")(?![^<>]*>)(?![^&;]+;)", regxMatchCase);
 								}
-								
+								// pre-format raw string data
+                                if (opts.formatRawData) {
+                            	   this_data[opts.selectedItemProp] = opts.formatRawData.call(this, this_data[opts.selectedItemProp]);
+                                }
+								// Highlight query within result
 								if(opts.resultsHighlight){
 									this_data[opts.selectedItemProp] = this_data[opts.selectedItemProp].replace(regx,"<em>$1</em>");
 								}
+								// Format the resultlist with custom callback function resulting in new html
 								if(!opts.formatList){
 									formatted = formatted.html(this_data[opts.selectedItemProp]);
 								} else {
