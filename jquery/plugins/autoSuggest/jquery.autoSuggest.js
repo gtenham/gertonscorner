@@ -184,9 +184,12 @@
 				function keyChange() {
 					// ignore if the following keys are pressed: [shift] [capslock]
 					if( (lastKeyPressCode > 8 && lastKeyPressCode < 32) ){ return results_holder.hide(); }
-					var trimInputValue =  (input.val() || "").replace( /^(\s|\u00A0)+//g, "" )
+					// Remove first character(s) when this is a space (newlines)
+					var trimInputValue =  (input.val()||"").replace( /^(\s|\u00A0)+/g,"");
+					input.val(trimInputValue);
 					var string = input.val().replace(/[\\]+|[\/]+/g,"");
 					if (string == prev) return;
+					
 					prev = string;
 					if (string.length >= opts.minChars) {
 						input_holder.addClass("loading");
@@ -339,8 +342,8 @@
 							input_focus = true;
 							input.focus();
 						}
-						results_holder.show();
 					}
+					results_holder.show();
 					opts.resultsComplete.call(this);
 				}
 				
