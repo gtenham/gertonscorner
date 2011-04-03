@@ -34,6 +34,7 @@
 			dynamicParamsMap: false, 
 			matchCase: false,
 			matchAny: true, // Match any occurrence of queryParam
+			trimQueryParam: "ltrim", //false, ltrim, rtrim or trim
 			minChars: 1,
 			keyDelay: 400,
 			resultsHighlight: true,
@@ -73,37 +74,27 @@
 				
 				input.attr("autocomplete","off").addClass("as-input");
 				
-				var input_focus = false;
-				
 				// Setup basic elements and render them to the DOM
 				input.wrap('<div class="as-original" id="as-original-'+x+'"></div>');
 				var input_holder = $("#as-original-"+x);
-				var results_holder = $('<div class="as-results" id="as-results-'+x+'"></div>').hide();
+				var results_holder = $('<div class="as-results" id="as-results-'+x+'"></div>');
 				var results_list =  $('<ul class="as-list"></ul>');
 				
 				input_holder.click(function(){
-					input_focus = true;
 					input.focus();
-				}).mousedown(function(){ input_focus = false; }).after(results_holder);	
+				}).after(results_holder);	
 
+				$('html').bind('click',function(){results_list.hide();});
+				
 				var timeout = null;
 				var prev = "";
 				
 				// Handle input field events
-				input.focus(function(){			
-					if(input_focus){
-						if($(this).val() != ""){
-							results_list.css("width", input.outerWidth()-2);
-							
-							results_holder.show();
-						}
+				input.focus(function(){		
+					if($(this).val() != ""){
+						results_list.css("width", input.outerWidth()-2);
+						//results_list.show();
 					}
-					input_focus = true;
-					//return true;
-				}).blur(function(){
-					if(input_focus){
-						results_holder.hide();
-					}				
 				}).keydown(function(e) {
 					// track last key pressed
 					lastKeyPressCode = e.keyCode;
@@ -121,7 +112,7 @@
 							var active = $("li.active:first", results_holder);
 							if(active.length > 0){
 								active.click();
-								results_holder.hide();
+								results_list.hide();
 							}
 							if(opts.neverSubmit || active.length > 0){
 								e.preventDefault();
@@ -131,22 +122,23 @@
 							var active = $("li.active:first", results_holder);
 							if(active.length > 0){
 								active.click();
-								results_holder.hide();
 							}
+							results_list.hide();
 							break;
 						case 8: // backspace
 							if(input.val().length <= 1){
-								results_holder.html("").hide();
+								results_holder.html("");
 								prev = "";
+								results_list.hide();
 							}
 							if (timeout){ clearTimeout(timeout); }
 							timeout = setTimeout(function(){ keyChange(); }, opts.keyDelay);
 							break;
 						case 46: // delete
 							if(input.val().length <= getSelectionRange(this) ) {
-								results_holder.html("").hide();
+								results_holder.html("");
 								prev = "";
-								results_holder.hide();
+								results_list.hide();
 							}
 							if (timeout){ clearTimeout(timeout); }
 							timeout = setTimeout(function(){ keyChange(); }, opts.keyDelay);
@@ -155,10 +147,29 @@
 							if(opts.showResultList){
 								if (timeout){ clearTimeout(timeout); }
 								timeout = setTimeout(function(){ keyChange(); }, opts.keyDelay);
-							}
+							} 
 							break;
 					}
 				});
+				
+				function trimValue(val) {
+					var returnValue = val;
+					switch(opts.trimQueryParam) {
+						case "ltrim":
+							returnValue = (val||"").replace( /^(\s|\u00A0)+/g,"");
+							break;
+						case "rtrim":
+							returnValue = (val||"").replace( /[\s\u00A0]+$/g,"");
+							break;
+						case "trim":
+							returnValue = $.trim(val);
+							break;
+						default:
+							returnValue = val;
+							break;
+					}
+					return returnValue;
+				}
 				
 				function getSelectionRange(inputbox) {
 					var startPos = 0;
@@ -182,14 +193,12 @@
 				}
 				
 				function keyChange() {
-					// ignore if the following keys are pressed: [shift] [capslock]
-					if( (lastKeyPressCode > 8 && lastKeyPressCode < 32) ){ return results_holder.hide(); }
-					// Remove first character(s) when this is a space (newlines)
-					var trimInputValue =  (input.val()||"").replace( /^(\s|\u00A0)+/g,"");
-					input.val(trimInputValue);
-					var string = input.val().replace(/[\\]+|[\/]+/g,"");
-					if (string == prev) return;
+					// Trimming value (using opts.trimQueryParam)
+					var trimInputValue = trimValue(input.val());
 					
+					var string = trimInputValue.replace(/[\\]+|[\/]+/g,"");
+					
+					if (string == prev) return;
 					prev = string;
 					if (string.length >= opts.minChars) {
 						input_holder.addClass("loading");
@@ -228,14 +237,14 @@
 						}
 					} else {
 						input_holder.removeClass("loading");
-						results_holder.hide();
+						results_list.hide();
 					}
 				}
 				var num_count = 0;
 				function processData(data, query){
 					if (!opts.matchCase){ query = query.toLowerCase(); }
 					var matchCount = 0;
-					results_holder.html(results_list.html("")).hide();
+					results_holder.html(results_list.html(""));
 					if(data.length > 0){
 						for(var i=0;i<d_count;i++){				
 							var num = i;
@@ -267,19 +276,16 @@
 								var formatted = $('<li class="as-result-item" id="as-result-item-'+num+'"></li>').click(function(){
 										var raw_data = $(this).data("data");
 										var number = raw_data.num;
-										if($("#as-original-"+number, input_holder).length <= 0 ){
-											var data = raw_data.attributes;
+										var data = raw_data.attributes;
 											
-											input.focus();
-											prev = "";
-											input_focus = false;
-											add_selected_item(data, number);
-											if (opts.resultClick) {
-                                        	   opts.resultClick.call(this, raw_data);
-                                            }
-											results_holder.hide();
-										}
-									}).mousedown(function(){ input_focus = false; }).mouseover(function(){
+										prev = "";
+										add_selected_item(data, number);
+										if (opts.resultClick) {
+                                           opts.resultClick.call(this, raw_data);
+                                        }
+										results_list.hide();
+										input.focus();
+									}).mouseover(function(){
 										$("li", results_list).removeClass("active");
 										$(this).addClass("active");
 									}).data("data",{attributes: data[num], num: num_count});
@@ -313,13 +319,15 @@
 						}
 					}
 					input_holder.removeClass("loading");
-					results_list.css("display", "block");
+					results_list.show();
 					if(matchCount == 0){
+						results_list.css("overflow-y", "");
+						results_list.css("height", "");
 						if (opts.emptyText) {
 							results_list.html('<li class="as-message">'+opts.emptyText+'</li>');
 							input.focus();
 						} else {
-							results_list.css("display", "none");
+							results_list.hide();
 						}
 					} else {
 						results_list.css("width", input.outerWidth());
@@ -332,18 +340,16 @@
 							}
 							results_list.css("overflow-y", "scroll");
 							results_list.css("height", maxHeight+"px");
+							// Catch scroll event
 							results_list.scroll(function() {
-								input_focus = false;
+								// Still needed?
 							});
-							input.focus();
 						} else {
 							results_list.css("overflow-y", "");
 							results_list.css("height", "");
-							input_focus = true;
-							input.focus();
 						}
+						input.focus();
 					}
-					results_holder.show();
 					opts.resultsComplete.call(this);
 				}
 				
