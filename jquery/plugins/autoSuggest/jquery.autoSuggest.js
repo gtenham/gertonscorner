@@ -84,7 +84,7 @@
 					input.focus();
 				}).after(results_holder);	
 
-				$('html').bind('click',function(){results_list.hide();});
+				$('html').bind('click',function(){toggleResultsList('hide');});
 				
 				var timeout = null;
 				var prev = "";
@@ -93,7 +93,7 @@
 				input.focus(function(){		
 					if($(this).val() != ""){
 						results_list.css("width", input.outerWidth()-2);
-						//results_list.show();
+						//toggleResultsList('show');
 					}
 				}).keydown(function(e) {
 					// track last key pressed
@@ -112,7 +112,7 @@
 							var active = $("li.active:first", results_holder);
 							if(active.length > 0){
 								active.click();
-								results_list.hide();
+								toggleResultsList('hide');
 							}
 							if(opts.neverSubmit || active.length > 0){
 								e.preventDefault();
@@ -123,13 +123,13 @@
 							if(active.length > 0){
 								active.click();
 							}
-							results_list.hide();
+							toggleResultsList('hide');
 							break;
 						case 8: // backspace
 							if(input.val().length <= 1){
 								results_holder.html("");
 								prev = "";
-								results_list.hide();
+								toggleResultsList('hide');
 							}
 							if (timeout){ clearTimeout(timeout); }
 							timeout = setTimeout(function(){ keyChange(); }, opts.keyDelay);
@@ -138,7 +138,7 @@
 							if(input.val().length <= getSelectionRange(this) ) {
 								results_holder.html("");
 								prev = "";
-								results_list.hide();
+								toggleResultsList('hide');
 							}
 							if (timeout){ clearTimeout(timeout); }
 							timeout = setTimeout(function(){ keyChange(); }, opts.keyDelay);
@@ -151,6 +151,17 @@
 							break;
 					}
 				});
+				
+				function toggleResultsList(action) {
+					if (action == 'hide') {
+						results_holder.hide();
+						results_list.hide();
+					} else {
+						results_holder.show();
+						results_list.show();
+					}
+				}
+				
 				
 				function trimValue(val) {
 					var returnValue = val;
@@ -237,7 +248,7 @@
 						}
 					} else {
 						input_holder.removeClass("loading");
-						results_list.hide();
+						toggleResultsList('hide');
 					}
 				}
 				var num_count = 0;
@@ -283,7 +294,7 @@
 										if (opts.resultClick) {
                                            opts.resultClick.call(this, raw_data);
                                         }
-										results_list.hide();
+										toggleResultsList('hide');
 										input.focus();
 									}).mouseover(function(){
 										$("li", results_list).removeClass("active");
@@ -319,7 +330,7 @@
 						}
 					}
 					input_holder.removeClass("loading");
-					results_list.show();
+					toggleResultsList('show');
 					if(matchCount == 0){
 						results_list.css("overflow-y", "");
 						results_list.css("height", "");
@@ -327,7 +338,7 @@
 							results_list.html('<li class="as-message">'+opts.emptyText+'</li>');
 							input.focus();
 						} else {
-							results_list.hide();
+							toggleResultsList('hide');
 						}
 					} else {
 						results_list.css("width", input.outerWidth());
