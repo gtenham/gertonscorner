@@ -6,7 +6,7 @@
  * See for more examples the demo at: 
  * http://gertonscorner.googlecode.com/svn/trunk/jquery/demo.html
  *
- * Version: 0.2 (26/08/2010)
+ * Version: 0.3 (03/04/2011)
  *
  * Dual licensed under the MIT and GPL licenses:
  *   http://www.opensource.org/licenses/mit-license.php
