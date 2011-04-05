@@ -91,17 +91,43 @@
 				var prev = "";
 				
 				// Handle input field events
-				input.focus(function(){		
-					if($(this).val() != "" && !keep_list){
+				input.focus(function(){	
+					var active = $("li.active:first", results_holder);
+					if(($(this).val() != "" && !keep_list) || active.length > 0){
 						results_list.css("width", input.outerWidth()-2);
 						keep_list = true;
 						toggleResultsList('show');
 					}
-				}).blur(function(e) { keep_list = false;
-				})
-				.keydown(function(e) {
+				}).blur(function(e) { 
+					keep_list = false;
+				}).keydown( function(e) {
+					handleKeyBoard(e);
+				});
+				
+				// Opera browser workaround for not having a proper keydown event for return and tab
+				if($.browser.opera){
+					input.keypress( function(e) {
+						switch(e.keyCode) {
+						case 13: // return
+							var active = $("li.active:first", results_holder);
+							if(opts.neverSubmit || active.length > 0){
+								e.preventDefault();
+							}
+							break;
+						case 9: // tab
+							var active = $("li.active:first", results_holder);
+							if (opts.resultClick && active.length > 0) {
+	                        	   e.preventDefault();
+	                        }
+							break;
+						}
+					});
+				}
+				
+				function handleKeyBoard(e) {
 					// track last key pressed
 					lastKeyPressCode = e.keyCode;
+					first_focus = false;
 					switch(e.keyCode) {
 						case 38: // up
 							e.preventDefault();
@@ -127,6 +153,9 @@
 								active.click();
 							}
 							toggleResultsList('hide');
+							if (opts.resultClick && active.length > 0) {
+	                        	   e.preventDefault();
+	                        }
 							break;
 						case 8: // backspace
 							if(input.val().length <= 1){
@@ -153,7 +182,7 @@
 							} 
 							break;
 					}
-				});
+				}
 				
 				function toggleResultsList(action) {
 					if (action == 'hide') {
