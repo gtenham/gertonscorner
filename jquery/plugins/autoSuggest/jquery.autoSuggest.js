@@ -6,9 +6,9 @@
  * See for more examples the demo at: 
  * http://gertonscorner.googlecode.com/svn/trunk/jquery/demo.html
  *
- * Version 0.2  (23/02/2011)
+ * Version 0.3  (07/04/2011)
  *
- * This Plug-In will auto-complete or auto-suggest completed search queries
+ * This Plug-In will auto-suggest completed search queries
  * for you as you type. It supports keybord navigation (UP + DOWN + RETURN), as well
  * as multiple AutoSuggest fields on the same page.
  *
@@ -23,21 +23,20 @@
 (function($){
 	$.fn.autoSuggest = function(data, options) {
 		var defaults = { 
-			asHtmlID: false,
-			emptyText: "No Results Found",
-			selectedItemProp: "value", //name of object property
-			selectedValuesProp: "value", //name of object property
+			asHtmlID: false, // Provide unique input id for wrapper elements, when false a random id is generated
+			emptyText: "No Results Found", // false, or any html string to show when no entries are found
+			selectedItemProp: "value", //name of object property used for showing as selected value
 			searchObjProps: "value", //false, "value" or a comma separated list of object property names to search in
-			queryParam: "q",
+			queryParam: "q", // The request parameter for ajax call containing the search string
 			retrieveLimit: false, //number for 'limit' param on ajax request
-			extraParams: "",
-			dynamicParamsMap: false, 
-			matchCase: false,
-			matchAny: true, // Match any occurrence of queryParam
+			extraParams: "", // Any extra static request parameters
+			dynamicParamsMap: false, // Any extra dynamic request parameters from other input fields
+			matchCase: false, // Match case within results
+			matchAny: true, // Match any occurrence of queryParam, use false for a more strict match
 			trimQueryParam: "ltrim", //false, ltrim, rtrim or trim
-			minChars: 1,
-			keyDelay: 400,
-			resultsHighlight: true,
+			minChars: 1, // Start ajax request after typing x characters
+			keyDelay: 400, // key delay between processing response
+			resultsHighlight: true, // Highlight matching queryParam within results
 			neverSubmit: false, // Prevent submit form on [ENTER]
 			showResultList: true, // Show result list
 			showScrollbar: false, // Show scrollbar, "retrieveLimit" will be used for determining height
@@ -398,7 +397,7 @@
 				}
 				
 				function add_selected_item(data, num){
-					input.val(data[opts.selectedValuesProp]);
+					input.val(data[opts.selectedItemProp]);
 				}
 				
 				function moveSelection(direction){
