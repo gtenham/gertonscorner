@@ -35,6 +35,8 @@
 			<input type="text" id="auto3" name="auto3" value="" />
 			<label for="auto4">Using scrollbar option</label>
 			<input type="text" id="auto4" name="auto4" value="" />
+			<label for="auto5">Test for Unicode match/highlight</label>
+			<input type="text" id="auto5" name="auto5" value="" />
 		</fieldset>
 	</form>
 	
@@ -51,6 +53,7 @@ $(document).ready(function() {
 	$("#auto2").autoSuggest(data.items).inFieldLabel();
 	$("#auto3").autoSuggest(data.items,{retrieveLimit:3});
 	$("#auto4").autoSuggest(data.items,{retrieveLimit:3, showScrollbar:true});
+	$("#auto5").autoSuggest(unicodedata.items);
 });
 
 var data = {items: [
@@ -65,6 +68,12 @@ var data = {items: [
               {value: "Michael Jordan"}
               ]};
 
+var unicodedata = {items: [
+              {value: "Ząbki K. Warszawy"},
+			  {value: "Ząbki B. no match"},
+			  {value: "Zakopane"},
+			  {value: "Zabrze"}
+              ]};
 </script>
 </body>
 </html>
