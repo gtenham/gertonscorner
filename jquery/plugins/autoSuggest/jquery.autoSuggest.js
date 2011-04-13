@@ -312,7 +312,7 @@
 							if (!opts.searchObjProps || (typeof opts.searchObjProps == 'undefined')) {
 								localmatch = true;
 							} else {
-								// TODO: matching unicode characters: http://xregexp.com/plugins/
+								// TODO: matching unicode characters: http://xregexp.com/plugins/ and http://www.regular-expressions.info/unicode.html
 								if(opts.searchObjProps == "value") {
 									str = data[num].value;
 								} else {	
@@ -349,13 +349,14 @@
 									}).data("data",{attributes: data[num], num: num_count});
 								var this_data = $.extend({},data[num]);
 								
-								// TODO: matching unicode characters: http://xregexp.com/plugins/
+								// TODO: matching unicode characters: http://xregexp.com/plugins/ and http://www.regular-expressions.info/unicode.html
 								var regxMatchCase = (!opts.matchCase) ? "gi" : "g";
 								if (!opts.matchAny){
 									var regx = new RegExp("^(" + query + ")(?![^<>]*>)(?![^&;]+;)", regxMatchCase);
 								} else {
 									var regx = new RegExp("(?![^&;]+;)(?!<[^<>]*)(" + query + ")(?![^<>]*>)(?![^&;]+;)", regxMatchCase);
 								}
+								
 								// pre-format raw string data
                                 if (opts.formatRawData) {
                             	   this_data[opts.selectedItemProp] = opts.formatRawData.call(this, this_data[opts.selectedItemProp]);
