@@ -42,16 +42,19 @@
 			showScrollbar: false, // Show scrollbar, "retrieveLimit" will be used for determining height
 			start: function(){},
 			formatRawData: false, //callback function : function(string){ return string; }
-		  	formatList: false, //callback function
+		  	formatList: false, //callback function : function(data, elem){ return new_elem; }
 		  	beforeRetrieve: function(string){ return string; },
 		  	retrieveComplete: function(data){ return data; },
 		  	resultClick: false, //function(data){},
-		  	resultsComplete: function(){}
+		  	resultsComplete: function(){},
+			onActiveValueChanged: function(){}
 	  	};  
 	 	var opts = $.extend(defaults, options);	 	
 	 	
 		var d_type = "object";
 		var d_count = 0;
+		
+		
 		if(typeof data == "string") {
 			d_type = "string";
 			var req_string = data;
@@ -126,7 +129,6 @@
 				function handleKeyBoard(e) {
 					// track last key pressed
 					lastKeyPressCode = e.keyCode;
-					first_focus = false;
 					switch(e.keyCode) {
 						case 38: // up
 							e.preventDefault();
@@ -152,9 +154,11 @@
 								active.click();
 							}
 							toggleResultsList('hide');
+							
 							if (opts.resultClick && active.length > 0) {
 	                        	   e.preventDefault();
 	                        }
+							if (timeout){ clearTimeout(timeout); }
 							break;
 						case 8: // backspace
 							if(input.val().length <= 1){
@@ -170,7 +174,7 @@
 								results_holder.html("");
 								prev = "";
 								toggleResultsList('hide');
-							}
+							} 
 							if (timeout){ clearTimeout(timeout); }
 							timeout = setTimeout(function(){ keyChange(); }, opts.keyDelay);
 							break;
@@ -188,8 +192,10 @@
 						results_holder.hide();
 						results_list.hide();
 					} else {
-						results_holder.show();
-						results_list.show();
+						if (results_list.children().length > 0) {
+							results_holder.show();
+							results_list.show();
+						}
 					}
 				}
 				
@@ -240,7 +246,16 @@
 					
 					var string = trimInputValue.replace(/[\\]+|[\/]+/g,"");
 					
-					if (string == prev) return;
+					if (string == prev) {
+						return;
+					} else {
+						//Check if there is a current active value which might be changed
+						var active = $("li.active:first", results_holder);
+						if(active.length > 0){
+							opts.onActiveValueChanged.call(this);
+						}
+					}
+					
 					prev = string;
 					if (string.length >= opts.minChars) {
 						input_holder.addClass("loading");
@@ -294,9 +309,10 @@
 							num_count++;
 							var str = "";
 							var localmatch = false;
-							if (!opts.searchObjProps) {
+							if (!opts.searchObjProps || (typeof opts.searchObjProps == 'undefined')) {
 								localmatch = true;
 							} else {
+								// TODO: matching unicode characters: http://xregexp.com/plugins/
 								if(opts.searchObjProps == "value") {
 									str = data[num].value;
 								} else {	
@@ -323,7 +339,6 @@
 											
 										prev = "";
 										add_selected_item(data, number);
-										input.focus();
 										toggleResultsList('hide');
 										if (opts.resultClick) {
                                            opts.resultClick.call(this, raw_data);
@@ -334,6 +349,7 @@
 									}).data("data",{attributes: data[num], num: num_count});
 								var this_data = $.extend({},data[num]);
 								
+								// TODO: matching unicode characters: http://xregexp.com/plugins/
 								var regxMatchCase = (!opts.matchCase) ? "gi" : "g";
 								if (!opts.matchAny){
 									var regx = new RegExp("^(" + query + ")(?![^<>]*>)(?![^&;]+;)", regxMatchCase);
@@ -425,7 +441,7 @@
 						}
 					}
 				}
-									
+				
 			});
 		}
 	};
