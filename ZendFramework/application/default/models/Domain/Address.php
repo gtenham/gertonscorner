@@ -20,13 +20,28 @@ class Model_Domain_Address extends GcLib_Domain_Abstract {
 	}
 	
 	protected function validateZipcode() {
+		
+		$this->removeErrors("zipcode");
+		$localValid = false;
+		
+		// Check on empty value
+		$validator = new Zend_Validate_NotEmpty();
+		$localValid = $validator->isValid($this->zipcode);
+		if (!$validator->isValid($this->zipcode)) {
+			$error = new GcLib_Domain_Exception("zipcode","Zipcode is required and can not be empty.",-10000);
+		    $this->setError($error);
+		} 
+		
 		//Dutch zipcode pattern: ^[0-9]{4}\s{0,1}[a-zA-Z]{2}$
 		$validator = new Zend_Validate_Regex(array('pattern' => '/^[0-9]{4}\s{0,1}[a-zA-Z]{2}$/'));
-		if ($validator->isValid($this->zipcode)) {
-			$this->setValid("zipcode");
-		} else {
-			$error = new GcLib_Domain_Exception("zipcode","Invalid zipcode format.",-10000);
+		$localValid = $validator->isValid($this->zipcode);
+		if (!$validator->isValid($this->zipcode)) {
+			$error = new GcLib_Domain_Exception("zipcode","Invalid zipcode format.",-10001);
 		    $this->setError($error);
+		} 
+		
+		if ($localValid) {
+			$this->setValid("zipcode");
 		}
 	}
 }
