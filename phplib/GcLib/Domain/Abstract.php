@@ -127,6 +127,22 @@ abstract class GcLib_Domain_Abstract {
     	$this->_errors[] = $error;
     }
     
+	/**
+     * Remove errors from errorstack
+     * @param string $attribute (optional)
+     */
+	public function removeErrors($attribute=null) {
+    	if ($attribute != null) {
+    		foreach ($this->_errors as $key => $val) {
+	    		if ($val->getAttribute() === $attribute) {
+	    			unset($this->_errors[$key]);
+	    		}
+	       	}
+    	} else {
+    		$this->_errors = array();
+    	}
+    }
+    
     /**
      * @param string $attribute (optional)
      * @return array 
