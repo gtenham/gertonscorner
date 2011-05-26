@@ -31,7 +31,6 @@ abstract class GcLib_Domain_Abstract {
      * @param array $data
      */
     public function setData(array $data) {
-    	//$this->_errors = array();
     	$this->populate($data);
     }
     
@@ -41,17 +40,13 @@ abstract class GcLib_Domain_Abstract {
      */
     public function __set($attribute, $value) {
        if (array_key_exists($attribute, $this->_data)) {
-          if ($value !== $this->_data[$attribute] || !$this->isValid($attribute)) {
-          	 $this->_dirtyAttributes[$attribute] = true;
-       	  } else {
-       	  	 unset($this->_dirtyAttributes[$attribute]);
-       	  }
           $this->_data[$attribute] = $value;
-          //$this->validate($attribute,$value);
+          $this->_dirtyAttributes[$attribute] = true;
        }
     }
 	
     /**
+     * @param string $attribute
      * @return multitype
      */
     public function &__get($attribute) {
@@ -63,6 +58,7 @@ abstract class GcLib_Domain_Abstract {
     }
   
     /**
+     * @param string $attribute
      * @return boolean
      */
     public function __isset($attribute) {
@@ -74,6 +70,9 @@ abstract class GcLib_Domain_Abstract {
     }
 
     /**
+     * 
+     * @param string $attribute
+     * @return NULL
      */
     public function __unset($attribute) {
        if (array_key_exists($attribute, $this->_data)) {
@@ -225,7 +224,7 @@ abstract class GcLib_Domain_Abstract {
           throw new Exception('Initial data must be an array or object');
        }
        foreach ($data as $key => $val) {
-          $this->__set($key, $val);
+       	  $this->__set($key, $val);
        }
        return $this;
     }
