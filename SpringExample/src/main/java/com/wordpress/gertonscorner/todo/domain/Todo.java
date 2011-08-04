@@ -13,6 +13,7 @@ public class Todo implements Serializable {
 	private static final long serialVersionUID = -632626680286074037L;
 	
 	private String id;
+	private Integer done;
 	private String description;
 	
 	public Todo() {}
@@ -26,6 +27,12 @@ public class Todo implements Serializable {
 	}
 	public void setId(String id) {
 		this.id = id;
+	}
+	public void setDone(Integer done) {
+		this.done = done;
+	}
+	public Integer getDone() {
+		return done;
 	}
 	public String getDescription() {
 		return description;

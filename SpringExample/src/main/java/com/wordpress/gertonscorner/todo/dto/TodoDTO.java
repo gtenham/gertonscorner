@@ -15,6 +15,7 @@ public class TodoDTO implements Serializable {
 	private static final long serialVersionUID = -7974075876533955036L;
 
 	private String id;
+	private Integer done;
 	private String description;
 	private Collection<ErrorDTO> errors = new ArrayList<ErrorDTO>(0);
 	
@@ -29,6 +30,12 @@ public class TodoDTO implements Serializable {
 	}
 	public void setId(String id) {
 		this.id = id;
+	}
+	public void setDone(Integer done) {
+		this.done = done;
+	}
+	public Integer getDone() {
+		return done;
 	}
 	public String getDescription() {
 		return description;
