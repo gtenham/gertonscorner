@@ -51,7 +51,7 @@ public class TodoController {
 	 * @return Todo transfer object
 	 */
 	@RequestMapping(value = "/todos/{id}", method = RequestMethod.GET)
-	public @ResponseBody TodoDTO getOrder(@PathVariable("id") String id) {		
+	public @ResponseBody TodoDTO getTodo(@PathVariable("id") String id) {		
 		return todoService.getTodoById(id);
 	}
 	

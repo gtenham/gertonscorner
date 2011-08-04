@@ -15,7 +15,7 @@
     limitations under the License.
 -->
 <!-- 
--- Oracle table creation script
+rem Oracle table creation script
 create table todos(
 id          varchar2(20) not null,
 done        number(1) default 0 not null,

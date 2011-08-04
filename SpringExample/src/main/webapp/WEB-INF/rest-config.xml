@@ -17,14 +17,14 @@
 	<bean id="xstreamMarshaller" class="org.springframework.oxm.xstream.XStreamMarshaller">
 		<property name="aliases">
 	        <map>
-            	<entry key="order" value="com.wordpress.gertonscorner.todo.dto.TodoDTO" />
-            	<entry key="orders" value="com.wordpress.gertonscorner.todo.dto.TodoList"/>
+            	<entry key="todo" value="com.wordpress.gertonscorner.todo.dto.TodoDTO" />
+            	<entry key="todos" value="com.wordpress.gertonscorner.todo.dto.TodoList"/>
             	<entry key="error" value="com.wordpress.gertonscorner.todo.dto.ErrorDTO" />
         	</map>
     	</property>
     	<!-- property name="aliasesByType">
       		<map>
-        		<entry key="orders" value="com.wordpress.gertonscorner.todo.dto.TodoList"/>        
+        		<entry key="todos" value="com.wordpress.gertonscorner.todo.dto.TodoList"/>        
       		</map>
     	</property--> 
     	<property name="useAttributeFor">
@@ -43,7 +43,7 @@
     	</property>
     	<property name="implicitCollections">
         	<map>
-            	<entry key="com.wordpress.gertonscorner.todo.dto.TodoList" value="orders" />
+            	<entry key="com.wordpress.gertonscorner.todo.dto.TodoList" value="todos" />
         	</map>
     	</property>
 	</bean>
