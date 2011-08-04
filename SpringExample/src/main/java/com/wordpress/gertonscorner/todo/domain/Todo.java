@@ -1,22 +1,22 @@
-package com.wordpress.gertonscorner.messagebroker.domain;
+package com.wordpress.gertonscorner.todo.domain;
 
 import java.io.Serializable;
 
 /**
- * Order domain entity
+ * Todo domain entity
  * 
  * @author Gerton
  *
  */
-public class Order implements Serializable {
+public class Todo implements Serializable {
 
 	private static final long serialVersionUID = -632626680286074037L;
 	
 	private String id;
 	private String description;
 	
-	public Order() {}
-	public Order(String id, String description) {
+	public Todo() {}
+	public Todo(String id, String description) {
 		this.id = id;
 		this.description = description;
 	}

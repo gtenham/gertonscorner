@@ -1,16 +1,16 @@
-package com.wordpress.gertonscorner.messagebroker.dto;
+package com.wordpress.gertonscorner.todo.dto;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 
 /**
- * Order transfer object
+ * Todo transfer object
  * 
  * @author Gerton
  *
  */
-public class OrderDTO implements Serializable {
+public class TodoDTO implements Serializable {
 
 	private static final long serialVersionUID = -7974075876533955036L;
 
@@ -18,8 +18,8 @@ public class OrderDTO implements Serializable {
 	private String description;
 	private Collection<ErrorDTO> errors = new ArrayList<ErrorDTO>(0);
 	
-	public OrderDTO() {}
-	public OrderDTO(String id, String description) {
+	public TodoDTO() {}
+	public TodoDTO(String id, String description) {
 		this.id = id;
 		this.description = description;
 	}

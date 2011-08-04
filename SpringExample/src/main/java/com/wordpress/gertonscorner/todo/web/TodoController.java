@@ -1,0 +1,84 @@
+package com.wordpress.gertonscorner.todo.web;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.wordpress.gertonscorner.todo.dto.TodoDTO;
+import com.wordpress.gertonscorner.todo.dto.TodoList;
+import com.wordpress.gertonscorner.todo.services.ITodoService;
+
+/**
+ * Todo web controller
+ * 
+ * @author Gerton
+ *
+ */
+@Controller
+public class TodoController {
+	@Autowired
+	private ITodoService todoService;
+	
+	/**
+	 * Get all available todos and returns them directly into the response
+	 * 
+	 * @return TodoList transfer object
+	 */
+	@RequestMapping(value = "/todos", method = RequestMethod.GET)
+	public @ResponseBody TodoList todoList() {		
+		return new TodoList(todoService.getTodos());
+	}
+	
+	/**
+	 * Add todo and returns the new todo directly into the response.
+	 * 
+	 * @param todo The new todo data
+	 * @return Todo transfer object
+	 */
+	@RequestMapping(value = "/todos", method = RequestMethod.POST)
+	public @ResponseBody TodoDTO addTodo(@RequestBody TodoDTO todo) {		
+		return todoService.insertTodo(todo);
+	}
+	
+	/**
+	 * Get todo by given id
+	 * 
+	 * @param id
+	 * @return Todo transfer object
+	 */
+	@RequestMapping(value = "/todos/{id}", method = RequestMethod.GET)
+	public @ResponseBody TodoDTO getOrder(@PathVariable("id") String id) {		
+		return todoService.getTodoById(id);
+	}
+	
+	/**
+	 * Update the todo for id with given todo data and return the updated
+	 * todo directly into the response.
+	 * 
+	 * @param id the id of the todo
+	 * @param todo The todo data to update
+	 * @return Todo transfer object
+	 */
+	@RequestMapping(value = "/todos/{id}", method = RequestMethod.PUT)
+	public @ResponseBody TodoDTO updateTodo(@PathVariable("id") String id,
+										  @RequestBody TodoDTO todo) {
+		return todoService.updateTodo(todo);
+	}
+	
+	/**
+	 * Delete todo for given id and returns all 
+	 * todos directly into the response.
+	 * 
+	 * @param id the id of the todo
+	 * @return TodoList transfer object
+	 */
+	@RequestMapping(value = "/todos/{id}", method = RequestMethod.DELETE)
+	public @ResponseBody TodoList deleteTodos(@PathVariable("id") String id) {
+		todoService.deleteTodo(id);
+		return new TodoList(todoService.getTodos());
+	}
+}

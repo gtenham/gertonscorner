@@ -1,4 +1,4 @@
-package com.wordpress.gertonscorner.messagebroker.dto;
+package com.wordpress.gertonscorner.todo.dto;
 
 import java.io.Serializable;
 
