@@ -14,7 +14,15 @@
     See the License for the specific language governing permissions and
     limitations under the License.
 -->
+<!-- 
+-- Oracle table creation script
+create table todos(
+id          varchar2(20) not null,
+done        number(1) default 0 not null,
+description varchar2(200)
+);
 
+ -->
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     "http://www.mybatis.org/dtd/mybatis-3-mapper.dtd">
     
