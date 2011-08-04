@@ -20,9 +20,9 @@
 
 <configuration>
 	<typeAliases>
-		<typeAlias type="com.wordpress.gertonscorner.messagebroker.domain.Order" alias="Order"/>
+		<typeAlias type="com.wordpress.gertonscorner.todo.domain.Todo" alias="Todo"/>
 	</typeAliases>
     <mappers>
-        <mapper resource="mybatis-maps/OrderDao.xml" />
+        <mapper resource="mybatis-maps/TodoDao.xml" />
     </mappers>
 </configuration>

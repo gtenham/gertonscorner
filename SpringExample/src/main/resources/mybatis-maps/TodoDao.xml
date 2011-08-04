@@ -18,26 +18,26 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     "http://www.mybatis.org/dtd/mybatis-3-mapper.dtd">
     
-	<mapper namespace="com.wordpress.gertonscorner.messagebroker.dao.IOrderDao">
-	<select id="getOrders" resultType="Order">
-    	select id,description from orders
+	<mapper namespace="com.wordpress.gertonscorner.todo.dao.ITodoDao">
+	<select id="getTodos" resultType="Todo">
+    	select id,description from todos
     </select>
     
-    <select id="selectOrder" parameterType="string" resultType="Order">
+    <select id="selectTodo" parameterType="string" resultType="Todo">
     	select id, description from orders where id = #{id}
     </select>
     
-    <insert id="insertOrder" parameterType="Order">
-    	insert into orders(id,description) 
+    <insert id="insertTodo" parameterType="Todo">
+    	insert into todos(id,description) 
         values (#{id}, #{description})
     </insert>
     
-    <delete id="deleteOrder" parameterType="string">
+    <delete id="deleteTodo" parameterType="string">
     	delete from orders where id = #{id}
     </delete>
     
-    <update id="updateOrder" parameterType="Order">
-    	update orders
+    <update id="updateTodo" parameterType="Todo">
+    	update todos
     	set description = #{description}
     	where id = #{id}
     </update>

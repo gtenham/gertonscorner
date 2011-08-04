@@ -17,24 +17,24 @@
 	<bean id="xstreamMarshaller" class="org.springframework.oxm.xstream.XStreamMarshaller">
 		<property name="aliases">
 	        <map>
-            	<entry key="order" value="com.wordpress.gertonscorner.messagebroker.dto.OrderDTO" />
-            	<entry key="orders" value="com.wordpress.gertonscorner.messagebroker.dto.OrderList"/>
-            	<entry key="error" value="com.wordpress.gertonscorner.messagebroker.dto.ErrorDTO" />
+            	<entry key="order" value="com.wordpress.gertonscorner.todo.dto.TodoDTO" />
+            	<entry key="orders" value="com.wordpress.gertonscorner.todo.dto.TodoList"/>
+            	<entry key="error" value="com.wordpress.gertonscorner.todo.dto.ErrorDTO" />
         	</map>
     	</property>
     	<!-- property name="aliasesByType">
       		<map>
-        		<entry key="orders" value="com.wordpress.gertonscorner.messagebroker.dto.OrderList"/>        
+        		<entry key="orders" value="com.wordpress.gertonscorner.todo.dto.TodoList"/>        
       		</map>
     	</property--> 
     	<property name="useAttributeFor">
     		<map key-type="java.lang.Class">
-       			<entry key="com.wordpress.gertonscorner.messagebroker.dto.OrderDTO">
+       			<entry key="com.wordpress.gertonscorner.todo.dto.TodoDTO">
           			<list>
             			<value>id</value>
           			</list>            
         		</entry>
-        		<entry key="com.wordpress.gertonscorner.messagebroker.dto.ErrorDTO">
+        		<entry key="com.wordpress.gertonscorner.todo.dto.ErrorDTO">
           			<list>
             			<value>field</value>
           			</list>            
@@ -43,7 +43,7 @@
     	</property>
     	<property name="implicitCollections">
         	<map>
-            	<entry key="com.wordpress.gertonscorner.messagebroker.dto.OrderList" value="orders" />
+            	<entry key="com.wordpress.gertonscorner.todo.dto.TodoList" value="orders" />
         	</map>
     	</property>
 	</bean>

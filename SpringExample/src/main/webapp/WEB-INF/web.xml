@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app id="WebApp_ID" version="2.5" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
-	<display-name>Spring ajax/flex Broker</display-name>
+	<display-name>Spring rest/flex Broker</display-name>
   	<servlet>
-    	<servlet-name>ajaxbroker</servlet-name>
+    	<servlet-name>restbroker</servlet-name>
     	<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
     	<load-on-startup>1</load-on-startup>
   	</servlet>
@@ -19,8 +19,8 @@
   	</servlet-mapping>
   	
   	<servlet-mapping>
-    	<servlet-name>ajaxbroker</servlet-name>
-    	<url-pattern>/ajaxbroker/*</url-pattern>
+    	<servlet-name>restbroker</servlet-name>
+    	<url-pattern>/restbroker/*</url-pattern>
   	</servlet-mapping>
   	
   	<filter>
@@ -30,6 +30,6 @@
 
 	<filter-mapping>
 		<filter-name>etagFilter</filter-name>
-		<servlet-name>ajaxbroker</servlet-name>
+		<servlet-name>restbroker</servlet-name>
 	</filter-mapping>
 </web-app>

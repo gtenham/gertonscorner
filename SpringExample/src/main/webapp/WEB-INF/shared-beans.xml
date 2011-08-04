@@ -12,13 +12,13 @@
        http://www.springframework.org/schema/context
        http://www.springframework.org/schema/context/spring-context-3.0.xsd">
        
-	<context:component-scan base-package="com.wordpress.gertonscorner.messagebroker.services"/>
+	<context:component-scan base-package="com.wordpress.gertonscorner.todo.services"/>
 	<import resource="rest-config.xml"/>
 	<import resource="db-config.xml"/>
 	
 	<bean id="orderDao" class="org.mybatis.spring.mapper.MapperFactoryBean">
         <property name="sqlSessionFactory" ref="sqlSessionFactory" />
-        <property name="mapperInterface" value="com.wordpress.gertonscorner.messagebroker.dao.IOrderDao" />
+        <property name="mapperInterface" value="com.wordpress.gertonscorner.todo.dao.ITodoDao" />
     </bean>
     
     <bean id="mapper" class="org.dozer.DozerBeanMapper">
