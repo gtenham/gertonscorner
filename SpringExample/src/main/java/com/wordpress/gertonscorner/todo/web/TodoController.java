@@ -1,16 +1,20 @@
 package com.wordpress.gertonscorner.todo.web;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 import com.wordpress.gertonscorner.todo.dto.TodoDTO;
 import com.wordpress.gertonscorner.todo.dto.TodoList;
 import com.wordpress.gertonscorner.todo.services.ITodoService;
+import com.wordpress.gertonscorner.todo.services.exceptions.TodoNotFoundException;
 
 /**
  * Todo web controller
@@ -51,6 +55,7 @@ public class TodoController {
 	 * @return Todo transfer object
 	 */
 	@RequestMapping(value = "/todos/{id}", method = RequestMethod.GET)
+	@ResponseStatus(HttpStatus.OK)
 	public @ResponseBody TodoDTO getTodo(@PathVariable("id") String id) {		
 		return todoService.getTodoById(id);
 	}
@@ -81,4 +86,9 @@ public class TodoController {
 		todoService.deleteTodo(id);
 		return new TodoList(todoService.getTodos());
 	}
+	
+	@ExceptionHandler(TodoNotFoundException.class)
+	@ResponseStatus(HttpStatus.NOT_FOUND)
+	public void todoNotFound() {}
+	
 }

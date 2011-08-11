@@ -3,6 +3,7 @@ package com.wordpress.gertonscorner.todo.services;
 import java.util.Collection;
 
 import com.wordpress.gertonscorner.todo.dto.TodoDTO;
+import com.wordpress.gertonscorner.todo.services.exceptions.TodoNotFoundException;
 
 /**
  * Interface Todo service
@@ -16,9 +17,10 @@ public interface ITodoService {
 	 * Get Todo transfer object by given id
 	 * 
 	 * @param id
+	 * @throws TodoNotFoundException
 	 * @return Todo transfer object
 	 */
-	TodoDTO getTodoById(String id);
+	TodoDTO getTodoById(String id) throws TodoNotFoundException;
 	
 	/**
 	 * Get all available orders (converted to order transfer objects)

@@ -16,6 +16,7 @@ import com.wordpress.gertonscorner.todo.domain.Todo;
 import com.wordpress.gertonscorner.todo.dto.ErrorDTO;
 import com.wordpress.gertonscorner.todo.dto.TodoDTO;
 import com.wordpress.gertonscorner.todo.services.ITodoService;
+import com.wordpress.gertonscorner.todo.services.exceptions.TodoNotFoundException;
 
 
 /**
@@ -56,8 +57,12 @@ public class TodoService implements ITodoService {
 	/* (non-Javadoc)
 	 * @see com.wordpress.gertonscorner.todo.services.ITodoService#getOrderById(java.lang.String)
 	 */
-	public TodoDTO getTodoById(String id) {
-		return mapper.map(todoDao.selectTodo(id),TodoDTO.class);
+	public TodoDTO getTodoById(String id) throws TodoNotFoundException {
+		Todo todo = todoDao.selectTodo(id);
+		if (todo == null) {
+			throw new TodoNotFoundException("Todo with ID " + id + " could not be found.");
+		}
+		return mapper.map(todo,TodoDTO.class);
 	}
 
 	/* (non-Javadoc)
