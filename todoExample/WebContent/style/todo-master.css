@@ -93,6 +93,10 @@ ol, ul {
     position: relative;
     top: 9px;
 }
+#todo-list .done .todo-text {
+    color: #777777;
+    text-decoration: line-through;
+}
 #todo-list .todo-destroy {
     background: url("/images/destroy.png") no-repeat scroll 0 0 transparent;
     cursor: pointer;

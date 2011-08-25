@@ -22,8 +22,10 @@ var TodoList = Backbone.Collection.extend({
     model: Todo,
 
     // Base url for rest based service todos.
-    url: '/services/restbroker/todos/1',
-
+    url: '/services/restbroker/todos',
+    parse: function(response) {
+    	return response.todos;
+    },
     // Filter down the list of all todo items that are finished.
     done: function() {
       return this.filter(function(todo){ return todo.get('done') == 1; });
