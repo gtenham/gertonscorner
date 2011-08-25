@@ -43,8 +43,8 @@ public class TodoController {
 	 * @param todo The new todo data
 	 * @return Todo transfer object
 	 */
-	@RequestMapping(value = "/todos", method = RequestMethod.POST)
-	public @ResponseBody TodoDTO addTodo(@RequestBody TodoDTO todo) {		
+	@RequestMapping(value = "/todos/{id}", method = RequestMethod.POST)
+	public @ResponseBody TodoDTO addTodo(@PathVariable("id") String id,@RequestBody TodoDTO todo) {		
 		return todoService.insertTodo(todo);
 	}
 	
@@ -71,6 +71,12 @@ public class TodoController {
 	@RequestMapping(value = "/todos/{id}", method = RequestMethod.PUT)
 	public @ResponseBody TodoDTO updateTodo(@PathVariable("id") String id,
 										  @RequestBody TodoDTO todo) {
+		try {
+			// Try a lazy PUT
+			TodoDTO tmp = todoService.getTodoById(id);
+		} catch (TodoNotFoundException e) {
+			return todoService.insertTodo(todo);
+		}
 		return todoService.updateTodo(todo);
 	}
 	
