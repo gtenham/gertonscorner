@@ -1,10 +1,53 @@
 <!DOCTYPE html>
 <html>
-<head>
-<meta charset="UTF-8">
-<title>Todos example</title>
-</head>
-<body>
-Hello todo
-</body>
+	<head>
+		<meta charset="UTF-8">
+		<title>Todos example</title>
+		<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/combo?3.4.0/build/cssreset/cssreset-min.css&3.4.0/build/cssfonts/cssfonts-min.css&3.4.0/build/cssgrids/cssgrids-min.css">
+		<link rel="stylesheet" type="text/css" href="/style/todo-master.css" />
+	</head>
+	<body>
+		<div id="todoapp" class="yui3-g">
+			<h1>Todos</h1>
+	        <div id="create-todo" class="yui3-u-1">
+				<input id="new-todo" type="text" placeholder="What needs to be done?">
+				<span class="ui-tooltip-top" style="display: none;">Press Enter to save this task</span>
+	        </div>
+	        <div id="todos" class="yui3-u-1">
+				<ul id="todo-list">	</ul>
+	        </div>
+	    </div>
+	
+<script type="text/template" id="item-template">
+      <div class="todo <%= done==1 ? 'done' : '' %>">
+        <div class="display">
+          <input class="check" type="checkbox" <%= done==1 ? 'checked="checked"' : '' %> />
+          <div class="todo-text"></div>
+          <span class="todo-destroy"></span>
+        </div>
+        <div class="edit">
+          <input class="todo-input" type="text" value="" />
+        </div>
+      </div>
+</script>
+
+<script type="text/template" id="stats-template">
+      <% if (total) { %>
+        <span class="todo-count">
+          <span class="number"><%= remaining %></span>
+          <span class="word"><%= remaining == 1 ? 'item' : 'items' %></span> left.
+        </span>
+      <% } %>
+      <% if (done) { %>
+        <span class="todo-clear">
+          <a href="#">
+            Clear <span class="number-done"><%= done %></span>
+            completed <span class="word-done"><%= done == 1 ? 'item' : 'items' %></span>
+          </a>
+        </span>
+      <% } %>
+</script>
+		<script type="application/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/labjs/2.0.3/LAB.min.js"></script>
+		<script type="application/javascript" src="/js/load.js"></script>
+	</body>
 </html>
