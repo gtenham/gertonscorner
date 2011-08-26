@@ -125,7 +125,7 @@ ol, ul {
     width: 100%;
 }
 .ui-tooltip:after, .ui-tooltip-top:after, .ui-tooltip-right:after, .ui-tooltip-bottom:after, .ui-tooltip-left:after {
-    content: "▸";
+    content: " ";
     display: block;
     font-size: 2em;
     height: 0;
