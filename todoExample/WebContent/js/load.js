@@ -7,14 +7,13 @@ $LAB
 .script("http://ajax.microsoft.com/ajax/jquery.templates/beta1/jquery.tmpl.min.js")
 .script("http://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.1.7/underscore-min.js")
 .script("http://cdnjs.cloudflare.com/ajax/libs/backbone.js/0.5.3/backbone-min.js")
+.script("/js/ext/jquery.jgrowl.js")
+.script("/js/todo.ui.utils.js")
 .script("/js/backbone-mvc-todos.js")
 .wait(function() {
 	$(document).ready(function() {
 		// Your dom ready stuff
 		var App = new AppView;
-		//$.get('/templates/todo-templates.tpl', function(templates) {
-		//	$('body').append(templates);
-		//	var App = new AppView;
-		//});
+		
 	});
 });

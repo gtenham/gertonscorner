@@ -5,10 +5,11 @@
 		<title>Todos example</title>
 		<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/combo?3.4.0/build/cssreset/cssreset-min.css&3.4.0/build/cssfonts/cssfonts-min.css&3.4.0/build/cssgrids/cssgrids-min.css">
 		<link rel="stylesheet" type="text/css" href="/style/todo-master.css" />
+		<link rel="stylesheet" type="text/css" href="/style/jquery.jgrowl.css" />
 	</head>
 	<body>
 		<div id="todoapp" class="yui3-g">
-			<h1>Todos</h1>
+			<h1>Things To Do</h1>
 	        <div id="create-todo" class="yui3-u-1">
 				<input id="new-todo" type="text" placeholder="What needs to be done?">
 				<span class="ui-tooltip-top" style="display: none;">Press Enter to save this task</span>
@@ -16,14 +17,16 @@
 	        <div id="todos" class="yui3-u-1">
 				<ul id="todo-list">	</ul>
 	        </div>
+	        <div id="todo-stats" class="yui3-u-1"></div>
 	    </div>
 	
 <script type="text/template" id="item-template">
       <div class="todo <%= done==1 ? 'done' : '' %>">
         <div class="display">
-          <input class="check" type="checkbox" <%= done==1 ? 'checked="checked"' : '' %> />
-          <div class="todo-text"></div>
-          <span class="todo-destroy"></span>
+          <input id="check<%= order %>" class="check" type="checkbox" <%= done==1 ? 'checked="checked"' : '' %> />
+          <label for="check<%= order %>" class="todo-text"></label>
+		  <span class="todo-action todo-edit"></span>
+		  <span class="todo-action todo-destroy"></span>
         </div>
         <div class="edit">
           <input class="todo-input" type="text" value="" />

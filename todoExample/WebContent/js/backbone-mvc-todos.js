@@ -1,13 +1,12 @@
+var Error = Backbone.Model.extend({});
 var Todo = Backbone.Model.extend({
-
-    // Default attributes for a todo item.
+	// Default attributes for a todo item.
     defaults: function() {
       return {
-        done:  0,
-        id: Todos.nextOrder()+''
+    	done:  0,
+        order: Todos.nextOrder()
       };
     },
-
     // Toggle the 'done' state of this todo item.
     toggle: function() {
       toggle = this.get("done")==0 ? 1 : 0;
@@ -26,6 +25,7 @@ var TodoList = Backbone.Collection.extend({
     parse: function(response) {
     	return response.todos;
     },
+    
     // Filter down the list of all todo items that are finished.
     done: function() {
       return this.filter(function(todo){ return todo.get('done') == 1; });
@@ -36,16 +36,15 @@ var TodoList = Backbone.Collection.extend({
       return this.without.apply(this, this.done());
     },
 
-    // We keep the Todos in sequential order, despite being saved by unordered
-    // GUID in the database. This generates the next order number for new items.
+    // We keep the Todos in sequential order, This generates the next order number for new items.
     nextOrder: function() {
       if (!this.length) return 1;
-      return parseInt(this.last().get('id')) + 1;
+      return this.last().get('order') + 1;
     },
 
     // Todos are sorted by their original insertion order.
     comparator: function(todo) {
-      return parseInt(todo.get('id'));
+      return todo.get('order');
     }
 
 });
@@ -64,7 +63,7 @@ var TodoView = Backbone.View.extend({
     // The DOM events specific to an item.
     events: {
       "click .check"              : "toggleDone",
-      "dblclick div.todo-text"    : "edit",
+      "click span.todo-edit"      : "edit",
       "click span.todo-destroy"   : "clear",
       "keypress .todo-input"      : "updateOnEnter"
     },
@@ -73,17 +72,18 @@ var TodoView = Backbone.View.extend({
     initialize: function() {
       this.model.bind('change', this.render, this);
       this.model.bind('destroy', this.remove, this);
+      this.model.bind('editReady', this.editReady, this);
     },
 
     // Re-render the contents of the todo item.
     render: function() {
-      $(this.el).html(this.template(this.model.toJSON()));
-      this.setText();
-      return this;
+    	$(this.el).html(this.template(this.model.toJSON()));
+    	this.setText();
+    	return this;
     },
 
     // To avoid XSS (not that it would be harmful in this particular app),
-    // we use `jQuery.text` to set the contents of the todo item.
+    // we use 'jQuery.text' to set the contents of the todo item.
     setText: function() {
       var text = this.model.get('description');
       this.$('.todo-text').text(text);
@@ -91,24 +91,35 @@ var TodoView = Backbone.View.extend({
       this.input.bind('blur', _.bind(this.close, this)).val(text);
     },
 
-    // Toggle the `"done"` state of the model.
+    // Toggle the '"done"' state of the model.
     toggleDone: function() {
       this.model.toggle();
     },
 
-    // Switch this view into `"editing"` mode, displaying the input field.
+    // Switch this view into '"editing"' mode, displaying the input field.
     edit: function() {
       $(this.el).addClass("editing");
       this.input.focus();
     },
 
-    // Close the `"editing"` mode, saving changes to the todo.
+    // Close the '"editing"' mode, saving changes to the todo.
     close: function() {
-      this.model.save({description: this.input.val()});
-      $(this.el).removeClass("editing");
+		
+		this.model.save({description: this.input.val()},
+				{success: function(model, response) {
+							 var errors = new Backbone.Collection(model.get('errors'));
+							 errors.each(function(error) {
+								showError(new Error(error).get('message'));
+							 });
+							 
+							 if (errors.length == 0) {
+								 model.trigger("editReady");
+							 }
+						  }
+				});
     },
 
-    // If you hit `enter`, we're through editing the item.
+    // If you hit 'enter', we're through editing the item.
     updateOnEnter: function(e) {
       if (e.keyCode == 13) this.close();
     },
@@ -121,6 +132,10 @@ var TodoView = Backbone.View.extend({
     // Remove the item, destroy the model.
     clear: function() {
       this.model.destroy();
+    },
+    
+    editReady: function () {
+    	$(this.el).removeClass("editing");
     }
 
 });
@@ -171,8 +186,20 @@ var AppView = Backbone.View.extend({
     // Add a single todo item to the list by creating a view for it, and
     // appending its element to the `<ul>`.
     addOne: function(todo) {
-      var view = new TodoView({model: todo});
-      this.$("#todo-list").append(view.render().el);
+    	var errors = new Backbone.Collection(todo.get('errors'));
+    	errors.each(function(error) {
+    		showError(new Error(error).get('message'));
+    	});
+    	
+    	var view = new TodoView({model: todo});
+    	this.$("#todo-list").append(view.render().el);
+    	if (errors.length > 0) {
+    		$(view.el).addClass("editing");
+    		
+    		$('.editing .todo-input').focus();
+    		this.showTooltip(e);
+    	}
+    	
     },
 
     // Add all items in the **Todos** collection at once.
@@ -181,12 +208,13 @@ var AppView = Backbone.View.extend({
     },
 
     // If you hit return in the main input field, and there is text to save,
-    // create new **Todo** model persisting it to *localStorage*.
+    // create new **Todo** model persisting it to server.
     createOnEnter: function(e) {
       var text = this.input.val();
       if (!text || e.keyCode != 13) return;
       Todos.create({description: text});
       this.input.val('');
+      $(".ui-tooltip-top").fadeOut();
     },
 
     // Clear all done todo items, destroying their models.
