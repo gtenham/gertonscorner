@@ -16,6 +16,7 @@ public class TodoDTO implements Serializable {
 
 	private String id;
 	private Integer done;
+	private Integer order;
 	private String description;
 	private Collection<ErrorDTO> errors = new ArrayList<ErrorDTO>(0);
 	
@@ -36,6 +37,18 @@ public class TodoDTO implements Serializable {
 	}
 	public Integer getDone() {
 		return done;
+	}
+	/**
+	 * @param order the order to set
+	 */
+	public void setOrder(Integer order) {
+		this.order = order;
+	}
+	/**
+	 * @return the order
+	 */
+	public Integer getOrder() {
+		return order;
 	}
 	public String getDescription() {
 		return description;

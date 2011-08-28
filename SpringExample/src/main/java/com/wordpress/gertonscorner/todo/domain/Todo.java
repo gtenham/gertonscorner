@@ -14,6 +14,7 @@ public class Todo implements Serializable {
 	
 	private String id;
 	private Integer done;
+	private Integer order;
 	private String description;
 	
 	public Todo() {}
@@ -33,6 +34,18 @@ public class Todo implements Serializable {
 	}
 	public Integer getDone() {
 		return done;
+	}
+	/**
+	 * @param order the order to set
+	 */
+	public void setOrder(Integer order) {
+		this.order = order;
+	}
+	/**
+	 * @return the order
+	 */
+	public Integer getOrder() {
+		return order;
 	}
 	public String getDescription() {
 		return description;
