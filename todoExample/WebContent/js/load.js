@@ -14,6 +14,5 @@ $LAB
 	$(document).ready(function() {
 		// Your dom ready stuff
 		var App = new AppView;
-		
 	});
 });

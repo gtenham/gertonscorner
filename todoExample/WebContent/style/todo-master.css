@@ -61,7 +61,6 @@ ol, ul {
 	border-radius: 5px;
 	background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#fff), to(#9BC8FF)) !important;
 	background-image: -moz-linear-gradient(0% 100% 90deg, #9BC8FF, #fff) !important;
-	filter: progid:DXImageTransform.Microsoft.Gradient(StartColorStr='#fff', EndColorStr='#9BC8FF', GradientType=0) !important;
 	background-color: #fff;
 }
 #todo-list li:after {
@@ -197,8 +196,6 @@ ol, ul {
 div.jGrowl div.notify {
 	background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#fff), to(#9BC8FF)) !important;
 	background-image: -moz-linear-gradient(0% 100% 90deg, #9BC8FF, #fff) !important;
-	filter: progid:DXImageTransform.Microsoft.Gradient(
-                StartColorStr='#fff', EndColorStr='#9BC8FF', GradientType=0) !important;
 	background-color: #fff;
 	text-shadow: 0 1px 1px rgba(255, 255, 255, 0.85);
 	-webkit-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
@@ -210,8 +207,6 @@ div.jGrowl div.notify {
 div.jGrowl div.error {
 	background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#fff), to(#FF7C75)) !important;
 	background-image: -moz-linear-gradient(0% 100% 90deg, #FF7C75, #fff) !important;
-	filter: progid:DXImageTransform.Microsoft.Gradient(
-                StartColorStr='#fff', EndColorStr='#FF7C75', GradientType=0) !important;
 	background-color: #fff;
 	text-shadow: 0 1px 1px rgba(255, 255, 255, 0.85);
 	-webkit-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
