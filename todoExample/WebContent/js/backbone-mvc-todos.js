@@ -77,6 +77,7 @@ var TodoView = Backbone.View.extend({
 
     // Re-render the contents of the todo item.
     render: function() {
+    	$(this.el).attr('id',this.model.cid);
     	$(this.el).html(this.template(this.model.toJSON()));
     	this.setText();
     	return this;
@@ -160,19 +161,34 @@ var AppView = Backbone.View.extend({
       "click .todo-clear a": "clearCompleted"
     },
 
-    // At initialization we bind to the relevant events on the `Todos`
+    // At initialization we bind to the relevant events on the 'Todos'
     // collection, when items are added or changed. Kick things off by
-    // loading any preexisting todos that might be saved in *localStorage*.
+    // loading any preexisting todos that might be saved on server.
     initialize: function() {
       this.input    = this.$("#new-todo");
 
+      this.sortedList = this.$('#todo-list')
+      						.sortable({update: function(event,ui) {
+      								Todos.trigger("orderUpdated");
+      							}
+      						})
+      						.disableSelection();
+      
       Todos.bind('add',   this.addOne, this);
       Todos.bind('reset', this.addAll, this);
       Todos.bind('all',   this.render, this);
-
+      Todos.bind('orderUpdated',   this.updateOrder, this);
+      
       Todos.fetch();
     },
 
+    updateOrder: function() {
+    	this.$('#todo-list li').each(function(index) {
+    		Todos.getByCid($(this).attr('id')).save({'order':index});
+    	});
+    	
+    	
+    },
     // Re-rendering the App just means refreshing the statistics -- the rest
     // of the app doesn't change.
     render: function() {

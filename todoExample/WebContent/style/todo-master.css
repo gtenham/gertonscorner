@@ -51,6 +51,7 @@ ol, ul {
     list-style: none outside none;
 }
 #todo-list li {
+	cursor: pointer;
     font-size: 184.6%;
     line-height: 1.1em;
     padding: 12px 20px 11px 0;
