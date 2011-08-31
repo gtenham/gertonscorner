@@ -72,6 +72,7 @@ ol, ul {
 	overflow: hidden;
 	visibility: hidden;
 }
+label.todo-text {display: block; padding-left: 30px; width: 80%;}
 #todo-list li.editing {
 	padding: 0;
 	border-bottom: 0;
