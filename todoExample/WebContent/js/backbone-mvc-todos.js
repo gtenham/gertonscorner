@@ -1,4 +1,5 @@
 var Error = Backbone.Model.extend({});
+var TodoOrder = Backbone.Model.extend({urlRoot : '/services/restbroker/todos/sort'});
 var Todo = Backbone.Model.extend({
 	// Default attributes for a todo item.
     defaults: function() {
@@ -183,10 +184,14 @@ var AppView = Backbone.View.extend({
     },
 
     updateOrder: function() {
-    	this.$('#todo-list li').each(function(index) {
-    		Todos.getByCid($(this).attr('id')).save({'order':index});
-    	});
+    	var sort = new TodoOrder();
+    	var list=new Array();
     	
+    	this.$('#todo-list li').each(function(index) {
+    		//Todos.getByCid($(this).attr('id')).save({'order':index});
+    		list[index] = Todos.getByCid($(this).attr('id')).get('id');
+    	});
+    	sort.save({'sortedIds':list});
     	
     },
     // Re-rendering the App just means refreshing the statistics -- the rest
