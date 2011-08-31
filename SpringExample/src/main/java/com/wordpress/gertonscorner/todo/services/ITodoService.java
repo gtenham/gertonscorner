@@ -3,6 +3,7 @@ package com.wordpress.gertonscorner.todo.services;
 import java.util.Collection;
 
 import com.wordpress.gertonscorner.todo.dto.TodoDTO;
+import com.wordpress.gertonscorner.todo.dto.TodoSortDTO;
 import com.wordpress.gertonscorner.todo.services.exceptions.TodoNotFoundException;
 
 /**
@@ -52,4 +53,10 @@ public interface ITodoService {
 	 */
 	void deleteTodo(String id);
 	
+	/**
+	 * Add/update sorting for todos.
+	 * 
+	 * @param TodoSortDTO sort Contains sorted list of todo ids
+	 */
+	void updateTodoSorting(TodoSortDTO sort);
 }

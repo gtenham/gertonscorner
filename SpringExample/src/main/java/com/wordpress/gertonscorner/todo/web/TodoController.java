@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 import com.wordpress.gertonscorner.todo.dto.TodoDTO;
 import com.wordpress.gertonscorner.todo.dto.TodoList;
+import com.wordpress.gertonscorner.todo.dto.TodoSortDTO;
 import com.wordpress.gertonscorner.todo.services.ITodoService;
 import com.wordpress.gertonscorner.todo.services.exceptions.TodoNotFoundException;
 
@@ -85,6 +86,18 @@ public class TodoController {
 	public @ResponseBody TodoList deleteTodos(@PathVariable("id") String id) {
 		todoService.deleteTodo(id);
 		return new TodoList(todoService.getTodos());
+	}
+	
+	/**
+	 * Add/update sorting for todos.
+	 * 
+	 * @param TodoSortDTO Contains sorted list of todo ids 
+	 * @return http status 204 - NO CONTENT
+	 */
+	@RequestMapping(value = "/todos/sort", method = RequestMethod.POST)
+	@ResponseStatus(HttpStatus.NO_CONTENT)
+	public void updateTodoSorting(@RequestBody TodoSortDTO sort) {		
+		todoService.updateTodoSorting(sort);
 	}
 	
 	@ExceptionHandler(TodoNotFoundException.class)

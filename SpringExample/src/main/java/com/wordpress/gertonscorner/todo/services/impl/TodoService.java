@@ -1,16 +1,14 @@
 package com.wordpress.gertonscorner.todo.services.impl;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.UUID;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
 
-import org.apache.ibatis.jdbc.RuntimeSqlException;
 import org.dozer.Mapper;
-import org.dozer.MappingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.flex.remoting.RemotingDestination;
 import org.springframework.flex.remoting.RemotingInclude;
@@ -20,6 +18,7 @@ import com.wordpress.gertonscorner.todo.dao.ITodoDao;
 import com.wordpress.gertonscorner.todo.domain.Todo;
 import com.wordpress.gertonscorner.todo.dto.ErrorDTO;
 import com.wordpress.gertonscorner.todo.dto.TodoDTO;
+import com.wordpress.gertonscorner.todo.dto.TodoSortDTO;
 import com.wordpress.gertonscorner.todo.services.ITodoService;
 import com.wordpress.gertonscorner.todo.services.exceptions.TodoNotFoundException;
 
@@ -134,7 +133,30 @@ public class TodoService implements ITodoService {
 		return todoDTO;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.wordpress.gertonscorner.todo.services.ITodoService#updateTodoSorting(com.wordpress.gertonscorner.todo.dto.TodoSortDTO)
+	 */
+	public void updateTodoSorting(TodoSortDTO sort) {
+		List<String> list = (List<String>) sort.getSortedIds();
+		
+		for (int i = 0; i < list.size(); i++) {
+			Todo todo = todoDao.selectTodo(list.get(i));
+			if (todo == null) {
+				throw new TodoNotFoundException("Todo with ID " + list.get(i) + " could not be found.");
+			}
+			todo.setOrder(i);
+			todoDao.updateTodo(todo);
+		}
+	}
+	
+	/**
+	 * Check if todo exists
+	 * 
+	 * @param id
+	 * @return
+	 */
 	private boolean todoExists(String id) {
 		return todoDao.selectTodo(id) != null;
 	}
+
 }
