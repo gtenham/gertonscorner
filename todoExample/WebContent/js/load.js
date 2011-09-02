@@ -9,7 +9,8 @@ $LAB
 .script("http://cdnjs.cloudflare.com/ajax/libs/backbone.js/0.5.3/backbone-min.js")
 .script("/js/ext/jquery.jgrowl.js")
 .script("/js/todo.ui.utils.js")
-.script("/js/backbone-mvc-todos.js")
+.script("/js/backbone-models-todos.js")
+.script("/js/backbone-views-todos.js")
 .wait(function() {
 	$(document).ready(function() {
 		// Your dom ready stuff
