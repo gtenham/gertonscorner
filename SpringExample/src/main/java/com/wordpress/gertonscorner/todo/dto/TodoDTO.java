@@ -3,6 +3,7 @@ package com.wordpress.gertonscorner.todo.dto;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 
 /**
  * Todo transfer object
@@ -18,6 +19,7 @@ public class TodoDTO implements Serializable {
 	private Integer done;
 	private Integer order;
 	private String description;
+	private Date startDate;
 	private Collection<ErrorDTO> errors = new ArrayList<ErrorDTO>(0);
 	
 	public TodoDTO() {}
@@ -55,6 +57,18 @@ public class TodoDTO implements Serializable {
 	}
 	public void setDescription(String description) {
 		this.description = description;
+	}
+	/**
+	 * @param startDate the startDate to set
+	 */
+	public void setStartDate(Date startDate) {
+		this.startDate = startDate;
+	}
+	/**
+	 * @return the startDate
+	 */
+	public Date getStartDate() {
+		return startDate;
 	}
 	public void setErrors(Collection<ErrorDTO> errors) {
 		this.errors = errors;

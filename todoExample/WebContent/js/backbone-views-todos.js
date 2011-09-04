@@ -16,13 +16,18 @@ var TodoView = Backbone.View.extend({
 
     // The TodoView listens for changes to its model, re-rendering.
     initialize: function() {
-      this.model.bind('change', this.render, this);
-      this.model.bind('destroy', this.remove, this);
-      this.model.bind('editReady', this.editReady, this);
+    	this.model.bind('change', this.render, this);
+	    this.model.bind('destroy', this.remove, this);
+	    this.model.bind('editReady', this.editReady, this);
     },
-
+    
     // Re-render the contents of the todo item.
     render: function() {
+    	//var date = new Date(this.model.get('startDate'));
+    	//console.log(this.model.get('startDate'));
+    	//console.log(date.toLocaleString());
+    	//console.log(date.getTime());
+    	
     	$(this.el).attr('id',this.model.cid);
     	$(this.el).html(this.template(this.model.toJSON()));
     	this.setText();
@@ -104,7 +109,8 @@ var AppView = Backbone.View.extend({
     events: {
       "keypress #new-todo":  "createOnEnter",
       "keyup #new-todo":     "showTooltip",
-      "click .todo-clear a": "clearCompleted"
+      "click .todo-clear a": "clearCompleted",
+      "click .todo-count a": "moveToToday"
     },
 
     // At initialization we bind to the relevant events on the 'Todos'
@@ -119,11 +125,13 @@ var AppView = Backbone.View.extend({
       							}
       						})
       						.disableSelection();
+      //_.bindAll(this, 'render', 'addOne', 'addAll', 'updateOrder');
       
       Todos.bind('add',   this.addOne, this);
       Todos.bind('reset', this.addAll, this);
       Todos.bind('all',   this.render, this);
       Todos.bind('orderUpdated',   this.updateOrder, this);
+      Todos.bind('startDateChanged',   this.addOne, this);
       
       Todos.fetch();
     },
@@ -133,7 +141,7 @@ var AppView = Backbone.View.extend({
     	var list=new Array();
     	
     	this.$('#todo-list li').each(function(index) {
-    		//Todos.getByCid($(this).attr('id')).save({'order':index});
+    		//Single item update! Todos.getByCid($(this).attr('id')).save({'order':index});
     		list[index] = Todos.getByCid($(this).attr('id')).get('id');
     	});
     	sort.save({'sortedIds':list});
@@ -145,48 +153,66 @@ var AppView = Backbone.View.extend({
       this.$('#todo-stats').html(this.statsTemplate({
         total:      Todos.length,
         done:       Todos.done().length,
-        remaining:  Todos.remaining().length
+        remaining:  Todos.remaining().length,
+        past:       Todos.fromPast().length
       }));
     },
 
     // Add a single todo item to the list by creating a view for it, and
     // appending its element to the `<ul>`.
     addOne: function(todo) {
-    	var errors = new Backbone.Collection(todo.get('errors'));
-    	errors.each(function(error) {
-    		showError(new Error(error).get('message'));
-    	});
-    	
-    	var view = new TodoView({model: todo});
-    	this.$("#todo-list").append(view.render().el);
-    	if (errors.length > 0) {
-    		$(view.el).addClass("editing");
-    		
-    		$('.editing .todo-input').focus();
-    		this.showTooltip(e);
+    	if (!todo.fromPast()) {
+	    	var errors = new Backbone.Collection(todo.get('errors'));
+	    	errors.each(function(error) {
+	    		showError(new Error(error).get('message'));
+	    	});
+	    	
+	    	var view = new TodoView({model: todo});
+	    	this.$("#todo-list").append(view.render().el);
+	    	if (errors.length > 0) {
+	    		$(view.el).addClass("editing");
+	    		
+	    		$('.editing .todo-input').focus();
+	    		this.showTooltip(e);
+	    	}
     	}
-    	
     },
 
     // Add all items in the **Todos** collection at once.
     addAll: function() {
-      Todos.each(this.addOne);
+    	Todos.each(this.addOne);
     },
 
     // If you hit return in the main input field, and there is text to save,
     // create new **Todo** model persisting it to server.
     createOnEnter: function(e) {
-      var text = this.input.val();
-      if (!text || e.keyCode != 13) return;
-      Todos.create({description: text});
-      this.input.val('');
-      $(".ui-tooltip-top").fadeOut();
-    },
+	var text = this.input.val();
+		if (!text || e.keyCode != 13) return;
+		Todos.create({description: text});
+		this.input.val('');
+		$(".ui-tooltip-top").fadeOut();
+	},
 
     // Clear all done todo items, destroying their models.
     clearCompleted: function() {
-      _.each(Todos.done(), function(todo){ todo.destroy(); });
-      return false;
+	    _.each(Todos.done(), function(todo){ todo.destroy(); });
+	    return false;
+    },
+    
+    // Move all todo items from the past to today.
+    moveToToday: function() {
+    	var d = new Date();
+    	
+    	_.each(Todos.fromPast(), 
+    		  function(todo){ 
+    	  		   todo.save({'startDate':d.getTime()},
+    	  				 {success: function(model, response) {
+    	  					Todos.trigger("startDateChanged", model);
+    	  				 }
+    			   });
+    	  		   
+    	  	  });
+    	return false;
     },
 
     // Lazily show the tooltip that tells you to press `enter` to save

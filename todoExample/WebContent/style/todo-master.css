@@ -150,14 +150,14 @@ label.todo-text {display: block; padding-left: 30px; width: 80%;}
 #todo-stats .todo-clear {
 	float: right;
 }
-#todo-stats .todo-clear a {
+#todo-stats a {
 	color: #777777;
 	font-size: 12px;
 }
-#todo-stats .todo-clear a:visited {
+#todo-stats a:visited {
 	color: #777777;
 }
-#todo-stats .todo-clear a:hover {
+#todo-stats a:hover {
 	color: #336699;
 }
 

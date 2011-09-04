@@ -12,6 +12,15 @@ var Todo = Backbone.Model.extend({
     toggle: function() {
       toggle = this.get("done")==0 ? 1 : 0;
       this.save({done: toggle});
+    },
+    // Model has startDate in the past and is still open
+    fromPast: function () {
+    	var date = new Date(this.get('startDate'));
+		var today = new Date();
+		return 	date.getFullYear() <= today.getFullYear() &&
+				date.getMonth() <= today.getMonth() &&
+				date.getDate() < today.getDate() &&
+				this.get('done') == 0;
     }
 
 });
@@ -37,6 +46,28 @@ var TodoList = Backbone.Collection.extend({
       return this.without.apply(this, this.done());
     },
 
+    // Filter down the list to only todo items of today
+    fromToday: function() {
+    	return this.filter(function(todo){ 
+    				var date = new Date(todo.get('startDate'));
+    				var today = new Date();
+    				return 	date.getFullYear() == today.getFullYear() &&
+    						date.getMonth() == today.getMonth() &&
+    						date.getDate() == today.getDate(); 
+    			});
+    },
+    
+    // Filter down the list to only todo items in the past and not being done
+    fromPast: function() {
+    	return this.filter(function(todo){ 
+			var date = new Date(todo.get('startDate'));
+			var today = new Date();
+			return 	date.getFullYear() <= today.getFullYear() &&
+					date.getMonth() <= today.getMonth() &&
+					date.getDate() < today.getDate() &&
+					todo.get('done') == 0; 
+		});
+    },
     // We keep the Todos in sequential order, This generates the next order number for new items.
     nextOrder: function() {
       if (!this.length) return 1;
@@ -45,7 +76,7 @@ var TodoList = Backbone.Collection.extend({
 
     // Todos are sorted by their original insertion order.
     comparator: function(todo) {
-      return todo.get('order');
+      return todo.get('startDate');
     }
 
 });

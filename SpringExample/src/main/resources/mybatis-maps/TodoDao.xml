@@ -20,6 +20,7 @@ create table todos(
 id                varchar2(100) not null,
 done           number(1) default 0 not null,
 sorting         number(3) default 1 not null,
+startDate       date default sysdate not null,
 description varchar2(2000)
 );
 
@@ -29,16 +30,16 @@ description varchar2(2000)
     
 	<mapper namespace="com.wordpress.gertonscorner.todo.dao.ITodoDao">
 	<select id="getTodos" resultType="Todo">
-    	select id, done, sorting as "order", description from todos
+    	select id, done, sorting as "order", startdate, description from todos
     </select>
     
     <select id="selectTodo" parameterType="string" resultType="Todo">
-    	select id, done, sorting as "order", description from todos where id = #{id}
+    	select id, done, sorting as "order", startdate, description from todos where id = #{id}
     </select>
     
     <insert id="insertTodo" parameterType="Todo">
-    	insert into todos(id,done, sorting, description) 
-        values (#{id},#{done},#{order}, #{description})
+    	insert into todos(id,done, sorting, startdate, description) 
+        values (#{id},#{done},#{order}, sysdate, #{description})
     </insert>
     
     <delete id="deleteTodo" parameterType="string">
@@ -50,6 +51,7 @@ description varchar2(2000)
     	set description = #{description}
     	,   done = #{done}
     	,   sorting = #{order}
+    	,   startdate = #{startDate}
     	where id = #{id}
     </update>
 </mapper>

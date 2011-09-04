@@ -1,6 +1,7 @@
 package com.wordpress.gertonscorner.todo.domain;
 
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * Todo domain entity
@@ -16,6 +17,7 @@ public class Todo implements Serializable {
 	private Integer done;
 	private Integer order;
 	private String description;
+	private Date startDate;
 	
 	public Todo() {}
 	public Todo(String id, String description) {
@@ -52,6 +54,18 @@ public class Todo implements Serializable {
 	}
 	public void setDescription(String description) {
 		this.description = description;
+	}
+	/**
+	 * @param startDate the startDate to set
+	 */
+	public void setStartDate(Date startDate) {
+		this.startDate = startDate;
+	}
+	/**
+	 * @return the startDate
+	 */
+	public Date getStartDate() {
+		return startDate;
 	}
 	
 }

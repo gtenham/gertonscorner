@@ -183,7 +183,7 @@
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-validator</artifactId>
-			<version>4.1.0.Final</version>
+			<version>4.2.0.Final</version>
  		</dependency>
  		
  		<!-- 
@@ -194,7 +194,7 @@
  		<dependency>
 			<groupId>net.sf.dozer</groupId>
 			<artifactId>dozer</artifactId>
-			<version>5.3.1</version>
+			<version>5.3.2</version>
 		</dependency>
  		<dependency>
 			<groupId>org.apache.xmlbeans</groupId>
@@ -204,7 +204,7 @@
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-simple</artifactId>
-			<version>1.5.8</version>
+			<version>1.6.1</version>
 		</dependency>
 		<!-- 
 			Because Spring is using the commons-logging framework
@@ -213,7 +213,7 @@
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>jcl-over-slf4j</artifactId>
-			<version>1.5.8</version>
+			<version>1.6.1</version>
 		</dependency>
 		
 		<!-- 
@@ -223,24 +223,24 @@
 		<dependency>
 		  <groupId>org.mybatis</groupId>
 		  <artifactId>mybatis</artifactId>
-		  <version>3.0.4</version>
+		  <version>3.0.5</version>
 		</dependency>
 		<dependency>
 	  		<groupId>org.mybatis</groupId>
 	  		<artifactId>mybatis-spring</artifactId>
-	  		<version>1.0.0</version>
+	  		<version>1.0.1</version>
 		</dependency>
 		
 		<!-- Jackson Java JSON-processor. Parsing and mapping. -->
 		<dependency>
 			<groupId>org.codehaus.jackson</groupId>
 			<artifactId>jackson-core-asl</artifactId>
-			<version>1.6.4</version>
+			<version>1.8.5</version>
 		</dependency>
 		<dependency>
 			<groupId>org.codehaus.jackson</groupId>
 			<artifactId>jackson-mapper-asl</artifactId>
-			<version>1.6.4</version>
+			<version>1.8.5</version>
 		</dependency>
 		
 		<!-- 

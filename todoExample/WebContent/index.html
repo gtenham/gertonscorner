@@ -40,6 +40,10 @@
         <span class="todo-count">
           <span class="number"><%= remaining %></span>
           <span class="word"><%= remaining == 1 ? 'item' : 'items' %></span> left.
+		  <% if (past) { %>
+		  [<a href="#">Move <span class="number past-item"><%= past %></span>
+          <span class="word past-item"><%= past == 1 ? 'item' : 'items' %></span> to today.</a>]
+		  <% } %>
         </span>
       <% } %>
       <% if (done) { %>
