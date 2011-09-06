@@ -5,7 +5,8 @@ var Todo = Backbone.Model.extend({
     defaults: function() {
       return {
     	done:  0,
-        order: Todos.nextOrder()
+        order: Todos.nextOrder(),
+        startDate: new Date()
       };
     },
     // Toggle the 'done' state of this todo item.
@@ -19,8 +20,7 @@ var Todo = Backbone.Model.extend({
 		var today = new Date();
 		return 	date.getFullYear() <= today.getFullYear() &&
 				date.getMonth() <= today.getMonth() &&
-				date.getDate() < today.getDate() &&
-				this.get('done') == 0;
+				date.getDate() < today.getDate();
     }
 
 });
@@ -64,8 +64,7 @@ var TodoList = Backbone.Collection.extend({
 			var today = new Date();
 			return 	date.getFullYear() <= today.getFullYear() &&
 					date.getMonth() <= today.getMonth() &&
-					date.getDate() < today.getDate() &&
-					todo.get('done') == 0; 
+					date.getDate() < today.getDate(); 
 		});
     },
     // We keep the Todos in sequential order, This generates the next order number for new items.
@@ -76,7 +75,7 @@ var TodoList = Backbone.Collection.extend({
 
     // Todos are sorted by their original insertion order.
     comparator: function(todo) {
-      return todo.get('startDate');
+      return todo.get('order');
     }
 
 });
