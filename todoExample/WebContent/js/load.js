@@ -8,6 +8,7 @@ $LAB
 .script("http://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.1.7/underscore-min.js")
 .script("http://cdnjs.cloudflare.com/ajax/libs/backbone.js/0.5.3/backbone-min.js")
 .script("/js/ext/jquery.jgrowl-min.js")
+.script("/js/backbone.storage.js")
 .script("/js/todo.ui.utils.js")
 .script("/js/backbone-models-todos.js")
 .script("/js/backbone-views-todos.js")

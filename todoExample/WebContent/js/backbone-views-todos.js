@@ -137,7 +137,7 @@ var AppView = Backbone.View.extend({
     },
 
     updateOrder: function() {
-    	var sort = new TodoOrder();
+    	var sort = new TodoSorting();
     	var list=new Array();
     	
     	this.$('#todo-list li').each(function(index) {
@@ -162,6 +162,10 @@ var AppView = Backbone.View.extend({
     // appending its element to the `<ul>`.
     addOne: function(todo) {
     	if (!todo.fromPast()) {
+    		// TODO: remove
+    		var test = new Dummy();
+    		test.save({test: "hello dummy"});
+    		
 	    	var errors = new Backbone.Collection(todo.get('errors'));
 	    	errors.each(function(error) {
 	    		showError(new Error(error).get('message'));

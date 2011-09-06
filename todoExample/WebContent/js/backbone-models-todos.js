@@ -1,5 +1,8 @@
+//TODO: remove
+var Dummy = Backbone.Model.extend({sync: _.bitBucketStorage});
+
 var Error = Backbone.Model.extend({});
-var TodoOrder = Backbone.Model.extend({urlRoot : '/services/restbroker/todos/sort'});
+var TodoSorting = Backbone.Model.extend({urlRoot : '/services/restbroker/todos/sort'});
 var Todo = Backbone.Model.extend({
 	// Default attributes for a todo item.
     defaults: function() {
