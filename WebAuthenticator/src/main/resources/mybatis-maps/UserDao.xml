@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    Copyright 2010 The myBatis Team
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+        http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+-->
+<!-- 
+rem Oracle table creation script
+create table users(
+id                varchar2(100) not null,
+username          varchar2(1000) not null,
+password          varchar2(1000) not null,
+active            number(1) default 1 not null,
+service_url	 	  varchar2(2000)
+);
+
+ -->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://www.mybatis.org/dtd/mybatis-3-mapper.dtd">
+    
+<mapper namespace="com.wordpress.gertonscorner.security.dao.IUserDao">
+	<select id="selectUserById" parameterType="string" resultType="User">
+    	select id, username, password, active, service_url from users where id = #{id}
+    </select>
+    <!-- 
+    <insert id="insertUser" parameterType="Todo">
+    	insert into users(id, username, password, active, service_url) 
+        values (#{id},#{username},#{password}, #{active}, #{service_url})
+    </insert>
+    
+    <delete id="deleteUser" parameterType="string">
+    	delete from users where id = #{id}
+    </delete>
+    
+    <update id="updateUser" parameterType="User">
+    	update users
+    	set service_url = #{service_url}
+    	,   active = #{active}
+    	,   password = #{password}
+    	,   username = #{username}
+    	where id = #{id}
+    </update>
+     -->
+</mapper>
