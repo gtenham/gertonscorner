@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 import com.wordpress.gertonscorner.security.crypto.AES;
+import com.wordpress.gertonscorner.security.crypto.AESCtr;
 import com.wordpress.gertonscorner.security.crypto.SHA;
 import com.wordpress.gertonscorner.security.crypto.TEA;
 import com.wordpress.gertonscorner.security.services.IUserService;
@@ -48,14 +49,23 @@ public class UserController {
 	public @ResponseBody String testEncryption(@PathVariable("id") String id) {
 		String hashedMessage = null;
 		String quote = "søme highly secret text to be encrypteđ";
+		//String quote = "The quick brown fox";
 		try {
 			hashedMessage = SHA.getSHA256Digest(userService.getUserById(id).getPassword());
 		} catch (NoSuchAlgorithmException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} 
-		String encryptVal = AES.encrypt256(hashedMessage, quote);
-		String decryptVal = AES.decrypt256(hashedMessage, encryptVal); 
+		String encryptVal = null;
+		String decryptVal = null;
+		try {
+			encryptVal = AESCtr.encrypt128(hashedMessage, quote);
+			decryptVal = AESCtr.decrypt128(hashedMessage, encryptVal); 
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} 
+		 
 		
 		System.out.println("Hashed message: "+hashedMessage);
 		System.out.println("AES encrypt: "+encryptVal);

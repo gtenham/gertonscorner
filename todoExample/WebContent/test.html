@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>test authenticate</title>
+	
+</head>
+<body>
+<a href="#" id="aes">Test AES-CTR encryption</a>
+<a href="#" id="rsa-gen">Generate RSA key pair</a>	
+<a href="#" id="rsa">Test RSA encryption</a>		
+<script type="application/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
+<script type="application/javascript" src="/js/ext/base64.js"></script>
+<script type="application/javascript" src="/js/ext/utf8.js"></script>
+<script type="application/javascript" src="/js/ext/sha256.js"></script>
+<script type="application/javascript" src="/js/ext/aes.js"></script>
+<script type="application/javascript" src="/js/ext/aes-ctr.js"></script>
+<script type="application/javascript" src="/js/ext/cryptico.js"></script>
+<script type="application/javascript">
+
+$(document).ready(function() {
+	// Your dom ready stuff
+	var myRSAkey;
+
+	$('#aes').click(function() {
+		$.get("/login/authenticator/users/1/test", function(data) {
+			//alert('response: '+data);
+    		org = "søme highly secret text to be encrypteđ";
+    		pwdStr = "secret";
+    		hashedPwd = Sha256.hash(pwdStr);
+			pwd = "2bb80d537b1da3e38bd30361aa855686bde0eacd7162fef6a25fe97bf527a25b";
+    		encval = Aes.Ctr.encrypt(org, hashedPwd ,128);
+			plaintext = Aes.Ctr.decrypt(encval, hashedPwd ,128);
+    
+			serverStr = Aes.Ctr.decrypt(data, hashedPwd ,128);
+
+    		console.log("original: "+org);
+    		console.log("data    : "+data);
+			console.log("enc data: "+encval);
+			console.log("password : "+pwd);
+			console.log("hashedpwd: "+hashedPwd);
+			console.log("decrypted client: "+plaintext);
+			console.log("decrypted server: "+serverStr);
+
+			return false;
+		});
+	});
+	
+	$('#rsa-gen').click(function() {
+		// The passphrase used to repeatably generate this RSA key.
+		var PassPhrase = "secret"; 
+
+		// The length of the RSA key, in bits.
+		var Bits = 512; 
+
+		myRSAkey = cryptico.generateRSAKey(PassPhrase, Bits);
+		return false;
+	});
+
+	$('#rsa').click(function() {
+		
+		var myPublicKeyString = cryptico.publicKeyString(myRSAkey);
+
+		var PlainText = "søme highly secret text to be encrypteđ";
+
+		var EncryptionResult = cryptico.encrypt(PlainText, myPublicKeyString);
+		var DecryptionResult = cryptico.decrypt(EncryptionResult.cipher, myRSAkey);
+
+		console.log("myPublicKeyString: "+myPublicKeyString);
+    	console.log("EncryptionResult    : "+EncryptionResult.cipher);
+		console.log("DecryptionResult: "+DecryptionResult.plaintext);
+
+		return false;
+	});
+});
+</script>
+		
+</body>
+</html>
