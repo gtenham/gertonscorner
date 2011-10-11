@@ -23,7 +23,7 @@ $(document).ready(function() {
 	var myRSAkey;
 
 	$('#aes').click(function() {
-		$.get("/login/authenticator/users/1/test", function(data) {
+		$.get("/auth-proxy/was/authentication/token/1", function(data) {
 			//alert('response: '+data);
     		org = "søme highly secret text to be encrypteđ";
     		pwdStr = "secret";
