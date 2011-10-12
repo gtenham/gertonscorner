@@ -22,6 +22,14 @@ public interface IUserDao {
 	User selectUserById(String id);
 	
 	/**
+	 * Select a user by its username
+	 * 
+	 * @param username
+	 * @return User
+	 */
+	User selectUserByName(String username);
+	
+	/**
 	 * Insert a new user
 	 * 
 	 * @param user

@@ -7,10 +7,10 @@ public class User implements Serializable {
 	private static final long serialVersionUID = 4095943060729596113L;
 	
 	private String id;
-	private String username;
-	private String password;
+	private String userName;
+	private String publicKey;
 	private Integer active;
-	private String service_url;
+	private String serviceUrl;
 	
 	public User() {}
 
@@ -28,34 +28,7 @@ public class User implements Serializable {
 		return id;
 	}
 
-	/**
-	 * @param username the username to set
-	 */
-	public void setUsername(String username) {
-		this.username = username;
-	}
-
-	/**
-	 * @return the username
-	 */
-	public String getUsername() {
-		return username;
-	}
-
-	/**
-	 * @param password the password to set
-	 */
-	public void setPassword(String password) {
-		this.password = password;
-	}
-
-	/**
-	 * @return the password
-	 */
-	public String getPassword() {
-		return password;
-	}
-
+	
 	/**
 	 * @param active the active to set
 	 */
@@ -71,16 +44,44 @@ public class User implements Serializable {
 	}
 
 	/**
-	 * @param service_url the service_url to set
+	 * @param userName the userName to set
 	 */
-	public void setService_url(String service_url) {
-		this.service_url = service_url;
+	public void setUserName(String userName) {
+		this.userName = userName;
 	}
 
 	/**
-	 * @return the service_url
+	 * @return the userName
 	 */
-	public String getService_url() {
-		return service_url;
+	public String getUserName() {
+		return userName;
+	}
+
+	/**
+	 * @param publicKey the publicKey to set
+	 */
+	public void setPublicKey(String publicKey) {
+		this.publicKey = publicKey;
+	}
+
+	/**
+	 * @return the publicKey
+	 */
+	public String getPublicKey() {
+		return publicKey;
+	}
+
+	/**
+	 * @param serviceUrl the serviceUrl to set
+	 */
+	public void setServiceUrl(String serviceUrl) {
+		this.serviceUrl = serviceUrl;
+	}
+
+	/**
+	 * @return the serviceUrl
+	 */
+	public String getServiceUrl() {
+		return serviceUrl;
 	}
 }

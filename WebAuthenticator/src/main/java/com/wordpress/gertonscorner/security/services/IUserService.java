@@ -22,4 +22,22 @@ public interface IUserService {
 	 * @throws UserNotFoundException
 	 */
 	User getUserById(String id) throws UserNotFoundException;
+	
+	/**
+	 * Get User by given username.
+	 * 
+	 * @param username
+	 * @return User
+	 * @throws UserNotFoundException
+	 */
+	User getUserByName(String username) throws UserNotFoundException;
+	
+	/**
+	 * Update public key for given user
+	 * 
+	 * @param id
+	 * @param publicKey
+	 * @throws UserNotFoundException
+	 */
+	void updatePublicKey(String id, String publicKey) throws UserNotFoundException;
 }

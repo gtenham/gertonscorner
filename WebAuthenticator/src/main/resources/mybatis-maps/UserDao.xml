@@ -19,7 +19,7 @@ rem Oracle table creation script
 create table users(
 id                varchar2(100) not null,
 username          varchar2(1000) not null,
-password          varchar2(1000) not null,
+public_key        varchar2(1000) not null,
 active            number(1) default 1 not null,
 service_url	 	  varchar2(2000)
 );
@@ -30,25 +30,31 @@ service_url	 	  varchar2(2000)
     
 <mapper namespace="com.wordpress.gertonscorner.security.dao.IUserDao">
 	<select id="selectUserById" parameterType="string" resultType="User">
-    	select id, username, password, active, service_url from users where id = #{id}
+    	select id, username as "userName", public_key as "publicKey", active, service_url as "serviceUrl" from users where id = #{id}
     </select>
+    
+    <select id="selectUserByName" parameterType="string" resultType="User">
+    	select id, username as "userName", public_key as "publicKey", active, service_url as "serviceUrl" from users where username = #{userName}
+    </select>
+    
+    <update id="updateUser" parameterType="User">
+    	update users
+    	set service_url = #{serviceUrl}
+    	,   active = #{active}
+    	,   public_key = #{publicKey}
+    	,   username = #{userName}
+    	where id = #{id}
+    </update>
     <!-- 
     <insert id="insertUser" parameterType="Todo">
-    	insert into users(id, username, password, active, service_url) 
-        values (#{id},#{username},#{password}, #{active}, #{service_url})
+    	insert into users(id, username, public_key, active, service_url) 
+        values (#{id},#{userName},#{publicKey}, #{active}, #{serviceUrl})
     </insert>
     
     <delete id="deleteUser" parameterType="string">
     	delete from users where id = #{id}
     </delete>
     
-    <update id="updateUser" parameterType="User">
-    	update users
-    	set service_url = #{service_url}
-    	,   active = #{active}
-    	,   password = #{password}
-    	,   username = #{username}
-    	where id = #{id}
-    </update>
+    
      -->
 </mapper>

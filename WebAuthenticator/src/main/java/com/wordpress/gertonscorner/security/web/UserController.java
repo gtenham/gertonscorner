@@ -36,7 +36,14 @@ public class UserController {
 	@RequestMapping(value = "/users/{id}", method = RequestMethod.GET)
 	@ResponseStatus(HttpStatus.OK)
 	public @ResponseBody String getUserName(@PathVariable("id") String id) {
-		return userService.getUserById(id).getUsername();
+		return userService.getUserById(id).getUserName();
+	}
+	
+	@RequestMapping(value = "/users/{id}/{publickey}", method = RequestMethod.GET)
+	@ResponseStatus(HttpStatus.NO_CONTENT)
+	public void updateTodo(@PathVariable("id") String id,
+						   @PathVariable("publickey") String publicKey) {
+		userService.updatePublicKey(id, publicKey);
 	}
 	
 	@ExceptionHandler(UserNotFoundException.class)

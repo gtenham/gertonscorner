@@ -8,7 +8,8 @@
 <body>
 <a href="#" id="aes">Test AES-CTR encryption</a>
 <a href="#" id="rsa-gen">Generate RSA key pair</a>	
-<a href="#" id="rsa">Test RSA encryption</a>		
+<a href="#" id="rsa">Test RSA encryption</a>	
+<a href="#" id="update">Test update key</a>	
 <script type="application/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
 <script type="application/javascript" src="/js/ext/base64.js"></script>
 <script type="application/javascript" src="/js/ext/utf8.js"></script>
@@ -22,24 +23,22 @@ $(document).ready(function() {
 	// Your dom ready stuff
 	var myRSAkey;
 
+	$('#update').click(function() {
+		$.get("/auth-proxy/was/users/1/secret", function(data) {
+
+		});
+	});
+
 	$('#aes').click(function() {
-		$.get("/auth-proxy/was/authentication/token/1", function(data) {
+		$.get("/auth-proxy/was/authentication/token?username=gerton.tenham@yahoo.com", function(data) {
 			//alert('response: '+data);
-    		org = "søme highly secret text to be encrypteđ";
     		pwdStr = "secret";
     		hashedPwd = Sha256.hash(pwdStr);
-			pwd = "2bb80d537b1da3e38bd30361aa855686bde0eacd7162fef6a25fe97bf527a25b";
-    		encval = Aes.Ctr.encrypt(org, hashedPwd ,128);
-			plaintext = Aes.Ctr.decrypt(encval, hashedPwd ,128);
-    
-			serverStr = Aes.Ctr.decrypt(data, hashedPwd ,128);
+			
+			serverStr = Aes.Ctr.decrypt(data, hashedPwd ,256);
 
-    		console.log("original: "+org);
     		console.log("data    : "+data);
-			console.log("enc data: "+encval);
-			console.log("password : "+pwd);
 			console.log("hashedpwd: "+hashedPwd);
-			console.log("decrypted client: "+plaintext);
 			console.log("decrypted server: "+serverStr);
 
 			return false;
