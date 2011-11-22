@@ -7,7 +7,7 @@
 	<name>WebAuthenticator</name>
 	<!-- Shared version number properties -->
 	<properties>
-	  <org.springframework.version>3.0.5.RELEASE</org.springframework.version>
+	  <org.springframework.version>3.0.6.RELEASE</org.springframework.version>
 	</properties>
 	<build>
 		<plugins>
@@ -159,7 +159,14 @@
 	  		<scope>test</scope>
 	  	</dependency>
 	
-		
+		<dependency>
+  			<groupId>javax.servlet</groupId>
+  			<artifactId>javax.servlet-api</artifactId>
+  			<version>3.0.1</version>
+  			<type>jar</type>
+  			<scope>provided</scope>
+  		</dependency>
+  	
  		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-simple</artifactId>
@@ -224,6 +231,29 @@
     		<groupId>org.bouncycastle</groupId>
     		<artifactId>bcprov-jdk16</artifactId>
     		<version>1.46</version>
+		</dependency>
+		<dependency>
+			<groupId>org.aspectj</groupId>
+			<artifactId>aspectjrt</artifactId>
+			<version>1.6.11</version>
+		</dependency>
+ 
+		<dependency>
+			<groupId>org.aspectj</groupId>
+			<artifactId>aspectjweaver</artifactId>
+			<version>1.6.11</version>
+		</dependency>
+		<dependency>
+    		<groupId>cglib</groupId>
+			<artifactId>cglib</artifactId>
+			<version>2.2</version>
+    	</dependency>
+		<dependency>
+			<groupId>net.sf.ehcache</groupId>
+			<artifactId>ehcache</artifactId>
+			<version>2.4.6</version>
+			<type>pom</type>
+			<scope>compile</scope>
 		</dependency>
 	</dependencies>
 </project>

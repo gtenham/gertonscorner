@@ -3,10 +3,9 @@
  */
 package com.wordpress.gertonscorner.security.services;
 
-import java.security.NoSuchAlgorithmException;
-
 import com.wordpress.gertonscorner.security.domain.User;
 import com.wordpress.gertonscorner.security.services.exceptions.EncryptionException;
+import com.wordpress.gertonscorner.security.services.exceptions.ProxyAuthenticationRequiredException;
 
 /**
  * Interface authentication service.
@@ -27,10 +26,25 @@ public interface IAuthenticationService {
 	String getTokenForUser(User user) throws EncryptionException;
 	
 	/**
-	 * Render a random string used as token.
+	 * Get a new service ticket for user using 256 bit 
+	 * AES encryption in CTR mode.
 	 * 
-	 * @return random unique string
-	 * @throws NoSuchAlgorithmException 
+	 * @param user
+	 * @param service
+	 * @param remoteAddress
+	 * @return encrypted ticket
+	 * @throws EncryptionException
 	 */
-	String getRandomToken() throws NoSuchAlgorithmException;
+	String getServiceTicket(User user, String service, String remoteAddress) throws EncryptionException;
+	
+	/**
+	 * Validate authentication
+	 * 
+	 * @param servicetoken
+	 * @param remoteAddress
+	 * @param serviceName
+	 * @param remoteAddressOnly
+	 * @throws ProxyAuthenticationRequiredException
+	 */
+	void validateAuthentication(String servicetoken, String remoteAddress, String serviceName, Boolean remoteAddressOnly) throws ProxyAuthenticationRequiredException;
 }

@@ -10,7 +10,7 @@ public class User implements Serializable {
 	private String userName;
 	private String publicKey;
 	private Integer active;
-	private String serviceUrl;
+	private String fullName;
 	
 	public User() {}
 
@@ -72,16 +72,16 @@ public class User implements Serializable {
 	}
 
 	/**
-	 * @param serviceUrl the serviceUrl to set
+	 * @param fullName the fullName to set
 	 */
-	public void setServiceUrl(String serviceUrl) {
-		this.serviceUrl = serviceUrl;
+	public void setFullName(String fullName) {
+		this.fullName = fullName;
 	}
 
 	/**
-	 * @return the serviceUrl
+	 * @return the fullName
 	 */
-	public String getServiceUrl() {
-		return serviceUrl;
+	public String getFullName() {
+		return fullName;
 	}
 }

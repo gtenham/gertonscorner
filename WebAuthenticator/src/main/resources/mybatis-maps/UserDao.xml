@@ -21,7 +21,7 @@ id                varchar2(100) not null,
 username          varchar2(1000) not null,
 public_key        varchar2(1000) not null,
 active            number(1) default 1 not null,
-service_url	 	  varchar2(2000)
+fullname	 	  varchar2(2000)
 );
 
  -->
@@ -30,16 +30,16 @@ service_url	 	  varchar2(2000)
     
 <mapper namespace="com.wordpress.gertonscorner.security.dao.IUserDao">
 	<select id="selectUserById" parameterType="string" resultType="User">
-    	select id, username as "userName", public_key as "publicKey", active, service_url as "serviceUrl" from users where id = #{id}
+    	select id, username as "userName", public_key as "publicKey", active, fullname as "fullName" from users where id = #{id}
     </select>
     
     <select id="selectUserByName" parameterType="string" resultType="User">
-    	select id, username as "userName", public_key as "publicKey", active, service_url as "serviceUrl" from users where username = #{userName}
+    	select id, username as "userName", public_key as "publicKey", active, fullname as "fullName" from users where username = #{userName}
     </select>
     
     <update id="updateUser" parameterType="User">
     	update users
-    	set service_url = #{serviceUrl}
+    	set fullname = #{fullName}
     	,   active = #{active}
     	,   public_key = #{publicKey}
     	,   username = #{userName}

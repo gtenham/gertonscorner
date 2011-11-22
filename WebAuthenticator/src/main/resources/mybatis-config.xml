@@ -21,8 +21,12 @@
 <configuration>
 	<typeAliases>
 		<typeAlias type="com.wordpress.gertonscorner.security.domain.User" alias="User"/>
+		<typeAlias type="com.wordpress.gertonscorner.security.domain.Session" alias="Session"/>
+		<typeAlias type="com.wordpress.gertonscorner.security.domain.RegisteredService" alias="RegisteredService"/>
 	</typeAliases>
     <mappers>
         <mapper resource="mybatis-maps/UserDao.xml" />
+        <mapper resource="mybatis-maps/SessionDao.xml" />
+        <mapper resource="mybatis-maps/RegisteredServiceDao.xml" />
     </mappers>
 </configuration>
