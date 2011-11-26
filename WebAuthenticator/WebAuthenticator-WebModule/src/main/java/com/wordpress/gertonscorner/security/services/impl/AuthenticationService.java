@@ -51,8 +51,11 @@ public class AuthenticationService implements IAuthenticationService {
 		String encryptedToken = null;
 		
 		try {
-			String token = getRandomToken();
-			encryptedToken = AESCtr.encrypt256(user.getPublicKey(), token);
+			encryptedToken = sessionService.getUserToken(user.getUserName());
+			if (encryptedToken == null) {
+				String token = getRandomToken();
+				encryptedToken = AESCtr.encrypt256(user.getPublicKey(), token);
+			}
 			sessionService.setUserToken(user.getUserName(), encryptedToken);
 		} catch (Exception e) {
 			logger.error(e.getMessage());

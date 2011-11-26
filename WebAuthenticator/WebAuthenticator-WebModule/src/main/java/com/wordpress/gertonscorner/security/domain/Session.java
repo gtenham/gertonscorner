@@ -1,6 +1,7 @@
 package com.wordpress.gertonscorner.security.domain;
 
 import java.io.Serializable;
+import java.util.Date;
 
 public class Session implements Serializable {
 	
@@ -10,6 +11,7 @@ public class Session implements Serializable {
 	private String userToken;
 	private String serviceToken;
 	private String remoteAddress;
+	private Date lastActiveDate;
 	
 	public Session() {}
 	
@@ -66,5 +68,19 @@ public class Session implements Serializable {
 	 */
 	public String getRemoteAddress() {
 		return remoteAddress;
+	}
+
+	/**
+	 * @param lastActiveDate the lastActiveDate to set
+	 */
+	public void setLastActiveDate(Date lastActiveDate) {
+		this.lastActiveDate = lastActiveDate;
+	}
+
+	/**
+	 * @return the lastActiveDate
+	 */
+	public Date getLastActiveDate() {
+		return lastActiveDate;
 	}
 }

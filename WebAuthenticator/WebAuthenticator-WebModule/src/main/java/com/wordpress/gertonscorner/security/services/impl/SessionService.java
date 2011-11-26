@@ -3,6 +3,10 @@
  */
 package com.wordpress.gertonscorner.security.services.impl;
 
+import java.util.Date;
+
+import org.joda.time.DateTime;
+import org.joda.time.Duration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,7 +20,9 @@ import com.wordpress.gertonscorner.security.services.ISessionService;
  */
 @Service("sessionService")
 public class SessionService implements ISessionService {
-
+	
+	private static final long timeoutInMinutes = 30;
+		
 	@Autowired
 	ISessionDao sessionDao;
 	
@@ -42,7 +48,13 @@ public class SessionService implements ISessionService {
 	 */
 	public String getUserToken(String username) {
 		Session userSession = sessionDao.getUserSession(username);
-		return userSession.getUserToken();
+		if (userSession != null && !isSessionTimeout(userSession.getLastActiveDate())) {
+			writeSession(userSession, true);
+		} else {
+			destroySession(username);
+			userSession = null;
+		}
+		return (userSession == null) ? null : userSession.getUserToken();
 	}
 	
 	/* (non-Javadoc)
@@ -89,6 +101,15 @@ public class SessionService implements ISessionService {
 		} else {
 			sessionDao.createUserSession(usersession);
 		}
+	}
+	
+	private Boolean isSessionTimeout(Date date) {
+		DateTime now = new DateTime();
+		DateTime lastActiveDate = new DateTime(date);
+		// duration in ms between two instants
+		Duration dur = new Duration(lastActiveDate, now);
+		
+		return dur.getMillis() > (timeoutInMinutes*60*1000);
 	}
 	
 }

@@ -19,6 +19,7 @@ rem Oracle table creation script
 create table user_sessions(
 username          varchar2(1000) not null,
 user_token        varchar2(1000) not null,
+last_active		  date default sysdate not null,
 remote_address    varchar2(255),
 service_token     varchar2(1000)
 );
@@ -29,17 +30,18 @@ service_token     varchar2(1000)
     
 <mapper namespace="com.wordpress.gertonscorner.security.dao.ISessionDao">
 	<select id="getUserSession" parameterType="string" resultType="Session">
-    	select username as "userName", user_token as "userToken", remote_address as "remoteAddress", service_token as "serviceToken" from user_sessions where username = #{userName}
+    	select username as "userName", user_token as "userToken", last_active as "lastActiveDate", remote_address as "remoteAddress", service_token as "serviceToken" from user_sessions where username = #{userName}
     </select>
     
     <insert id="createUserSession" parameterType="Session">
-    	insert into user_sessions(username, user_token, remote_address, service_token) 
-        values (#{userName},#{userToken}, #{remoteAddress,jdbcType=VARCHAR}, #{serviceToken,jdbcType=VARCHAR})
+    	insert into user_sessions(username, user_token, last_active, remote_address, service_token) 
+        values (#{userName},#{userToken}, sysdate, #{remoteAddress,jdbcType=VARCHAR}, #{serviceToken,jdbcType=VARCHAR})
     </insert>
     
     <update id="updateUserSession" parameterType="Session">
     	update user_sessions
     	set user_token = #{userToken}
+    	,   last_active = sysdate
     	,   remote_address = #{remoteAddress,jdbcType=VARCHAR}
     	,   service_token = #{serviceToken,jdbcType=VARCHAR}
     	where username = #{userName}
