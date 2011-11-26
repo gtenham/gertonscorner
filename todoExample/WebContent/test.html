@@ -3,241 +3,35 @@
 <head>
 	<meta charset="UTF-8">
 	<title>test authenticate</title>
-	<style type="text/css">
-	* {
-		margin: 0px;
-		padding: 0px;outline: none;
-	}
-
-	body {
-		background: #4E0085;
-	}
-
-	.container {
-		border: 1px solid #270644;
-		width: 250px;
-		-moz-border-radius: 20px;
-		-webkit-border-radius: 20px;
-		background:  -moz-linear-gradient(19% 75% 90deg,#4E0085, #963AD6);
-		background:-webkit-gradient(linear, 0% 0%, 0% 100%, from(#963AD6), to(#4E0085));
-		margin:50px auto;
-		padding: 20px;
-		-moz-box-shadow:0px -5px 300px #270644;
-		-webkit-box-shadow:0px -5px 300px #270644;
-	}
-
-	label {
-		font-size: 12px;
-		font-family: arial, sans-serif;
-		list-style-type: none;
-		color: #fff;
-		text-shadow: #000 1px 1px;
-		margin-bottom: 10px;
-		font-weight: bold;
-		letter-spacing: 1px;
-		text-transform: uppercase;
-		display: block;
-	}
-
-	input {
-	  -webkit-transition-property: -webkit-box-shadow, background;
-	  -webkit-transition-duration: 0.25s;
-	  	padding: 6px;
-		border-bottom: 0px;
-		border-left: 0px;
-		border-right: 0px;
-		border-top: 1px solid #ad64e0;
-		-moz-box-shadow: 0px 0px 2px #000;
-		-webkit-box-shadow: 0px 0px 2px #000;
-		margin-bottom: 10px;
-		background: #8a33c6;
-		width: 230px;
-		color: #ffffff;
-	}
-
-	input.submit {
-	  -webkit-transition-property: -webkit-box-shadow, background;
-	  -webkit-transition-duration: 0.25s;
-		width: 100px;
-		background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#963AD6), to(#781bb9));	
-		background:  -moz-linear-gradient(19% 75% 90deg,#781bb9, #963AD6);
-		color: #fff;
-		text-transform: uppercase;
-		text-shadow: #000 1px 1px;
-		border-top: 1px solid #ad64e0;
-		margin-top: 10px;
-	}
-
-	input.submit:hover {
-		-webkit-box-shadow: 0px 0px 2px #000;
-		background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#963AD6), to(#781bb9));
-		background:  -moz-linear-gradient(19% 75% 90deg,#781bb9, #963AD6);
-	} 
-
-	input.submit:active {
-		background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#781bb9), to(#963AD6));
-		background:  -moz-linear-gradient(19% 75% 90deg,#963AD6, #781bb9);
-	}
-
-	input:hover {
-		-webkit-box-shadow: 0px 0px 4px #000;
-		background: #9d39e1;
-	}
-	a {color:#ffffff;}
-	#success {display: none;color:#ffffff;}
-	</style>
+	<link rel="stylesheet" type="text/css" href="/style/test-master.css" />
 </head>
 <body>
 	<div class="container">
-		<form>
-	        <label for="username">Username:</label>
-	        <input type="text" id="username" name="username" />
-	        <label for="password">Password:</label>
-	        <input type="password" id="password" name="password"  />
-	        <input type="submit" value="Login" id="login" name="login" class="submit" />
-		</form>
-		<span id="success">Congratulations! <br/>You are succesfully authenticated</span>
+		<header>
+			<h1>Web Authenticator Tester</h1>
+		</header>
+		<section>
+			<form>
+		        <label for="username">Username:</label>
+		        <input type="text" id="username" name="username" />
+		        <label for="password">Password:</label>
+		        <input type="password" id="password" name="password"  />
+		        <input type="submit" value="Login" id="login" name="login" class="submit" />
+			</form>
+			<span id="success"></span>
+			<span id="error"></span>
+		</section>
+		<aside>
+			<ul>
+				<li><a href="#" id="authTest">Test Authorization Header</a></li>
+			</ul>
+		</aside>
+		<footer>
+			<a href="#">Copyright &copy; Gerton ten Ham</a>
+		</footer>
 	</div>
-<a href="#" id="aes">Test AES-CTR encryption</a>
-<a href="#" id="rsa-gen">Generate RSA key pair</a>	
-<a href="#" id="rsa">Test RSA encryption</a>	
-<a href="#" id="authTest">Test Authorization Header</a>	
-<script type="application/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
-<script type="application/javascript" src="/js/ext/base64.js"></script>
-<script type="application/javascript" src="/js/ext/utf8.js"></script>
-<script type="application/javascript" src="/js/ext/sha256.js"></script>
-<script type="application/javascript" src="/js/ext/aes.js"></script>
-<script type="application/javascript" src="/js/ext/aes-ctr.js"></script>
-<script type="application/javascript" src="/js/ext/cryptico.js"></script>
-<script type="application/javascript">
-
-$(document).ready(function() {
-	// Your dom ready stuff
-	var myRSAkey;
-	var userName = 'gerton.tenham@yahoo.com';
-	var userToken;
-	var serviceToken;
-	var serviceRequest;
-
-	$('#login').click(function() {
-		var inputUserName = $('#username').val();
-		var inputPwd = $('#password').val();
-		$.get("/auth-proxy/was/authentication/token?username="+inputUserName, function(data) {
-			hashedPwd = Sha256.hash(inputPwd);
-			
-			serverStr = Aes.Ctr.decrypt(data, hashedPwd ,256);
-			userToken = serverStr;
-
-    		console.log("data    : "+data);
-			console.log("hashedpwd: "+hashedPwd);
-			console.log("decrypted server: "+serverStr);
-			// Encrypt a new service request ticket
-			requestForService = Aes.Ctr.encrypt("users", serverStr ,256);
-
-			$.get("/auth-proxy/was/authentication/serviceticket?username="+inputUserName+"&servicename="+requestForService, function(data) {
-				console.log("service token    : "+data);
-				serviceToken = data;
-				showFullName(serviceToken, userToken, inputUserName);
-				$('form').hide("fast");
-				$('#success').show();
-			});
-			return false;
-		});
-		// Override default behaviour form submit
-		return false;
-	});
-
-	function showFullName(sToken, uToken, uName) {
-		serviceRequest = Aes.Ctr.encrypt("welcome:"+sToken, uToken ,256);
-		serviceRequest = uName+':'+serviceRequest;
-		$.ajax({
-			url: '/auth-proxy/was/users',
-			type: 'GET',
-			data: 'username='+uName,
-			beforeSend: function( xhr ) {
-				xhr.setRequestHeader("Was-Proxy-Authorization", serviceRequest);
-			},
-			success: function(data) {
-						$('#success').html('Welcome '+ data + '<br/>You are succesfully authenticated');
-    					console.log('Load was performed.');
-  					},
-			error: function(jqXHR, textStatus, errorThrown) {
-						console.log(textStatus + ' : ' + errorThrown);
-					}
-		});
-	}
-
-	$('#authTest').click(function() {
-		serviceRequest = Aes.Ctr.encrypt("welcome:"+serviceToken, userToken ,256);
-		serviceRequest = userName+':'+serviceRequest;
-		$.ajax({
-			url: '/auth-proxy/was/users',
-			type: 'GET',
-			data: 'username='+userName,
-			beforeSend: function( xhr ) {
-				xhr.setRequestHeader("Was-Proxy-Authorization", serviceRequest);
-			},
-			success: function(data) {
-						$('#success').html('Welcome '+ data + '<br/>You are succesfully authenticated');
-    					console.log('Load was performed.');
-  					},
-			error: function(jqXHR, textStatus, errorThrown) {
-						console.log(textStatus + ' : ' + errorThrown);
-					}
-		});
-	});
-
-	$('#aes').click(function() {
-		$.get("/auth-proxy/was/authentication/token?username="+userName, function(data) {
-			//alert('response: '+data);
-    		pwdStr = "secret";
-    		hashedPwd = Sha256.hash(pwdStr);
-			
-			serverStr = Aes.Ctr.decrypt(data, hashedPwd ,256);
-			userToken = serverStr;
-
-    		console.log("data    : "+data);
-			console.log("hashedpwd: "+hashedPwd);
-			console.log("decrypted server: "+serverStr);
-			// Encrypt a new service request ticket
-			requestForService = Aes.Ctr.encrypt("users", serverStr ,256);
-
-			$.get("/auth-proxy/was/authentication/serviceticket?username="+userName+"&servicename="+requestForService, function(data) {
-				console.log("service token    : "+data);
-				serviceToken = data;
-			});
-			return false;
-		});
-	});
-	
-	$('#rsa-gen').click(function() {
-		// The passphrase used to repeatably generate this RSA key.
-		var PassPhrase = "secret"; 
-
-		// The length of the RSA key, in bits.
-		var Bits = 512; 
-
-		myRSAkey = cryptico.generateRSAKey(PassPhrase, Bits);
-		return false;
-	});
-
-	$('#rsa').click(function() {
-		
-		var myPublicKeyString = cryptico.publicKeyString(myRSAkey);
-
-		var PlainText = "søme highly secret text to be encrypteđ";
-
-		var EncryptionResult = cryptico.encrypt(PlainText, myPublicKeyString);
-		var DecryptionResult = cryptico.decrypt(EncryptionResult.cipher, myRSAkey);
-
-		console.log("myPublicKeyString: "+myPublicKeyString);
-    	console.log("EncryptionResult    : "+EncryptionResult.cipher);
-		console.log("DecryptionResult: "+DecryptionResult.plaintext);
-
-		return false;
-	});
-});
-</script>
+	<script type="application/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/labjs/2.0.3/LAB.min.js"></script>
+	<script type="application/javascript" src="/js/load-test.js"></script>
 		
 </body>
 </html>
