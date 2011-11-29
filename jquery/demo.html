@@ -5,12 +5,15 @@
 <title>Jquery plugin demo</title>
 <meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
 <meta http-equiv="X-UA-Compatible" content="chrome=1" />
-<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.5.0/jquery.min.js"></script>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js"></script>
 <script type="text/javascript" src="plugins/inFieldLabel/jquery.inFieldLabel.js"></script>
 <script type="text/javascript" src="plugins/autoSuggest/jquery.autoSuggest.js"></script>
+<script type="text/javascript" src="plugins/console/jquery.ui.console.js"></script>
 <link href="reset-fonts.css" rel="stylesheet" type="text/css" media="screen" />
 <link href="form.css" rel="stylesheet" type="text/css" media="screen" />
 <link href="demo.css" rel="stylesheet" type="text/css" media="screen" />
+<link rel="stylesheet" type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/themes/blitzer/jquery-ui.css" />
 </head>
 <body>
 	<h1>This demo will show it's full style with a css3 capable browser</h1>
@@ -38,7 +41,12 @@
 			<label for="auto5">Test for Unicode match/highlight</label>
 			<input type="text" id="auto5" name="auto5" value="" />
 		</fieldset>
+		<fieldset>
+			<legend>jQuery UI console</legend>
+		</fieldset>
 	</form>
+	
+	<div id="console" title="Log Console" class="dos"></div>
 	
 <script type="text/javascript">
 
@@ -54,6 +62,9 @@ $(document).ready(function() {
 	$("#auto3").autoSuggest(data.items,{retrieveLimit:3});
 	$("#auto4").autoSuggest(data.items,{retrieveLimit:3, showScrollbar:true});
 	$("#auto5").autoSuggest(unicodedata.items);
+	
+	// console (dependent on jqueryUI.dialog!)
+	var console = $("#console").console({"buttonbar":true});
 });
 
 var data = {items: [

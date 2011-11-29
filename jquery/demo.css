@@ -63,3 +63,5 @@ li.as-result-item.active em {
 	background: #253f7a;  
 	color: #fff;
 }
+/* Console log styling */
+.dos {font-family: Courier New, Courier;}
