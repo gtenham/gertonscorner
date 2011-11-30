@@ -20,7 +20,7 @@
 	  		'title' : 'jQueryUI console',
 	  		'height' : '250',
 	  		'position' : 'left',
-	  		'tail': true,
+	  		'tail': false,
 	  		'buttonbar' : false
 	  	}, options);
 	  

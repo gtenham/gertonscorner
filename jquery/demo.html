@@ -64,9 +64,10 @@ $(document).ready(function() {
 	$("#auto5").autoSuggest(unicodedata.items);
 	
 	// console (dependent on jqueryUI.dialog!)
-	var console = $("#console").console({"buttonbar":true});
+	console = $("#console").console({"buttonbar":true});
 });
 
+var console;
 var data = {items: [
               {value: "Mick Jagger"},
               {value: "Johnny Storm"},
