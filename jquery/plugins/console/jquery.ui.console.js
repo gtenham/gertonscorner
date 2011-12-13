@@ -75,10 +75,11 @@
 		  		}
 		  		settings[key] = value;
 		  		
-		  		if (!key in ['buttonbar','tail']) {
-		  			$this.dialog("option",key, value);
-		  		} else if (key == 'buttonbar') {
+		  		if (jQuery.inArray(key, ['buttonbar','tail']) >= 0) {
 		  			showButtonbar();
+		  		} else {
+		  			$this.dialog("option",key, value);
+		  			
 		  		}	  		
 		  	}
 	  	};

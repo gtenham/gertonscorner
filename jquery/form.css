@@ -31,7 +31,10 @@ form input:hover, form input:focus, form textarea:hover, form textarea:focus {
 
 form fieldset#current input {width:45px;}
 
-form select {width:80px;}
+form select {width:100px;
+    margin-bottom: 0.7em;
+    margin-right: 200px;
+    padding-left: 0.5em;}
 
 form option {background:#fff;color:#999999;}
 form optgroup {background:#fff; color:#000; font-style:normal;}

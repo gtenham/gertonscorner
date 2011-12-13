@@ -52,8 +52,17 @@
 			<input type="checkbox" id="console4" name="console4" value="false" />
 			<label for="console5">Print on new line</label>
 			<input type="checkbox" id="console5" name="console5" value="false" />
-			<label for="console6">Log message (press enter)</label>
-			<input type="text" id="console6" name="console6" value="" />
+			<label for="console6">position (within viewport)</label>
+			<select id="console6" name="console6">
+				<option value="left" selected="selected">Left</option>
+				<option value="right">Right</option>
+				<option value="top">Top</option>
+				<option value="bottom">Bottom</option>
+				<option value="center">Center</option>
+			</select>
+			<label for="console7">Log message (press enter)</label>
+			<input type="text" id="console7" name="console7" value="" />
+			
 		</fieldset>
 	</form>
 	
@@ -78,7 +87,7 @@ $(document).ready(function() {
 	uiconsole = $("#console").console({
 		'buttonbar':$("#console3").is(":checked"),
 		'tail':$("#console4").is(":checked"),
-		'position':"top"
+		'position':$('select[name="console6"] option:selected').val()
 		});
 	
 	$("#console").bind( "dialogclose", function(event, ui) {
@@ -93,15 +102,18 @@ $(document).ready(function() {
 	$("#console4").click(function () {
 		uiconsole.option("tail",$("#console4").is(":checked"));
 	});
-	$("#console6").keypress(function(event) {
+	$("#console6").change(function() {
+		uiconsole.option("position",$('select[name="console6"] option:selected').val());
+	});
+	$("#console7").keypress(function(event) {
 		if ( event.which == 13 ) {
 			if ($("#console5").is(":checked")) {
-				uiconsole.println($("#console6").val());
+				uiconsole.println($("#console7").val());
 			} else {
-				uiconsole.print($("#console6").val());
+				uiconsole.print($("#console7").val());
 			}
 			
-			$("#console6").val('');
+			$("#console7").val('');
     		event.preventDefault();
   		}
 	});
