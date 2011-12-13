@@ -6,7 +6,7 @@
  * See for more examples the demo at: 
  * http://gertonscorner.googlecode.com/svn/trunk/jquery/demo.html
  *
- * Version: 0.1 (29/11/2011)
+ * Version: 0.2 (13/12/2011)
  *
  * Dual licensed under the MIT and GPL licenses:
  *   http://www.opensource.org/licenses/mit-license.php
@@ -29,12 +29,18 @@
 		  		   , position: settings.position 
 		  		   });
 	  	
-	    if (settings.buttonbar) {
-	    	$this.dialog("option"
-	    			, "buttons"
-	    			, { "clear": function() {$this.empty();} }
-	    			);
-	    }
+	    var showButtonbar = function() {
+	    	if (settings.buttonbar) {
+		    	$this.dialog("option"
+		    			, "buttons"
+		    			, { "clear": function() {$this.empty();} }
+		    			);
+	    	} else {
+	    		$this.dialog("option", "buttons", {} );
+	    	}
+	    };
+	    
+	    showButtonbar();
 	    
 	  	return {
 		  	cls: function() { 
@@ -56,6 +62,24 @@
 		  	},
 		  	log: function(msg) {
 		  		console.log(msg);
+		  	},
+		  	open: function() {
+		  		$this.dialog("open");
+		  	},
+		  	close: function() {
+		  		$this.dialog("close");
+		  	},
+		  	option: function(key,value) {
+		  		if (value == null) {
+		  			return settings[key];
+		  		}
+		  		settings[key] = value;
+		  		
+		  		if (!key in ['buttonbar','tail']) {
+		  			$this.dialog("option",key, value);
+		  		} else if (key == 'buttonbar') {
+		  			showButtonbar();
+		  		}	  		
 		  	}
 	  	};
 	  

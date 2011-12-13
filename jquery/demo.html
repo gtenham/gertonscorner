@@ -43,6 +43,17 @@
 		</fieldset>
 		<fieldset>
 			<legend>jQuery UI console</legend>
+			<label for="console1">Status log console</label>
+			<input type="radio" id="console1" name="radio" checked="checked" /><span>On</span>
+			<input type="radio" id="console2" name="radio" /><span>Off</span>
+			<label for="console3">Show buttonbar</label>
+			<input type="checkbox" id="console3" name="console3" value="false" />
+			<label for="console4">Tailing messages</label>
+			<input type="checkbox" id="console4" name="console4" value="false" />
+			<label for="console5">Print on new line</label>
+			<input type="checkbox" id="console5" name="console5" value="false" />
+			<label for="console6">Log message (press enter)</label>
+			<input type="text" id="console6" name="console6" value="" />
 		</fieldset>
 	</form>
 	
@@ -64,10 +75,40 @@ $(document).ready(function() {
 	$("#auto5").autoSuggest(unicodedata.items);
 	
 	// console (dependent on jqueryUI.dialog!)
-	console = $("#console").console({"buttonbar":true});
+	uiconsole = $("#console").console({
+		'buttonbar':$("#console3").is(":checked"),
+		'tail':$("#console4").is(":checked"),
+		'position':"top"
+		});
+	
+	$("#console").bind( "dialogclose", function(event, ui) {
+		$("#console1").removeAttr("checked");
+		$("#console2").attr("checked", "checked");
+	});
+	$("#console1").click(function () {uiconsole.open()});
+	$("#console2").click(function () {uiconsole.close()});
+	$("#console3").click(function () {
+		uiconsole.option("buttonbar",$("#console3").is(":checked"));
+	});
+	$("#console4").click(function () {
+		uiconsole.option("tail",$("#console4").is(":checked"));
+	});
+	$("#console6").keypress(function(event) {
+		if ( event.which == 13 ) {
+			if ($("#console5").is(":checked")) {
+				uiconsole.println($("#console6").val());
+			} else {
+				uiconsole.print($("#console6").val());
+			}
+			
+			$("#console6").val('');
+    		event.preventDefault();
+  		}
+	});
+
 });
 
-var console;
+var uiconsole;
 var data = {items: [
               {value: "Mick Jagger"},
               {value: "Johnny Storm"},
