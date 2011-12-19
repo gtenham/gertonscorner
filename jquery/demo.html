@@ -10,6 +10,7 @@
 <script type="text/javascript" src="plugins/inFieldLabel/jquery.inFieldLabel.js"></script>
 <script type="text/javascript" src="plugins/autoSuggest/jquery.autoSuggest.js"></script>
 <script type="text/javascript" src="plugins/console/jquery.ui.console.js"></script>
+<script type="text/javascript" src="plugins/limitMaxlength/jquery.limitMaxlength.js"></script>
 <link href="reset-fonts.css" rel="stylesheet" type="text/css" media="screen" />
 <link href="form.css" rel="stylesheet" type="text/css" media="screen" />
 <link href="demo.css" rel="stylesheet" type="text/css" media="screen" />
@@ -62,13 +63,17 @@
 			</select>
 			<label for="console7">Log message (press enter)</label>
 			<input type="text" id="console7" name="console7" value="" />
-			
+		</fieldset>
+		<fieldset>
+			<legend>limitMaxlength</legend>
+			<label for="max1">Text area (limit 15 characters)</label>
+			<textarea id="max1" name="max1" maxlength="15" rows="2" cols="40">Lorem ipsum</textarea>
 		</fieldset>
 	</form>
 	
-	<div id="console" title="Log Console" class="dos"></div>
+	<div id="log" title="Log Console" class="dos"></div>
 	
-<script type="text/javascript">
+<script type="text/javascript"><!--
 
 $(document).ready(function() {
 	// inFieldLabel
@@ -84,43 +89,57 @@ $(document).ready(function() {
 	$("#auto5").autoSuggest(unicodedata.items);
 	
 	// console (dependent on jqueryUI.dialog!)
-	uiconsole = $("#console").console({
-		'buttonbar':$("#console3").is(":checked"),
+	var log = $("#log").console({
 		'tail':$("#console4").is(":checked"),
+		'height' : '250',
 		'position':$('select[name="console6"] option:selected').val()
-		});
+	});
 	
-	$("#console").bind( "dialogclose", function(event, ui) {
+	$("#log").bind( "dialogclose", function(event, ui) {
 		$("#console1").removeAttr("checked");
 		$("#console2").attr("checked", "checked");
 	});
-	$("#console1").click(function () {uiconsole.open()});
-	$("#console2").click(function () {uiconsole.close()});
+	$("#console1").click(function () {log.console('open')});
+	$("#console2").click(function () {log.console('close')});
 	$("#console3").click(function () {
-		uiconsole.option("buttonbar",$("#console3").is(":checked"));
+		if ($("#console3").is(":checked")) {
+		    log.console('option',"buttons",{ "clear": function() {log.console('cls');} });
+		} else {
+			log.console('option',"buttons",{});
+		}
 	});
 	$("#console4").click(function () {
-		uiconsole.option("tail",$("#console4").is(":checked"));
+		log.console('option',"tail",$("#console4").is(":checked"));
 	});
 	$("#console6").change(function() {
-		uiconsole.option("position",$('select[name="console6"] option:selected').val());
+		log.console('option',"position",$('select[name="console6"] option:selected').val());
 	});
 	$("#console7").keypress(function(event) {
 		if ( event.which == 13 ) {
 			if ($("#console5").is(":checked")) {
-				uiconsole.println($("#console7").val());
+				log.console('println',$("#console7").val());
 			} else {
-				uiconsole.print($("#console7").val());
+				log.console('print',$("#console7").val());
 			}
 			
 			$("#console7").val('');
     		event.preventDefault();
   		}
 	});
-
+    
+	// limitMaxlength (textarea)
+	$('textarea[maxlength]').limitMaxlength({
+		onEditCallback: function(remaining) {
+			log.console('option',"tail",true);
+			log.console('println',"Remaining characters: " + remaining);
+		},
+		onLimitCallback: function(maxlength) {
+			log.console('cls');
+			log.console('println',"Maximum length reached: "+maxlength);
+		}
+	});
 });
 
-var uiconsole;
 var data = {items: [
               {value: "Mick Jagger"},
               {value: "Johnny Storm"},
@@ -139,6 +158,6 @@ var unicodedata = {items: [
 			  {value: "Zakopane"},
 			  {value: "Zabrze"}
               ]};
-</script>
+--></script>
 </body>
 </html>
