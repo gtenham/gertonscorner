@@ -63,5 +63,9 @@ li.as-result-item.active em {
 	background: #253f7a;  
 	color: #fff;
 }
+
+/* Max length plugin */
+.max-length-container {position:relative;}
+.max-length-container .counter {position: absolute; bottom: 0; right: 15px;}
 /* Console log styling */
 .dos {font-family: Courier New, Courier;}

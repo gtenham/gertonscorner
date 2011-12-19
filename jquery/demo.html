@@ -67,7 +67,15 @@
 		<fieldset>
 			<legend>limitMaxlength</legend>
 			<label for="max1">Text area (limit 15 characters)</label>
-			<textarea id="max1" name="max1" maxlength="15" rows="2" cols="40">Lorem ipsum</textarea>
+			<div class="max-length-container">
+				<textarea id="max1" name="max1" maxlength="15" rows="2" cols="40">Lorem ipsum</textarea>
+				<span class="counter"> </span>
+			</div>
+			<label for="max2">Text area (limit 9 characters)</label>
+			<div class="max-length-container">
+				<textarea id="max2" name="max2" maxlength="9" rows="2" cols="40">123456789</textarea>
+				<span class="counter"> </span>
+			</div>
 		</fieldset>
 	</form>
 	
@@ -129,11 +137,18 @@ $(document).ready(function() {
     
 	// limitMaxlength (textarea)
 	$('textarea[maxlength]').limitMaxlength({
-		onEditCallback: function(remaining) {
+		onInitCallback: function(elem,remaining) {
 			log.console('option',"tail",true);
 			log.console('println',"Remaining characters: " + remaining);
+			elem.next('.counter').text(remaining);
 		},
-		onLimitCallback: function(maxlength) {
+		onEditCallback: function(elem,remaining) {
+			log.console('option',"tail",true);
+			log.console('cls');
+			log.console('println',"Remaining characters: " + remaining);
+			elem.next('.counter').text(remaining);
+		},
+		onLimitCallback: function(elem,maxlength) {
 			log.console('cls');
 			log.console('println',"Maximum length reached: "+maxlength);
 		}
