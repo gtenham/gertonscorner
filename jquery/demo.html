@@ -138,7 +138,6 @@ $(document).ready(function() {
 	// limitMaxlength (textarea)
 	$('textarea[maxlength]').limitMaxlength({
 		onInitCallback: function(elem,remaining) {
-			log.console('option',"tail",true);
 			log.console('println',"Remaining characters: " + remaining);
 			elem.next('.counter').text(remaining);
 		},

@@ -38,12 +38,13 @@
 	  	println: function(msg) {
 	  		if (this.options.tail) {
 	  			this.element.prepend(msg+'<br/>');
+	  		} else if (this.element.html() != "" && !this.element.html().match(/([\s\S]+)<br\s*\/?>$/)) {
+	  			this.element.append('<br/>'+msg+'<br/>');
 	  		} else {
 	  			this.element.append(msg+'<br/>');
 	  		}
 	  	},
 	  	print: function(msg) {
-	  		console.log("tail: "+this.options.tail);
 	  		if (this.options.tail) {
 	  			this.element.prepend(msg);
 	  		} else {
