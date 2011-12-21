@@ -69,3 +69,11 @@ li.as-result-item.active em {
 .max-length-container .counter {position: absolute; bottom: 0; right: 15px;}
 /* Console log styling */
 .dos {font-family: Courier New, Courier;}
+.ui-widget-content {
+	border:1px solid #999999; 
+	box-shadow: rgba(0,0,0, 0.1) 0px 0px 4px;  
+    -moz-box-shadow: rgba(0,0,0, 0.1) 0px 0px 4px;  
+    -webkit-box-shadow: rgba(0,0,0, 0.1) 0px 0px 4px;
+    background: -webkit-gradient(linear, left top, left 100, from(#FFFFFF), color-stop(4%, #eeeeee), to(#FFFFFF)) !important;  
+    background: -moz-linear-gradient(center top , #FFFFFF, #EEEEEE 1px, #FFFFFF 150px) repeat scroll 0 0 transparent !important;
+    }
