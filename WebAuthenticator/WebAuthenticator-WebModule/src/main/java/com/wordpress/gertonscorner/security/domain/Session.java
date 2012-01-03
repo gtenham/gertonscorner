@@ -9,7 +9,7 @@ public class Session implements Serializable {
 	
 	private String userName;
 	private String userToken;
-	private String serviceToken;
+	private String serviceTicket;
 	private String remoteAddress;
 	private Date lastActiveDate;
 	
@@ -43,17 +43,17 @@ public class Session implements Serializable {
 	}
 
 	/**
-	 * @param serviceToken the serviceToken to set
+	 * @param serviceTicket the serviceTicket to set
 	 */
-	public void setServiceToken(String serviceToken) {
-		this.serviceToken = serviceToken;
+	public void setServiceTicket(String serviceTicket) {
+		this.serviceTicket = serviceTicket;
 	}
 
 	/**
-	 * @return the serviceToken
+	 * @return the serviceTicket
 	 */
-	public String getServiceToken() {
-		return serviceToken;
+	public String getServiceTicket() {
+		return serviceTicket;
 	}
 
 	/**

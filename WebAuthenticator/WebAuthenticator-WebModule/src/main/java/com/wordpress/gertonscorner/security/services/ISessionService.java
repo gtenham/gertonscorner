@@ -27,12 +27,12 @@ public interface ISessionService {
 	String getUserToken(String username);
 	
 	/**
-	 * Set service request token for user
+	 * Set service request ticket for user
 	 * 
 	 * @param username
-	 * @param token
+	 * @param ticket
 	 */
-	void setServiceToken(String username, String token);
+	void setServiceTicket(String username, String ticket);
 	
 	/**
 	 * Set remote address for user.

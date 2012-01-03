@@ -60,12 +60,12 @@ public class SessionService implements ISessionService {
 	/* (non-Javadoc)
 	 * @see com.wordpress.gertonscorner.security.services.ISessionService#setServiceToken(java.lang.String, java.lang.String)
 	 */
-	public void setServiceToken(String username, String token) {
+	public void setServiceTicket(String username, String ticket) {
 		Session userSession = sessionDao.getUserSession(username);
 		if (userSession == null ) {
 			return;
 		}
-		userSession.setServiceToken(token);
+		userSession.setServiceTicket(ticket);
 		writeSession(userSession, true);
 	}
 

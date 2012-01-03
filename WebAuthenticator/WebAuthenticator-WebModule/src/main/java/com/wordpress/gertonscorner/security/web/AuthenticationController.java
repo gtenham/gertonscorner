@@ -8,7 +8,6 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -16,10 +15,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
+import com.wordpress.gertonscorner.security.annotations.Authentication;
 import com.wordpress.gertonscorner.security.services.IAuthenticationService;
 import com.wordpress.gertonscorner.security.services.IUserService;
-import com.wordpress.gertonscorner.security.services.exceptions.EncryptionException;
-import com.wordpress.gertonscorner.security.services.exceptions.UserNotFoundException;
 
 /**
  * Authentication web controller
@@ -30,7 +28,7 @@ import com.wordpress.gertonscorner.security.services.exceptions.UserNotFoundExce
  */
 @Controller
 @RequestMapping("/authentication")
-public class AuthenticationController {
+public class AuthenticationController extends AbstractWasController{
 
 	@Autowired
 	private IUserService userService;
@@ -74,15 +72,15 @@ public class AuthenticationController {
 													);
 	}
 	
-	@ExceptionHandler(UserNotFoundException.class)
-	@ResponseStatus(HttpStatus.NOT_FOUND)
-	public void userNotFound() {}
-	
-	@ExceptionHandler(Exception.class)
-	@ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-	public void internalServerError() {}
-	
-	@ExceptionHandler(EncryptionException.class)
-	@ResponseStatus(HttpStatus.FORBIDDEN)
-	public void forbiddenRequest() {}
+	/**
+	 * Remove the user session for given username
+	 * 
+	 * @param username
+	 */
+	@RequestMapping(value = "/serviceticket", method = RequestMethod.DELETE)
+	@Authentication(proxyName="was-proxy")
+	public void removeSession(@RequestParam(value="username", required = true ) String username
+							 ,HttpServletRequest request) {
+		authenticationService.invalidateSessionForUser(userService.getUserByName(username));
+	}
 }

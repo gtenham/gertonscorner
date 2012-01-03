@@ -83,7 +83,7 @@ public class AuthenticationService implements IAuthenticationService {
 			encryptedServiceTicket = AESCtr.encrypt256(serviceKey, decryptedServiceRequest+","+remoteAddress);
 			// Enrich user session with remote address and encrypted service ticket
 			sessionService.setRemoteAddress(user.getUserName(), remoteAddress);
-			sessionService.setServiceToken(user.getUserName(), encryptedServiceTicket);
+			sessionService.setServiceTicket(user.getUserName(), encryptedServiceTicket);
 			
 		} catch (Exception e) {
 			logger.error(e.getMessage());
@@ -103,6 +103,14 @@ public class AuthenticationService implements IAuthenticationService {
 		} else {
 			throw new ProxyAuthenticationRequiredException("WAS authentication required!");
 		}
+	}
+	
+	/* (non-Javadoc)
+	 * @see com.wordpress.gertonscorner.security.services.IAuthenticationService#invalidateSessionForUser(com.wordpress.gertonscorner.security.domain.User)
+	 */
+	public void invalidateSessionForUser(User user) throws ProxyAuthenticationRequiredException {
+		sessionService.destroySession(user.getUserName());
+		throw new ProxyAuthenticationRequiredException("WAS authentication required!");
 	}
 	
 	/**
@@ -169,4 +177,5 @@ public class AuthenticationService implements IAuthenticationService {
 		logger.info(token);
 		return token;
 	}
+
 }
