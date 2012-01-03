@@ -34,6 +34,7 @@ aside {
    	right: 10px;
    	top: 100px;
 }
+aside section {margin:22px 0 10px;}
 aside ul {list-style-type:none;}
 
 footer{padding: 0 0 0 120px;}
@@ -82,12 +83,12 @@ input.submit {
 input.submit:hover {
 	-webkit-box-shadow: 0px 0px 2px #000;
 	background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#963AD6), to(#781bb9));
-	background:  -moz-linear-gradient(19% 75% 90deg,#781bb9, #963AD6);
+	background: -moz-linear-gradient(19% 75% 90deg,#781bb9, #963AD6);
 } 
 
 input.submit:active {
 	background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#781bb9), to(#963AD6));
-	background:  -moz-linear-gradient(19% 75% 90deg,#963AD6, #781bb9);
+	background: -moz-linear-gradient(19% 75% 90deg,#963AD6, #781bb9);
 }
 
 input:hover {
@@ -96,4 +97,4 @@ input:hover {
 }
 a {color:#ffffff;}
 #success {display: none;color:#ffffff;}
-#error {display: none;color:#ffffff;font-size:0.85em;}
+#message {display: none;color:#ffffff;font-size:0.85em;}

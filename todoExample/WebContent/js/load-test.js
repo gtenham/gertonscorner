@@ -1,6 +1,7 @@
 $LAB
 .setOptions({AlwaysPreserveOrder:true})
-.script("http://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js")
+.script("http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js")
+.script("http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js")
 .script("/js/ext/base64.js")
 .script("/js/ext/utf8.js")
 .script("/js/ext/sha256.js")
@@ -8,16 +9,18 @@ $LAB
 .script("/js/ext/aes-ctr.js")
 .wait(function() {
 	$(document).ready(function() {
-		// Your dom ready stuff
-		var userName = 'gerton.tenham@yahoo.com';
+		// TODO: Should be saved into session container!
 		var userToken;
 		var serviceToken;
 		var serviceRequest;
-
+		// Variables holding user input
+		var inputUserName;
+		var inputPwd;
+		
 		$('#login').click(function() {
-			var inputUserName = $('#username').val();
-			var inputPwd = $('#password').val();
-			$('#error').hide("fast");
+			inputUserName = $('#username').val();
+			inputPwd = $('#password').val();
+			$('#message').hide("fast");
 			$.get("/auth-proxy/was/authentication/token?username="+inputUserName, function(data) {
 				hashedPwd = Sha256.hash(inputPwd);
 				
@@ -32,12 +35,12 @@ $LAB
 					type: 'GET',
 					data: 'username='+inputUserName+'&servicename='+requestForService,
 					success: function(data) {
-							serviceToken = data;
-							showFullName(serviceToken, userToken, inputUserName);
-	  					},
+						serviceToken = data;
+						showFullName(serviceToken, userToken, inputUserName);
+	  				},
 					error: function(jqXHR, textStatus, errorThrown) {
-							showError("Authentication error! Please try again.");
-						}
+						showMessage("Authentication error! Please try again.");
+					}
 				});
 				return false;
 			});
@@ -45,6 +48,67 @@ $LAB
 			return false;
 		});
 
+		$('#authTest').click(function() {
+			try{
+				serviceRequest = Aes.Ctr.encrypt("welcome:"+serviceToken, userToken ,256);
+				serviceRequest = inputUserName+':'+serviceRequest;
+				
+				$.ajax({
+					url: '/auth-proxy/was/users',
+					type: 'GET',
+					data: 'username='+inputUserName,
+					beforeSend: function( xhr ) {
+						xhr.setRequestHeader("Was-Proxy-Authorization", serviceRequest);
+					},
+					success: function(data) {
+						showMessage("Authenticated call returned: "+data);
+		  			},
+					error: function(jqXHR, textStatus, errorThrown) {
+						if (jqXHR.status == 407) {
+							showLogin();
+							showMessage("Authentication required! Please login.");
+						}
+								
+					}
+				});
+			} catch(e) {
+				console.log(e.message);
+				
+			}
+			
+			return false;
+		});
+		
+		$('#logout').click(function() {
+			try{
+				serviceRequest = Aes.Ctr.encrypt("logout:"+serviceToken, userToken ,256);
+				serviceRequest = inputUserName+':'+serviceRequest;
+				
+				$.ajax({
+					url: '/auth-proxy/was/authentication/serviceticket?username='+inputUserName,
+					type: 'DELETE',
+					beforeSend: function( xhr ) {
+						xhr.setRequestHeader("Was-Proxy-Authorization", serviceRequest);
+					},
+					success: function(data) {
+						showMessage("Logout succesfull!");
+		  			},
+					error: function(jqXHR, textStatus, errorThrown) {
+						if (jqXHR.status == 407) {
+							showLogin();
+							showMessage("Logout was succesfull.");
+						}
+								
+					}
+				});
+			} catch(e) {
+				console.log(e.message);
+				
+			}
+			
+			return false;
+		});
+		
 		function showFullName(sToken, uToken, uName) {
 			serviceRequest = Aes.Ctr.encrypt("welcome:"+sToken, uToken ,256);
 			serviceRequest = uName+':'+serviceRequest;
@@ -57,48 +121,24 @@ $LAB
 					xhr.setRequestHeader("Was-Proxy-Authorization", serviceRequest);
 				},
 				success: function(data) {
-							
-							$('form').hide("fast", function() {
-							    $('#success').html('Welcome '+ data + '<br/>You are succesfully authenticated').show();
-	    					});
-	  					},
+					$('form').hide("fast", function() {
+					    $('#success').html('Welcome '+ data + '<br/>You are succesfully authenticated').show();
+					});
+	  			},
 				error: function(jqXHR, textStatus, errorThrown) {
-							console.log(textStatus + ' : ' + errorThrown);
-						}
+					console.log(textStatus + ' : ' + errorThrown);
+				}
 			});
 		}
 
 		function showLogin() {
 			$('#success').hide("fast");
-			$('#error').hide("fast");
+			$('#message').hide("fast");
 			$('form').show("fast");
 		}
 		
-		function showError(message) {
-			$('#error').html(message).show("fast").fadeOut(10000);
+		function showMessage(message) {
+			$('#message').html(message).show("fast").fadeOut(10000);
 		}
-		
-		$('#authTest').click(function() {
-			serviceRequest = Aes.Ctr.encrypt("welcome:"+serviceToken, userToken ,256);
-			serviceRequest = userName+':'+serviceRequest;
-			$.ajax({
-				url: '/auth-proxy/was/users',
-				type: 'GET',
-				data: 'username='+userName,
-				beforeSend: function( xhr ) {
-					xhr.setRequestHeader("Was-Proxy-Authorization", serviceRequest);
-				},
-				success: function(data) {
-							console.log('Load was performed.');
-	  					},
-				error: function(jqXHR, textStatus, errorThrown) {
-							if (jqXHR.status == 407) {
-								showLogin();
-								showError("Authentication required! Please login.");
-							}
-							
-						}
-			});
-		});
 	});
 });

@@ -4,6 +4,7 @@
 	<meta charset="UTF-8">
 	<title>test authenticate</title>
 	<link rel="stylesheet" type="text/css" href="/style/test-master.css" />
+	<link rel="stylesheet" type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/themes/vader/jquery-ui.css" />
 </head>
 <body>
 	<div class="container">
@@ -19,17 +20,25 @@
 		        <input type="submit" value="Login" id="login" name="login" class="submit" />
 			</form>
 			<span id="success"></span>
-			<span id="error"></span>
+			
 		</section>
+		
 		<aside>
+			<section>
+				<span id="message"></span>
+			</section>
 			<ul>
-				<li><a href="#" id="authTest">Test Authorization Header</a></li>
+				<li><a href="#" id="authTest">Call authenticated method</a></li>
+				<li><a href="#" id="logout">Logout</a></li>
 			</ul>
+			
 		</aside>
 		<footer>
-			<a href="#">Copyright &copy; Gerton ten Ham</a>
+			<a href="#" id="cls">Copyright &copy; Gerton ten Ham</a>
+			
 		</footer>
 	</div>
+	
 	<script type="application/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/labjs/2.0.3/LAB.min.js"></script>
 	<script type="application/javascript" src="/js/load-test.js"></script>
 		
