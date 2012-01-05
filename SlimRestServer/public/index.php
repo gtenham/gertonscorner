@@ -1,4 +1,7 @@
 <?php
+ini_set('session.use_cookies', 0);
+ini_set('session.use_only_cookies', 0);
+
 set_include_path(implode(PATH_SEPARATOR, array(
     realpath(dirname(__FILE__) . '/../lib'),
     realpath(dirname(__FILE__) . '/../app'),
@@ -7,7 +10,9 @@ set_include_path(implode(PATH_SEPARATOR, array(
 
 require 'Slim/Slim.php';
 
-$app = new Slim();
+$app = new Slim(array(
+    'session.handler' => null
+));
 $app->setName('root');
 
 $app->get('/', function () use ($app) {
