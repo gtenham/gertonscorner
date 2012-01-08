@@ -1,0 +1,13 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<container>
+   <manager id="slim-rest-server">
+      <gateway class="GcLib\Dao\OracleGateway">
+         <property name="database">//localhost/XE:POOLED</property>
+         <property name="username">todo</property>
+         <property name="password">todo</property>
+      </gateway>
+      <daos>
+         <dao name="todo" class="models\dao\TodoDAO"/>
+      </daos>
+   </manager>
+</container>
