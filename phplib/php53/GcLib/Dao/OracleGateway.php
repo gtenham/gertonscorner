@@ -11,10 +11,17 @@ class OracleGateway extends Gateway {
 	
 	public function getConnection() {
 	   if (!$this->_conn) {
-	   	   $this->_conn = oci_connect( $this->_options["username"]
-		                             , $this->_options["password"]
-		                             , $this->_options["database"]
-		                             );
+	   	   if (stripos($this->_options["database"],":pooled")) {
+	   	       $this->_conn = oci_pconnect( $this->_options["username"]
+			                             , $this->_options["password"]
+			                             , $this->_options["database"]
+			                             );
+	   	   } else {
+		   	   $this->_conn = oci_connect( $this->_options["username"]
+			                             , $this->_options["password"]
+			                             , $this->_options["database"]
+			                             );
+	   	   }
 	   	}
 		return $this->_conn;
 	}
