@@ -30,8 +30,7 @@ $app->get('/', function () use ($app) {
 
 $app->get('/todos/:id', function ($id) {
 	$todoservice = new services\TodoService();
-	$todo = $todoservice->getTodoById($id);
-	echo json_encode($todo->toArray());
+	echo json_encode($todoservice->getTodoById($id));
 });
 
 $app->run();

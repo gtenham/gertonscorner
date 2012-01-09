@@ -17,6 +17,8 @@ class TodoService {
 	}
 	
 	public function getTodoById($id) {
-		return $this->todoDAO->findTodoById($id);
+		$todo = $this->todoDAO->findTodoById($id);
+		$errors['errors'] = $todo->getErrors();
+		return array_merge($todo->toArray(),$errors);
 	}
 }
