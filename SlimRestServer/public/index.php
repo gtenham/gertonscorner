@@ -28,8 +28,16 @@ $app->get('/', function () use ($app) {
 	echo "Running Slim app: ".$app->getName();
 });
 
-$app->get('/todos/:id', function ($id) {
-	$todoservice = new services\TodoService();
+$todoservice = new services\TodoService();
+
+$app->get('/todos', function () use ($app, $todoservice) {
+	$app->etag(md5(serialize($todoservice->getTodos())));
+	$todolist['todos'] = $todoservice->getTodos();
+	echo json_encode($todolist);
+}); 
+
+$app->get('/todos/:id', function ($id) use ($app, $todoservice) {
+	$app->etag(md5(serialize($todoservice->getTodoById($id))));
 	echo json_encode($todoservice->getTodoById($id));
 });
 
