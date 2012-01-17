@@ -20,20 +20,30 @@ defined('APPLICATION_PATH')
 require 'Slim/Slim.php';
 
 $app = new Slim(array(
-    'session.handler' => null
+    'session.handler' => null,
+	'templates.path' => '../app/views',
+	'debug' => false
 ));
-$app->setName('root');
+$app->setName('todos');
 
 $app->get('/', function () use ($app) {
-	echo "Running Slim app: ".$app->getName();
+	$app->render('TodoHome.php', array( 'name' => $app->getName() ));
 });
 
+$app->error(function ( Exception $e ) use ($app) {
+	if ($e->__toString() == null) {
+		$app->halt(500, $e->getMessage());
+	} else {
+		$app->halt($e->__toString());
+	}
+});
+
+// Start of Todo application REST routing
 $todoservice = new services\TodoService();
 
 $app->get('/todos', function () use ($app, $todoservice) {
 	$app->etag(md5(serialize($todoservice->getTodos())));
-	$todolist['todos'] = $todoservice->getTodos();
-	echo json_encode($todolist);
+	echo json_encode($todoservice->getTodos());
 }); 
 
 $app->get('/todos/:id', function ($id) use ($app, $todoservice) {
@@ -41,4 +51,9 @@ $app->get('/todos/:id', function ($id) use ($app, $todoservice) {
 	echo json_encode($todoservice->getTodoById($id));
 });
 
+$app->delete('/todos/:id', function ($id) use ($todoservice) {
+	$todoservice->removeTodo($id);
+});
+
+// Run slim application
 $app->run();

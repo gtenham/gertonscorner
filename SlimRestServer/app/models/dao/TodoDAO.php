@@ -2,6 +2,7 @@
 namespace models\dao;
 
 use models\domain\Todo as Todo;
+use services\exceptions\NotFoundException as NotFoundException;
 
 /**
  * Todo Data Access Object class
@@ -65,12 +66,18 @@ class TodoDAO {
     	$stmt = oci_parse($conn, 'select * from todos where id = :id');
     	oci_bind_by_name($stmt, ':id', $id);
     	$results = oci_execute($stmt, OCI_DEFAULT);
+    	$data = array();
+    	
     	if ($results) {
     		$row = oci_fetch_assoc($stmt);
-    		foreach($this->_todoMapper as $dbcol => $attr) {
-    			if (array_key_exists($dbcol, $row)) {
-    			   $data[$attr] = $row[$dbcol];
-    			}
+    		if ($row != false) {
+	    		foreach($this->_todoMapper as $dbcol => $attr) {
+	    			if (array_key_exists($dbcol, $row)) {
+	    			   $data[$attr] = $row[$dbcol];
+	    			}
+	    		}
+    		} else {
+    			throw new NotFoundException('Todo not found');
     		}
     	}
     	oci_free_statement($stmt);
@@ -78,5 +85,33 @@ class TodoDAO {
 		
     	$todo = new Todo($data);
     	return $todo;
+	}
+	
+	public function save(Todo $todo) {
+		
+	}
+	
+	public function destroy(array $ids) {
+		$success = true;
+		$conn = $this->_daogateway->getConnection();
+    	$stmt = oci_parse($conn, 'delete from todos where id = :id');
+    	oci_bind_by_name($stmt, ':id', $id);
+    	
+		foreach ($ids as $id) {
+		    $results = oci_execute($stmt, OCI_DEFAULT);
+		    if (!$results) {
+		    	$success = false;
+		    	break;
+		    }
+		}
+		if ($success) {
+			oci_commit($conn);
+		} else {
+			oci_rollback($conn);
+		}
+    	
+    	
+    	oci_free_statement($stmt);
+		oci_close($conn);
 	}
 }

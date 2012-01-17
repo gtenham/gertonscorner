@@ -32,7 +32,8 @@ class TodoService {
 	 * @return array of todos:
 	 */
 	public function getTodos() {
-		return $this->todoDAO->find();
+		$todolist['todos'] = $this->todoDAO->find();
+		return $todolist;
 	}
 	
 	/**
@@ -45,5 +46,9 @@ class TodoService {
 		$todo = $this->todoDAO->findTodoById($id);
 		$errors['errors'] = $todo->getErrors();
 		return array_merge($todo->toArray(),$errors);
+	}
+	
+	public function removeTodo($id) {
+		$this->todoDAO->destroy(array($id));
 	}
 }
