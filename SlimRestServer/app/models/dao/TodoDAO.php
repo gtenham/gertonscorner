@@ -88,7 +88,9 @@ class TodoDAO {
 	}
 	
 	public function save(Todo $todo) {
-		
+		/*
+		 * select lower(regexp_replace(sys_guid(),'(.{8})(.{4})(.{4})(.{4})(.{12})', '\1-\2-\3-\4-\5')) guid from dual;
+		 */
 	}
 	
 	public function destroy(array $ids) {
