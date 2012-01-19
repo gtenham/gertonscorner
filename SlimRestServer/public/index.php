@@ -51,6 +51,11 @@ $app->get('/todos/:id', function ($id) use ($app, $todoservice) {
 	echo json_encode($todoservice->getTodoById($id));
 });
 
+$app->post('/todos', function () use ($app, $todoservice) {
+	$data = json_decode($app->request()->getBody(),true);
+	$todoservice->addTodo($data);
+});
+
 $app->delete('/todos/:id', function ($id) use ($todoservice) {
 	$todoservice->removeTodo($id);
 });

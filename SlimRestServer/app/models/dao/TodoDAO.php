@@ -91,6 +91,31 @@ class TodoDAO {
 		/*
 		 * select lower(regexp_replace(sys_guid(),'(.{8})(.{4})(.{4})(.{4})(.{12})', '\1-\2-\3-\4-\5')) guid from dual;
 		 */
+		$newid = null;
+		$success = true;
+		$conn = $this->_daogateway->getConnection();
+		$guid = "lower(regexp_replace(sys_guid(),'(.{8})(.{4})(.{4})(.{4})(.{12})', '\\1-\\2-\\3-\\4-\\5'))";
+		if ($todo->id == null) {
+			// Insert new todo
+			$stmt = oci_parse($conn, "insert into todos (id, done, sorting, startdate, description ) 
+									  values (" . $guid . ", :done, :sorting, :startdate, :description) 
+									  returning id into :id");
+			oci_bind_by_name($stmt, ':id', $newid,40);
+    		oci_bind_by_name($stmt, ':done', $todo->done,1);
+    		oci_bind_by_name($stmt, ':sorting', $todo->order,3);
+    		oci_bind_by_name($stmt, ':startdate', $todo->startDate);
+			oci_bind_by_name($stmt, ':description', $todo->description, 2000);
+			$results = oci_execute($stmt, OCI_DEFAULT);
+		}
+		
+		if ($success) {
+			oci_commit($conn);
+		} else {
+			oci_rollback($conn);
+		}
+    	oci_free_statement($stmt);
+		oci_close($conn);
+		return $newid;
 	}
 	
 	public function destroy(array $ids) {

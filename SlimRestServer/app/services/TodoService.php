@@ -3,6 +3,7 @@ namespace services;
 
 use GcLib\Xml\XMLResource as XMLResource;
 use GcLib\Dao\Container as Container;
+use models\domain\Todo as Todo;
 
 /**
  * Todo service class
@@ -50,5 +51,11 @@ class TodoService {
 	
 	public function removeTodo($id) {
 		$this->todoDAO->destroy(array($id));
+	}
+	
+	public function addTodo($data) {
+		$todo = new Todo($data);
+		//$todo->validate();
+		var_dump($this->todoDAO->save($todo));
 	}
 }
