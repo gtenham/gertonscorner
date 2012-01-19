@@ -54,7 +54,7 @@ abstract class AbstractModel {
        if (array_key_exists($attribute, $this->_data)) {
           return $this->_data[$attribute];
        } else {
-          throw new Exception("Invalid attribute – $attribute");
+          throw new \Exception("Invalid attribute: $attribute");
        }
     }
   
@@ -209,7 +209,7 @@ abstract class AbstractModel {
        } else if (is_object($data)) {
           return (array) $data;           
        } else {
-          throw new Exception("Data must be an datasource, array or object");
+          throw new \Exception("Data must be an datasource, array or object");
        }
     }
     
@@ -222,7 +222,7 @@ abstract class AbstractModel {
           $data = $data->toArray();
        }
        if (!is_array($data)) {
-          throw new Exception('Initial data must be an array or object');
+          throw new \Exception('Initial data must be an array or object');
        }
        foreach ($data as $key => $val) {
        	  $this->__set($key, $val);

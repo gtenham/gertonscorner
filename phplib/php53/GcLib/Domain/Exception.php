@@ -15,7 +15,7 @@ namespace GcLib\Domain;
  * @copyright  Copyright (c) 2010 Gerton ten Ham
  * @version    $Id: Exception.php 64 2010-09-09 11:41:57Z gerton.tenham@yahoo.com $
  */
-Class Exception extends Exception {
+Class Exception extends \Exception {
 	protected $_attribute;
 	protected $_code;
 	protected $_message;
