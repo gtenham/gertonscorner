@@ -42,6 +42,7 @@ class TodoService {
 	 * 
 	 * @param string $id
 	 * @return array with todo data:
+	 * @throws NotFoundException
 	 */
 	public function getTodoById($id) {
 		$todo = $this->todoDAO->findTodoById($id);
@@ -49,13 +50,36 @@ class TodoService {
 		return array_merge($todo->toArray(),$errors);
 	}
 	
+	/**
+	 * Remove todo with given id
+	 * 
+	 * @param string $id the id of the resource
+	 */
 	public function removeTodo($id) {
 		$this->todoDAO->destroy(array($id));
 	}
 	
+	/**
+	 * Add a new Todo
+	 * 
+	 * @param Array $data
+	 * @return Todo the added todo
+	 * @throws 
+	 */
 	public function addTodo($data) {
 		$todo = new Todo($data);
-		//$todo->validate();
-		var_dump($this->todoDAO->save($todo));
+		return $this->todoDAO->save($todo);
+	}
+	
+	/**
+	 * Update an existing Todo
+	 * 
+	 * @param Array $data
+	 * @return Todo the updated todo
+	 * @throws 
+	 */
+	public function updateTodo($data) {
+		$todo = $this->todoDAO->save(new Todo($data));
+		return $todo->toArray();
 	}
 }

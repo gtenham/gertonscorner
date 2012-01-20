@@ -2,7 +2,7 @@
 <container>
    <manager id="slim-rest-server">
       <gateway class="GcLib\Dao\OracleGateway">
-         <property name="database">//localhost/HAMBASE:POOLED</property>
+         <property name="database">//localhost/XE:POOLED</property>
          <property name="username">todo</property>
          <property name="password">todo</property>
       </gateway>

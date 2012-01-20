@@ -34,7 +34,7 @@ $app->error(function ( Exception $e ) use ($app) {
 	if ($e->__toString() == null) {
 		$app->halt(500, $e->getMessage());
 	} else {
-		$app->halt($e->__toString());
+		$app->halt($e->getCode(), $e->getMessage());
 	}
 });
 
@@ -53,7 +53,14 @@ $app->get('/todos/:id', function ($id) use ($app, $todoservice) {
 
 $app->post('/todos', function () use ($app, $todoservice) {
 	$data = json_decode($app->request()->getBody(),true);
-	$todoservice->addTodo($data);
+	$todo = $todoservice->addTodo($data);
+	$app->response()->header('Location', $app->request()->getResourceUri().'/'.$todo->id);
+	$app->response()->status(201);
+});
+
+$app->put('/todos/:id', function () use ($app, $todoservice) {
+	$data = json_decode($app->request()->getBody(),true);
+	echo json_encode($todoservice->updateTodo($data));
 });
 
 $app->delete('/todos/:id', function ($id) use ($todoservice) {

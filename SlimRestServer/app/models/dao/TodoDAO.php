@@ -3,6 +3,7 @@ namespace models\dao;
 
 use models\domain\Todo as Todo;
 use services\exceptions\NotFoundException as NotFoundException;
+use services\exceptions\NoContentException as NoContentException;
 
 /**
  * Todo Data Access Object class
@@ -64,7 +65,7 @@ class TodoDAO {
 	public function findTodoById($id) {
 		$conn = $this->_daogateway->getConnection();
     	$stmt = oci_parse($conn, 'select * from todos where id = :id');
-    	oci_bind_by_name($stmt, ':id', $id);
+    	oci_bind_by_name($stmt, ':id', $id, 200);
     	$results = oci_execute($stmt, OCI_DEFAULT);
     	$data = array();
     	
@@ -77,7 +78,7 @@ class TodoDAO {
 	    			}
 	    		}
     		} else {
-    			throw new NotFoundException('Todo not found');
+    			throw new NotFoundException();
     		}
     	}
     	oci_free_statement($stmt);
@@ -87,11 +88,13 @@ class TodoDAO {
     	return $todo;
 	}
 	
+	/**
+	 * Save todo data
+	 * 
+	 * @param Todo $todo
+	 * @return Todo
+	 */
 	public function save(Todo $todo) {
-		/*
-		 * select lower(regexp_replace(sys_guid(),'(.{8})(.{4})(.{4})(.{4})(.{12})', '\1-\2-\3-\4-\5')) guid from dual;
-		 */
-		$newid = null;
 		$success = true;
 		$conn = $this->_daogateway->getConnection();
 		$guid = "lower(regexp_replace(sys_guid(),'(.{8})(.{4})(.{4})(.{4})(.{12})', '\\1-\\2-\\3-\\4-\\5'))";
@@ -100,7 +103,21 @@ class TodoDAO {
 			$stmt = oci_parse($conn, "insert into todos (id, done, sorting, startdate, description ) 
 									  values (" . $guid . ", :done, :sorting, :startdate, :description) 
 									  returning id into :id");
-			oci_bind_by_name($stmt, ':id', $newid,40);
+			oci_bind_by_name($stmt, ':id', $todo->id,200);
+    		oci_bind_by_name($stmt, ':done', $todo->done,1);
+    		oci_bind_by_name($stmt, ':sorting', $todo->order,3);
+    		oci_bind_by_name($stmt, ':startdate', $todo->startDate);
+			oci_bind_by_name($stmt, ':description', $todo->description, 2000);
+			$results = oci_execute($stmt, OCI_DEFAULT);
+		} else {
+			// Update existing Todo
+			$stmt = oci_parse($conn, "update todos 
+									  set done = :done
+									  , sorting = :sorting
+									  , startdate = :startdate
+									  , description = :description 
+									  where id = :id");
+			oci_bind_by_name($stmt, ':id', $todo->id,200);
     		oci_bind_by_name($stmt, ':done', $todo->done,1);
     		oci_bind_by_name($stmt, ':sorting', $todo->order,3);
     		oci_bind_by_name($stmt, ':startdate', $todo->startDate);
@@ -108,21 +125,26 @@ class TodoDAO {
 			$results = oci_execute($stmt, OCI_DEFAULT);
 		}
 		
-		if ($success) {
+		$todo->validate();
+		if ($success && $todo->isValid()) {
 			oci_commit($conn);
 		} else {
 			oci_rollback($conn);
 		}
     	oci_free_statement($stmt);
 		oci_close($conn);
-		return $newid;
+		return $todo;
 	}
 	
+	/**
+	 * Remove todos with ids in array
+	 * @param array $ids
+	 */
 	public function destroy(array $ids) {
 		$success = true;
 		$conn = $this->_daogateway->getConnection();
     	$stmt = oci_parse($conn, 'delete from todos where id = :id');
-    	oci_bind_by_name($stmt, ':id', $id);
+    	oci_bind_by_name($stmt, ':id', $id, 200);
     	
 		foreach ($ids as $id) {
 		    $results = oci_execute($stmt, OCI_DEFAULT);
@@ -136,9 +158,32 @@ class TodoDAO {
 		} else {
 			oci_rollback($conn);
 		}
-    	
-    	
     	oci_free_statement($stmt);
 		oci_close($conn);
+		
+		throw new NoContentException();
+	}
+	
+	/**
+	 * Generates a new Global UUID using oracle sys_guid() function
+	 * @return string guid
+	 */
+	public function generateGuid() {
+		$guid = "";
+		$conn = $this->_daogateway->getConnection();
+		$stmt = oci_parse($conn, "select lower(regexp_replace(sys_guid(),'(.{8})(.{4})(.{4})(.{4})(.{12})', '\\1-\\2-\\3-\\4-\\5')) guid from dual");
+    	
+		$results = oci_execute($stmt, OCI_DEFAULT);
+    	
+    	if ($results) {
+    		$row = oci_fetch_assoc($stmt);
+    		if ($row != false) {
+    			$guid = $row['GUID'];
+    		} 
+    	}
+    	oci_free_statement($stmt);
+		oci_close($conn);
+		
+    	return $guid;
 	}
 }

@@ -1,9 +1,9 @@
 <?php
 namespace services\exceptions;
 
-class NotFoundException extends \Exception {
+class NoContentException extends \Exception {
 	
-	const statusCode = 404;
+	const statusCode = 204;
 	private $responseData;
 	
 	public function __construct($message = null) {
