@@ -19,6 +19,9 @@ defined('APPLICATION_PATH')
               
 require 'Slim/Slim.php';
 
+// Create new Dependency Injection container
+$di = new Sf\Pimple();
+
 $app = new Slim(array(
     'session.handler' => null,
 	'templates.path' => '../app/views',
@@ -39,31 +42,38 @@ $app->error(function ( Exception $e ) use ($app) {
 });
 
 // Start of Todo application REST routing
-$todoservice = new services\TodoService();
+$di['todoservice'] = $di->share(function() {
+  return new services\TodoService();
+});
 
-$app->get('/todos', function () use ($app, $todoservice) {
+$app->get('/todos', function () use ($app, $di) {
+	$todoservice = $di['todoservice'];
 	$app->etag(md5(serialize($todoservice->getTodos())));
 	echo json_encode($todoservice->getTodos());
 }); 
 
-$app->get('/todos/:id', function ($id) use ($app, $todoservice) {
+$app->get('/todos/:id', function ($id) use ($app, $di) {
+	$todoservice = $di['todoservice'];
 	$app->etag(md5(serialize($todoservice->getTodoById($id))));
 	echo json_encode($todoservice->getTodoById($id));
 });
 
-$app->post('/todos', function () use ($app, $todoservice) {
+$app->post('/todos', function () use ($app, $di) {
+	$todoservice = $di['todoservice'];
 	$data = json_decode($app->request()->getBody(),true);
 	$todo = $todoservice->addTodo($data);
 	$app->response()->header('Location', $app->request()->getResourceUri().'/'.$todo->id);
 	$app->response()->status(201);
 });
 
-$app->put('/todos/:id', function () use ($app, $todoservice) {
+$app->put('/todos/:id', function () use ($app, $di) {
+	$todoservice = $di['todoservice'];
 	$data = json_decode($app->request()->getBody(),true);
 	echo json_encode($todoservice->updateTodo($data));
 });
 
-$app->delete('/todos/:id', function ($id) use ($todoservice) {
+$app->delete('/todos/:id', function ($id) use ($di) {
+	$todoservice = $di['todoservice'];
 	$todoservice->removeTodo($id);
 });
 
