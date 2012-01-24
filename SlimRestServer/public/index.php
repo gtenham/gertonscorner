@@ -45,16 +45,25 @@ $app->error(function ( Exception $e ) use ($app) {
 $di['todoservice'] = $di->share(function() {
   return new services\TodoService();
 });
+$di['etag'] = $di->share(function() {
+  return new services\EtagService();
+});
 
 $app->get('/todos', function () use ($app, $di) {
-	$todoservice = $di['todoservice'];
-	$app->etag(md5(serialize($todoservice->getTodos())));
-	echo json_encode($todoservice->getTodos());
+	$etag = $di['etag']->get('/todos');
+	$app->etag($etag);
+	if ($app->request()->headers('If-None-Match') != $etag) {
+		
+		$todoservice = $di['todoservice'];
+		//$app->etag(md5(serialize($todoservice->getTodos())));
+		echo json_encode($todoservice->getTodos());
+	} else {echo 'not changed';}
 }); 
 
 $app->get('/todos/:id', function ($id) use ($app, $di) {
+	$app->etag($di['etag']->get('/todos/'.$id));
 	$todoservice = $di['todoservice'];
-	$app->etag(md5(serialize($todoservice->getTodoById($id))));
+	//$app->etag(md5(serialize($todoservice->getTodoById($id))));
 	echo json_encode($todoservice->getTodoById($id));
 });
 
@@ -62,19 +71,22 @@ $app->post('/todos', function () use ($app, $di) {
 	$todoservice = $di['todoservice'];
 	$data = json_decode($app->request()->getBody(),true);
 	$todo = $todoservice->addTodo($data);
+	$di['etag']->change('/todos');
 	$app->response()->header('Location', $app->request()->getResourceUri().'/'.$todo->id);
 	$app->response()->status(201);
 });
 
-$app->put('/todos/:id', function () use ($app, $di) {
+$app->put('/todos/:id', function ($id) use ($app, $di) {
 	$todoservice = $di['todoservice'];
 	$data = json_decode($app->request()->getBody(),true);
+	$di['etag']->change('/todos/'.$id);
 	echo json_encode($todoservice->updateTodo($data));
 });
 
 $app->delete('/todos/:id', function ($id) use ($di) {
 	$todoservice = $di['todoservice'];
 	$todoservice->removeTodo($id);
+	$di['etag']->remove('/todos/'.$id);
 });
 
 // Run slim application

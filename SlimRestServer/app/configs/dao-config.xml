@@ -10,4 +10,13 @@
          <dao name="todo" class="models\dao\TodoDAO"/>
       </daos>
    </manager>
+   <manager id="memcache-server">
+      <gateway class="GcLib\Dao\MemcacheGateway">
+         <property name="host">localhost</property>
+         <property name="port">11211</property>
+      </gateway>
+      <daos>
+         <dao name="etag" class="models\dao\EtagDAO"/>
+      </daos>
+   </manager>
 </container>
