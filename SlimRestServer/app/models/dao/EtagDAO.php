@@ -23,7 +23,7 @@ class EtagDAO {
 	public function get($key) {
 		$conn = $this->_daogateway->getConnection();
 		if (!$conn->get($key)) {
-			$conn->replace($key,1);
+			$conn->set($key,1);
 			return 1;
 		}
 		return $conn->get($key);
@@ -32,7 +32,7 @@ class EtagDAO {
 	public function increment($key) {
 		$conn = $this->_daogateway->getConnection();
 		if (!$conn->get($key)) {
-			$conn->replace($key,1);
+			$conn->set($key,1);
 			return 1;
 		}
 		return $conn->increment($key, 1);
