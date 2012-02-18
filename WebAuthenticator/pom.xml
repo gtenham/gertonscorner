@@ -8,8 +8,7 @@
 	<description>Parent pom for WebAuthenticator</description>
 	<modules>
 		<module>WebAuthenticator-WebModule</module>
+		<module>WebAuthenticator-ClientModule</module>
 	</modules>
-	
-	
 	
 </project>

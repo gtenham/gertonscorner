@@ -29,6 +29,13 @@
 		</plugins>
 	</build>
 	<dependencies>
+		<dependency>
+  			<groupId>com.wordpress.gertonscorner</groupId>
+  			<artifactId>WebAuthenticator-ClientModule</artifactId>
+  			<version>0.0.1-SNAPSHOT</version>
+  			<type>jar</type>
+  			<scope>compile</scope>
+  		</dependency>
 		<!--
 		  Core utilities used by other modules.Define this if you use Spring Utility APIs (org.springframework.core.*/org.springframework.util.*)
 		-->
@@ -62,13 +69,13 @@
 		    Aspect Oriented Programming (AOP) Framework (depends on spring-core, spring-beans)
 		    Define this if you use Spring AOP APIs (org.springframework.aop.*)
 		-->
-		<dependency>
+		<!--<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-aop</artifactId>
 			<version>${org.springframework.version}</version>
 		</dependency>
 	
-		<!--
+		--><!--
 		    Application Context (depends on spring-core, spring-expression, spring-aop, spring-beans)
 		    This is the central artifact for Spring's Dependency Injection Container and is generally always defined
 		-->
@@ -125,13 +132,13 @@
 		    (depends on spring-core, spring-beans, spring-context)
 		    Define this if you need OXM (org.springframework.oxm.*)
 		-->
-		<dependency>
+		<!--<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-oxm</artifactId>
 			<version>${org.springframework.version}</version>
 		</dependency>
 	
-		<!--
+		--><!--
 		    Web application development utilities applicable to both Servlet and Portlet Environments
 		    (depends on spring-core, spring-beans, spring-context)
 		    Define this if you use Spring MVC, or wish to use Struts, JSF, or another web framework with Spring (org.springframework.web.*)
@@ -236,7 +243,7 @@
     		<artifactId>bcprov-jdk16</artifactId>
     		<version>1.46</version>
 		</dependency>
-		<dependency>
+		<!--<dependency>
 			<groupId>org.aspectj</groupId>
 			<artifactId>aspectjrt</artifactId>
 			<version>1.6.11</version>
@@ -252,7 +259,7 @@
 			<artifactId>cglib</artifactId>
 			<version>2.2</version>
     	</dependency>
-		<dependency>
+		--><dependency>
 			<groupId>net.sf.ehcache</groupId>
 			<artifactId>ehcache</artifactId>
 			<version>2.4.6</version>

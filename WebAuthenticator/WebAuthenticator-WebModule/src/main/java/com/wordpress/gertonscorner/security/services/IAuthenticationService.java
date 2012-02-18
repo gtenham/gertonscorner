@@ -46,7 +46,7 @@ public interface IAuthenticationService {
 	 * @param remoteAddressOnly
 	 * @throws ProxyAuthenticationRequiredException
 	 */
-	void validateAuthentication(String servicetoken, String remoteAddress, String serviceName, Boolean remoteAddressOnly) throws ProxyAuthenticationRequiredException;
+	//void validateAuthentication(String servicetoken, String remoteAddress, String serviceName, Boolean remoteAddressOnly) throws ProxyAuthenticationRequiredException;
 	
 	
 	/**

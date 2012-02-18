@@ -9,13 +9,13 @@ import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.wordpress.gertonscorner.security.annotations.Authentication;
-import com.wordpress.gertonscorner.security.services.IAuthenticationService;
+import com.wordpress.gertonscorner.security.services.IRemoteAuthenticationService;
 
 @Aspect
 public class SecurityAspect {
 
 	@Autowired
-	private IAuthenticationService authenticationService;
+	private IRemoteAuthenticationService authenticationService;
 	
 	@Pointcut(value="execution(public * *(..))")
 	public void anyPublicMethod() {

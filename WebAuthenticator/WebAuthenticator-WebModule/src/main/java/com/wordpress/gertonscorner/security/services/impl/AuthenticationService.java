@@ -16,6 +16,7 @@ import com.wordpress.gertonscorner.security.crypto.SHA;
 import com.wordpress.gertonscorner.security.dao.IRegisteredServiceDao;
 import com.wordpress.gertonscorner.security.domain.User;
 import com.wordpress.gertonscorner.security.services.IAuthenticationService;
+import com.wordpress.gertonscorner.security.services.IRemoteAuthenticationService;
 import com.wordpress.gertonscorner.security.services.ISessionService;
 import com.wordpress.gertonscorner.security.services.IUserService;
 import com.wordpress.gertonscorner.security.services.exceptions.EncryptionException;
@@ -28,7 +29,7 @@ import com.wordpress.gertonscorner.security.services.exceptions.ProxyAuthenticat
  *
  */
 @Service("authenticationService")
-public class AuthenticationService implements IAuthenticationService {
+public class AuthenticationService implements IAuthenticationService, IRemoteAuthenticationService {
 
 	private static final Logger logger = LoggerFactory.getLogger(AuthenticationService.class);
 	
